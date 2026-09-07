@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#2c4a32" />
+  <meta name="description" content="Bokka Bageri – et lite nanobakeri ved Bokkaskogen i Stavanger. Meld uforpliktende interesse for fersk surdeigsbakst i nabolaget." />
+  <title>Bokka Bageri – et lite nanobakeri ved Bokkaskogen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" href="assets/docs/9.png" />
+  <link rel="apple-touch-icon" href="assets/docs/9.png" />
+</head>
+<body>
+  <!-- Skip link for keyboard users -->
+  <a class="skip-link" href="#hovedinnhold">Hopp til innhold</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Bokka Bageri – til toppen">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 64 64" width="46" height="46" role="img" aria-hidden="true">
+          <path d="M14 40c0-11 3-21 12-21 6 0 9 3 9 8 0 4-2 6-5 7 4 1 7 3 7 8 0 6-4 10-11 10-7 0-12-4-12-12z"
+                fill="var(--bread)" stroke="var(--brown-ink)" stroke-width="2.6" stroke-linejoin="round"/>
+          <path d="M21 31c3-1 7-1 11 0M20 40c4-1 9-1 13 0" fill="none" stroke="var(--bread-light)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="21" cy="37" r="1.5" fill="var(--brown-ink)"/>
+          <circle cx="29" cy="37" r="1.5" fill="var(--brown-ink)"/>
+          <path d="M22 41c2 2 5 2 7 0" fill="none" stroke="var(--brown-ink)" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="18.5" cy="40" r="1.8" fill="var(--pink)" opacity="0.7"/>
+          <circle cx="31.5" cy="40" r="1.8" fill="var(--pink)" opacity="0.7"/>
+          <path d="M46 23c3 3 3 9 0 12" fill="none" stroke="var(--wheat)" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M46 26l-4-1M46 29h-4M46 32l-4 1" stroke="var(--wheat)" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M43 41c4 0 8 2 8 2" fill="none" stroke="var(--sage)" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="brand__text">
+        <span class="brand__name">Bokka Bageri</span>
+        <span class="brand__descriptor">Et lite nanobakeri ved Bokkaskogen</span>
+      </span>
+    </a>
+    <a class="btn btn--ghost header__cta" href="#meld-interesse">Meld interesse</a>
+  </header>
+
+  <main id="hovedinnhold">
+    <span id="top"></span>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" aria-labelledby="hero-tittel">
+      <svg class="bunting" viewBox="0 0 360 32" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M4 5 Q180 20 356 5" fill="none" stroke="var(--brown-ink)" stroke-width="1.4"/>
+        <g stroke="var(--brown-ink)" stroke-width="1.1" stroke-linejoin="round">
+          <path d="M26 7l17 1-7 17z" fill="var(--sage)"/>
+          <path d="M74 9l17 1-7 17z" fill="var(--wheat)"/>
+          <path d="M122 10l17 1-7 17z" fill="var(--pink)"/>
+          <path d="M170 11h17l-7 17z" fill="var(--sage)"/>
+          <path d="M218 10l17-1-7 17z" fill="var(--wheat)"/>
+          <path d="M266 9l17-1-7 17z" fill="var(--pink)"/>
+          <path d="M314 7l17-1-7 17z" fill="var(--sage)"/>
+        </g>
+      </svg>
+
+      <div class="hero__inner">
+        <div class="hero__art frame frame--tilt-left">
+          <img src="assets/docs/9.png" width="520" height="520"
+               alt="Bokka Bageri – logoen: en gyllen brød-B med et vennlig ansikt, hvetestrå og blader"
+               class="hero__logo" fetchpriority="high" decoding="async" />
+          <span class="float-bubble float-bubble--1" aria-hidden="true"></span>
+          <span class="float-bubble float-bubble--2" aria-hidden="true"></span>
+          <span class="float-bubble float-bubble--3" aria-hidden="true"></span>
+        </div>
+
+        <div class="hero__text">
+          <p class="hero__eyebrow">Fersk surdeigsbakst · Bokkaskogen, Stavanger</p>
+          <h1 id="hero-tittel">Bokka kommer når du vil ha oss</h1>
+          <p class="hero__lead">Fersk surdeigsbakst fra nabolaget – uten abonnement og uten kjøpepress.</p>
+          <a class="btn btn--primary btn--big" href="#meld-interesse">Meld interesse</a>
+          <p class="hero__reassure">Helt uforpliktende. Du bestemmer selv om du vil bestille når vi baker.</p>
+        </div>
+      </div>
+
+      <svg class="hero__sprig" viewBox="0 0 120 26" aria-hidden="true">
+        <path d="M10 14 Q40 2 60 14 Q80 26 110 14" fill="none" stroke="var(--sage-deep)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M30 8c-3-4-8-3-8-3 0 0 0 6 8 3zM90 20c3 4 8 3 8 3 0 0 0-6-8-3z" fill="var(--sage)"/>
+        <circle cx="60" cy="14" r="2.4" fill="var(--pink)"/>
+      </svg>
+    </section>
+
+    <!-- ============ PRODUCTS ============ -->
+    <section class="section products" aria-labelledby="produkter-tittel">
+      <div class="section__head">
+        <h2 id="produkter-tittel">Litt av det vi steller i stand</h2>
+        <p class="section__sub">Alt er ekte surdeig, bakt for hånd i små slenger.</p>
+      </div>
+
+      <ul class="product-grid" role="list">
+        <li class="product-card">
+          <div class="product-card__art">
+            <svg viewBox="0 0 120 120" role="img" aria-label="Illustrasjon av et rundt surdeigsbrød">
+              <ellipse cx="60" cy="96" rx="40" ry="7" fill="var(--forest)" opacity="0.12"/>
+              <path d="M20 66c0-20 18-30 40-30s40 10 40 30c0 16-18 24-40 24s-40-8-40-24z" fill="var(--bread)" stroke="var(--forest)" stroke-width="3"/>
+              <path d="M42 52c8 10 14 20 16 30M60 48c2 12 2 22 0 32M78 52c-8 10-13 20-15 30" fill="none" stroke="var(--cream)" stroke-width="3" stroke-linecap="round"/>
+              <path d="M30 62c6-3 12-4 18-3" fill="none" stroke="var(--bread-light)" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Surdeigsbrød</h3>
+          <p>Sprø skorpe, luftig og seigt inni. Baksten vi er mest stolte av.</p>
+        </li>
+
+        <li class="product-card">
+          <div class="product-card__art">
+            <svg viewBox="0 0 120 120" role="img" aria-label="Illustrasjon av en kardemommebolle">
+              <ellipse cx="60" cy="98" rx="34" ry="6" fill="var(--forest)" opacity="0.12"/>
+              <path d="M30 66c0-16 13-28 30-28s30 12 30 28-13 24-30 24-30-8-30-24z" fill="var(--bread-light)" stroke="var(--forest)" stroke-width="3"/>
+              <path d="M40 60c8 8 32 8 40 0M42 72c6 6 28 6 36 0" fill="none" stroke="var(--bread)" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="52" cy="55" r="1.8" fill="var(--forest)"/>
+              <circle cx="66" cy="53" r="1.8" fill="var(--forest)"/>
+              <circle cx="60" cy="62" r="1.8" fill="var(--forest)"/>
+            </svg>
+          </div>
+          <h3>Kardemommeboller</h3>
+          <p>Godt eltet deig med rikelig kardemomme. Best litt lun.</p>
+        </li>
+
+        <li class="product-card">
+          <div class="product-card__art">
+            <svg viewBox="0 0 120 120" role="img" aria-label="Illustrasjon av en surdeigs-cookie">
+              <ellipse cx="60" cy="96" rx="32" ry="6" fill="var(--forest)" opacity="0.12"/>
+              <circle cx="60" cy="60" r="34" fill="var(--bread-light)" stroke="var(--forest)" stroke-width="3"/>
+              <circle cx="50" cy="52" r="4" fill="var(--bread)"/>
+              <circle cx="72" cy="56" r="4" fill="var(--bread)"/>
+              <circle cx="58" cy="70" r="4" fill="var(--bread)"/>
+              <circle cx="70" cy="72" r="3" fill="var(--bread)"/>
+              <circle cx="48" cy="68" r="3" fill="var(--bread)"/>
+            </svg>
+          </div>
+          <h3>Surdeigs-cookies</h3>
+          <p>Seige i midten, med et snev av syrlig surdeig. En snill favoritt.</p>
+        </li>
+
+        <li class="product-card product-card--feature">
+          <div class="product-card__art">
+            <svg viewBox="0 0 120 120" role="img" aria-label="Illustrasjon av Bokka Dypp – stor kardemommebolle med et lite dyppfat">
+              <ellipse cx="54" cy="100" rx="40" ry="6" fill="var(--forest)" opacity="0.12"/>
+              <path d="M18 62c0-18 15-30 34-30s34 12 34 30-15 26-34 26-34-8-34-26z" fill="var(--bread-light)" stroke="var(--forest)" stroke-width="3"/>
+              <path d="M30 56c10 9 38 9 48 0M32 70c8 7 34 7 44 0" fill="none" stroke="var(--bread)" stroke-width="3" stroke-linecap="round"/>
+              <path d="M84 86c0-6 6-9 13-9s13 3 13 9-6 8-13 8-13-2-13-8z" fill="var(--pink)" stroke="var(--forest)" stroke-width="2.5"/>
+              <ellipse cx="97" cy="84" rx="8" ry="3" fill="var(--pink-soft)"/>
+            </svg>
+          </div>
+          <h3>Bokka Dypp</h3>
+          <p>Stor kardemomme-surdeigsbolle med et lite dyppfat – for eksempel lemon curd.</p>
+          <span class="tag">Husets lille godbit</span>
+        </li>
+
+        <li class="product-card">
+          <div class="product-card__art">
+            <svg viewBox="0 0 120 120" role="img" aria-label="Illustrasjon av en surdeigsstarter i et glass">
+              <ellipse cx="60" cy="100" rx="26" ry="5" fill="var(--forest)" opacity="0.12"/>
+              <rect x="38" y="40" width="44" height="56" rx="8" fill="var(--beige)" stroke="var(--forest)" stroke-width="3"/>
+              <rect x="34" y="34" width="52" height="10" rx="5" fill="var(--bread)" stroke="var(--forest)" stroke-width="3"/>
+              <path d="M42 74c0-8 36-8 36 0v14c0 4-36 4-36 0z" fill="var(--bread-light)"/>
+              <circle cx="50" cy="70" r="3" fill="var(--cream)"/>
+              <circle cx="62" cy="66" r="4" fill="var(--cream)"/>
+              <circle cx="72" cy="72" r="2.5" fill="var(--cream)"/>
+              <circle cx="58" cy="76" r="2.5" fill="var(--cream)"/>
+            </svg>
+          </div>
+          <h3>Surdeigsstarter</h3>
+          <p>En liten boblende venn du kan stelle hjemme. Vi hjelper deg i gang.</p>
+        </li>
+      </ul>
+      <p class="products__note">Illustrasjonene er våre egne skisser – ekte bilder kommer når ovnen er varm.</p>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="section how" aria-labelledby="slik-tittel">
+      <div class="section__head">
+        <h2 id="slik-tittel">Slik fungerer Bokka</h2>
+        <p class="section__sub">Fire små steg – helt uten mas.</p>
+      </div>
+
+      <ol class="steps" role="list">
+        <li class="step">
+          <span class="step__num" aria-hidden="true">1</span>
+          <span class="step__icon" aria-hidden="true">✋</span>
+          <h3>Meld interesse</h3>
+          <p>Fyll ut det lille skjemaet. Det tar under ett minutt.</p>
+        </li>
+        <li class="step">
+          <span class="step__num" aria-hidden="true">2</span>
+          <span class="step__icon" aria-hidden="true">🔔</span>
+          <h3>Vi sier fra når vi baker</h3>
+          <p>Du får en vennlig beskjed når Bokka fyrer opp ovnen.</p>
+        </li>
+        <li class="step">
+          <span class="step__num" aria-hidden="true">3</span>
+          <span class="step__icon" aria-hidden="true">🌿</span>
+          <h3>Du reserverer bare hvis du har lyst</h3>
+          <p>Ingen forpliktelser. Passer det ikke, hopper du bare over.</p>
+        </li>
+        <li class="step">
+          <span class="step__num" aria-hidden="true">4</span>
+          <span class="step__icon" aria-hidden="true">🛒</span>
+          <h3>Bokka leverer i nabolaget</h3>
+          <p>Vi triller rundt med vogna og leverer fersk bakst på døra.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============ BOKKA-BOBLER (starter characters) ============ -->
+    <section class="section bobler" id="bokka-bobler" aria-labelledby="bobler-tittel">
+      <div class="section__head">
+        <p class="eyebrow-hand">Møt surdeigsvennene våre</p>
+        <h2 id="bobler-tittel">Bokka-boblene</h2>
+        <p class="section__sub">Tre små surdeigsstartere som spiser mel og vann, lager bobler og hjelper deigen å vokse.</p>
+      </div>
+
+      <figure class="bobler__art frame">
+        <img src="assets/docs/Bokka-Bobler%20Sourdough%20Friends.png" width="1024" height="640"
+             alt="Bokka-boblene: Rugbokka, Hvetebokka og Søtbokka – tre små surdeigsstartere med glade ansikter og bobler"
+             loading="lazy" decoding="async" />
+      </figure>
+
+      <ul class="bobler-grid" role="list">
+        <li class="bobler-card bobler-card--rug">
+          <h3>Rugbokka</h3>
+          <p>Sterk og robust – full av kraft og dype, gode smaker.</p>
+        </li>
+        <li class="bobler-card bobler-card--hvete">
+          <h3>Hvetebokka</h3>
+          <p>Rolig og balansert – milde smaker og et stabilt sinn.</p>
+        </li>
+        <li class="bobler-card bobler-card--sot">
+          <h3>Søtbokka</h3>
+          <p>God og mild – en søt smak som gjør alt litt bedre.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ============ STORY ============ -->
+    <section class="section story" aria-labelledby="historie-tittel">
+      <div class="story__inner">
+        <figure class="story__art frame frame--tilt-right">
+          <img src="assets/docs/Bokka%20Bageri_%20Bread%20Wagon%20Parade.png" width="1024" height="1024"
+               alt="Tre barn triller en grønn vogn full av brød gjennom Bokkaskogen, med små vimpler og blader"
+               loading="lazy" decoding="async" />
+        </figure>
+        <div class="story__text">
+          <p class="eyebrow-hand">Vår lille historie</p>
+          <h2 id="historie-tittel">Tre små bakere, én vogn og masse surdeig.</h2>
+          <p>Bokka er et lite familieprosjekt i nabolaget. Her hjelper barna til med å bake, lærer om ekte råvarer og surdeig, og er med på å levere fersk bakst rundt i gatene med en liten vogn.</p>
+          <p>Det er ikke en butikk – det er en hyggelig unnskyldning for å lage noe godt sammen og dele det med naboene.</p>
+          <p class="story__tagline">Bakt med kjærlighet ved Bokkaskogen.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ INTEREST FORM ============ -->
+    <section class="section interest" id="meld-interesse" aria-labelledby="skjema-tittel">
+      <div class="interest__card">
+        <div class="section__head">
+          <h2 id="skjema-tittel">Meld interesse</h2>
+          <p class="section__sub">Vi gir deg beskjed neste gang Bokka baker. Ingenting bindende.</p>
+        </div>
+
+        <form id="interest-form" class="form" novalidate>
+          <div class="field">
+            <label for="fornavn">Fornavn</label>
+            <input type="text" id="fornavn" name="fornavn" autocomplete="given-name" required aria-required="true" />
+            <p class="field__error" id="fornavn-error" hidden>Skriv gjerne fornavnet ditt.</p>
+          </div>
+
+          <div class="field">
+            <label for="kontakt">Telefon eller e-post</label>
+            <input type="text" id="kontakt" name="kontakt" inputmode="email" autocomplete="email" required aria-required="true" placeholder="f.eks. 900 00 000 eller navn@epost.no" />
+            <p class="field__error" id="kontakt-error" hidden>Skriv et telefonnummer eller en e-postadresse vi kan nå deg på.</p>
+          </div>
+
+          <fieldset class="field field--group">
+            <legend>Hva er du nysgjerrig på?</legend>
+            <p class="field__hint">Kryss av det du liker – helt uforpliktende.</p>
+            <div class="checks">
+              <label class="check"><input type="checkbox" name="produkter" value="Surdeigsbrød" /> <span>Surdeigsbrød</span></label>
+              <label class="check"><input type="checkbox" name="produkter" value="Kardemommeboller" /> <span>Kardemommeboller</span></label>
+              <label class="check"><input type="checkbox" name="produkter" value="Surdeigs-cookies" /> <span>Surdeigs-cookies</span></label>
+              <label class="check"><input type="checkbox" name="produkter" value="Bokka Dypp" /> <span>Bokka Dypp</span></label>
+              <label class="check"><input type="checkbox" name="produkter" value="Surdeigsstarter" /> <span>Surdeigsstarter</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="field field--group">
+            <legend>Når passer det best?</legend>
+            <div class="checks checks--row">
+              <label class="check"><input type="checkbox" name="dager" value="Lørdag" /> <span>Lørdag</span></label>
+              <label class="check"><input type="checkbox" name="dager" value="Søndag" /> <span>Søndag</span></label>
+              <label class="check"><input type="checkbox" name="dager" value="Begge passer" /> <span>Begge passer</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="nabolag">Gate eller nabolag <span class="field__optional">(valgfritt)</span></label>
+            <input type="text" id="nabolag" name="nabolag" autocomplete="off" placeholder="f.eks. Bokkaveien" />
+            <p class="field__hint">Vi trenger ikke full adresse ennå – bare et hint om hvor du bor.</p>
+          </div>
+
+          <p class="form__disclaimer"><strong>Dette er ikke en bindende bestilling.</strong> Vi tar bare kontakt når vi baker, så bestemmer du selv.</p>
+
+          <button type="submit" class="btn btn--primary btn--big btn--full">Meld interesse</button>
+        </form>
+
+        <!-- Success message appears here after submit -->
+        <div class="form__success" id="form-success" role="status" hidden>
+          <span class="form__success-mark" aria-hidden="true">🌾</span>
+          <h3>Tusen takk – vi gleder oss til å bake for deg!</h3>
+          <p id="form-success-text">Vi sier fra neste gang Bokka fyrer opp ovnen. Helt uforpliktende, som lovet.</p>
+          <button type="button" class="btn btn--ghost" id="form-reset">Meld interesse for noen andre</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FINAL CTA ============ -->
+    <section class="section final-cta" aria-labelledby="final-tittel">
+      <h2 id="final-tittel">Vil du vite når Bokka baker?</h2>
+      <p>Meld interesse i dag – helt uforpliktende.</p>
+      <a class="btn btn--primary btn--big" href="#meld-interesse">Meld interesse</a>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <svg class="footer__sprig" viewBox="0 0 120 24" aria-hidden="true">
+      <path d="M8 12 Q40 2 60 12 Q80 22 112 12" fill="none" stroke="var(--wheat)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M30 7c-3-3-8-2-8-2 0 0 0 5 8 2zM90 17c3 3 8 2 8 2 0 0 0-5-8-2z" fill="var(--sage)"/>
+      <circle cx="60" cy="12" r="2.4" fill="var(--pink)"/>
+    </svg>
+    <p class="site-footer__brand">Bokka Bageri</p>
+    <p>Et lite nanobakeri ved Bokkaskogen · Stavanger</p>
+    <p class="site-footer__tagline">Bakt med kjærlighet ved Bokkaskogen 🌾</p>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
