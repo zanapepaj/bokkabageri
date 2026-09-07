@@ -469,6 +469,7 @@ a { color: var(--forest); }
   margin: 0;
 }
 .form__disclaimer strong { color: var(--forest); }
+.form__privacy { font-size: 0.85rem; color: var(--ink-soft); text-align: center; margin: 0; }
 
 /* Success state */
 .form__success {
@@ -542,6 +543,18 @@ a { color: var(--forest); }
 .bobler-card--hvete { border-left-color: var(--wheat); }
 .bobler-card--sot { border-left-color: var(--pink); }
 
+/* ---------- Instagram ---------- */
+.instagram { text-align: center; }
+.instagram__card {
+  background: var(--cream-deep);
+  border: 2.5px solid var(--beige);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.8rem, 6vw, 2.8rem);
+  box-shadow: var(--shadow-soft);
+}
+.instagram__text { color: var(--ink-soft); max-width: 34rem; margin: 0 auto 1.5rem; }
+.instagram__icon { flex: none; }
+
 /* ---------- Final CTA ---------- */
 .final-cta {
   text-align: center;
@@ -574,6 +587,15 @@ a { color: var(--forest); }
   color: var(--bread-light);
   margin-top: 0.7rem;
 }
+.site-footer__social { margin-top: 0.6rem; }
+.site-footer__link {
+  color: var(--bread-light);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.site-footer__link:hover,
+.site-footer__link:focus-visible { color: var(--cream); }
 
 /* ---------- Scroll reveal ---------- */
 .reveal {
