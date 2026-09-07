@@ -317,6 +317,23 @@ a { color: var(--forest); }
 }
 .product-card h3 { font-size: 1.3rem; margin-bottom: 0.35rem; }
 .product-card p { color: var(--ink-soft); margin: 0; }
+.product-card .price {
+  margin: 0.85rem 0 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--bread-deep);
+}
+.price__note {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+.product-card .price--soon {
+  font-family: var(--font-hand);
+  color: var(--ink-soft);
+  opacity: 0.85;
+}
 .product-card--feature {
   background: var(--pink-soft);
   border-color: var(--pink);
