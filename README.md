@@ -26,7 +26,7 @@ the oven is warm.
   upcoming *Bokka Dypp*)
 - "Slik funker det" — how the little bakery works
 - The **Bokka-Bobler** sourdough friends and the story of the bread wagon
-- An interest-registration form (saved locally in the browser for this prototype)
+- An interest-registration form (submitted asynchronously via Formspree)
 
 All on-page text is in **Norwegian**.
 

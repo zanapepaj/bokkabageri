@@ -268,7 +268,7 @@
           <p class="section__sub">Vi gir deg beskjed neste gang Bokka baker. Ingenting bindende.</p>
         </div>
 
-        <form id="interest-form" class="form" novalidate>
+        <form id="interest-form" class="form" action="https://formspree.io/f/your-form-id" method="POST" novalidate>
           <div class="field">
             <label for="fornavn">Fornavn</label>
             <input type="text" id="fornavn" name="fornavn" autocomplete="given-name" required aria-required="true" />
@@ -309,6 +309,8 @@
           </div>
 
           <p class="form__disclaimer"><strong>Dette er ikke en bindende bestilling.</strong> Vi tar bare kontakt når vi baker, så bestemmer du selv.</p>
+
+          <p class="field__error form__error" id="form-error" role="alert" hidden>Beklager – noe gikk galt da vi sendte skjemaet. Prøv igjen om litt, eller send oss en e-post.</p>
 
           <button type="submit" class="btn btn--primary btn--big btn--full">Meld interesse</button>
         </form>

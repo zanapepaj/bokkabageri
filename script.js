@@ -2,7 +2,7 @@
    Bokka Bageri — script.js
    Vanilla JS only. Handles:
    - interest form validation
-   - saving demo submissions to localStorage (no backend yet)
+   - asynchronous submission to Formspree (no page reload)
    - a warm success message
    - gentle scroll-reveal animations
    ========================================================= */
@@ -17,8 +17,9 @@
   const successBox = document.getElementById("form-success");
   const successText = document.getElementById("form-success-text");
   const resetBtn = document.getElementById("form-reset");
-
-  const STORAGE_KEY = "bokka-interest-demo";
+  const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+  const formError = document.getElementById("form-error");
+  const submitBtnLabel = submitBtn ? submitBtn.textContent : "";
 
   /**
    * Very light contact check: accept either an email-ish string
@@ -77,41 +78,14 @@
         return;
       }
 
-      // Collect the submission.
-      const submission = {
-        fornavn: firstName.value.trim(),
-        kontakt: contact.value.trim(),
-        produkter: getChecked(form, "produkter"),
-        dager: getChecked(form, "dager"),
-        nabolag: (form.elements["nabolag"].value || "").trim(),
-        tidspunkt: new Date().toISOString(),
-      };
-
-      saveSubmission(submission);
-
-      /* ---------------------------------------------------
-         BACKEND HOOK — connect a real backend here later.
-         Right now we only store demo data in localStorage.
-
-         When we go live, replace the saveSubmission() call
-         above (or add here) with something like:
-
-           fetch("/api/interest", {
-             method: "POST",
-             headers: { "Content-Type": "application/json" },
-             body: JSON.stringify(submission),
-           });
-
-         Consider: server-side validation, spam protection,
-         GDPR-friendly storage, and a double opt-in confirmation.
-         --------------------------------------------------- */
-
-      showSuccess(submission);
+      submitToFormspree();
     });
 
     if (resetBtn) {
       resetBtn.addEventListener("click", function () {
         form.reset();
+        hideFormError();
+        setSubmitting(false);
         successBox.hidden = true;
         form.hidden = false;
         firstName.focus();
@@ -119,36 +93,64 @@
     }
   }
 
-  function getChecked(formEl, name) {
-    return Array.prototype.slice
-      .call(formEl.querySelectorAll('input[name="' + name + '"]:checked'))
-      .map(function (el) {
-        return el.value;
+  /**
+   * Send the form to Formspree with fetch so the page never reloads.
+   * The success state is shown only after Formspree confirms (HTTP 2xx);
+   * a network error or non-OK response shows a friendly notice instead.
+   */
+  function submitToFormspree() {
+    if (!form) return;
+    hideFormError();
+    setSubmitting(true);
+
+    const name = form.elements["fornavn"].value.trim();
+
+    fetch(form.action, {
+      method: "POST",
+      body: new FormData(form),
+      headers: { Accept: "application/json" },
+    })
+      .then(function (response) {
+        if (response.ok) {
+          showSuccess(name);
+        } else {
+          showFormError();
+        }
+      })
+      .catch(function () {
+        showFormError();
+      })
+      .then(function () {
+        setSubmitting(false);
       });
   }
 
-  function saveSubmission(submission) {
-    let all = [];
-    try {
-      all = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-    } catch (err) {
-      all = [];
-    }
-    all.push(submission);
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
-    } catch (err) {
-      // localStorage can be unavailable (private mode / full).
-      // Failing quietly is fine for this demo.
+  function setSubmitting(isSubmitting) {
+    if (!submitBtn) return;
+    submitBtn.disabled = isSubmitting;
+    if (isSubmitting) {
+      form.setAttribute("aria-busy", "true");
+      submitBtn.textContent = "Sender …";
+    } else {
+      form.removeAttribute("aria-busy");
+      submitBtn.textContent = submitBtnLabel;
     }
   }
 
-  function showSuccess(submission) {
+  function showFormError() {
+    if (formError) formError.hidden = false;
+  }
+
+  function hideFormError() {
+    if (formError) formError.hidden = true;
+  }
+
+  function showSuccess(name) {
     if (!successBox) return;
     if (successText) {
       successText.textContent =
         "Takk, " +
-        submission.fornavn +
+        name +
         "! Vi sier fra neste gang Bokka fyrer opp ovnen. Helt uforpliktende, som lovet.";
     }
     form.hidden = true;

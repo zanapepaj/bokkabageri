@@ -430,6 +430,7 @@ a { color: var(--forest); }
 }
 .field input[aria-invalid="true"] { border-color: #b3452f; background: #fbeae6; }
 .field__error { color: #9c3a26; font-size: 0.88rem; font-weight: 600; margin: 0.1rem 0 0; }
+.form__error { text-align: center; margin: 0.2rem 0 1rem; }
 
 .field--group { display: grid; gap: 0.6rem; }
 .checks { display: grid; gap: 0.55rem; }
