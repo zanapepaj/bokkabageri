@@ -57,7 +57,7 @@
         <span class="brand__descriptor">Et lite nanobakeri ved Bokkaskogen</span>
       </span>
     </a>
-    <a class="btn btn--ghost header__cta" href="#meld-interesse">Meld interesse</a>
+    <a class="btn btn--ghost header__cta" href="#helgens-bestilling">Bestill til helgen</a>
   </header>
 
   <main id="hovedinnhold">
@@ -92,7 +92,7 @@
           <p class="hero__eyebrow">Fersk surdeigsbakst · Bokkaskogen, Stavanger</p>
           <h1 id="hero-tittel">Bokka kommer når du vil ha oss</h1>
           <p class="hero__lead">Fersk surdeigsbakst fra nabolaget – uten abonnement og uten kjøpepress.</p>
-          <a class="btn btn--primary btn--big" href="#meld-interesse">Meld interesse</a>
+          <a class="btn btn--primary btn--big" href="#helgens-bestilling">Bestill til helgen</a>
           <p class="hero__reassure">Helt uforpliktende. Du bestemmer selv om du vil bestille når vi baker.</p>
         </div>
       </div>
@@ -102,6 +102,139 @@
         <path d="M30 8c-3-4-8-3-8-3 0 0 0 6 8 3zM90 20c3 4 8 3 8 3 0 0 0-6-8-3z" fill="var(--sage)"/>
         <circle cx="60" cy="14" r="2.4" fill="var(--pink)"/>
       </svg>
+    </section>
+
+    <!-- ============ WEEKEND ORDER ============ -->
+    <section class="section weekend-order" id="helgens-bestilling" aria-labelledby="bestilling-tittel">
+      <div class="order-wrap frame">
+        <span class="order__badge" role="text">Begrenset antall</span>
+
+        <div class="section__head">
+          <p class="eyebrow-hand">Helgens bakst</p>
+          <h2 id="bestilling-tittel">Denne helgen baker vi</h2>
+          <p class="section__sub">Vil du at vi skal holde av noe til deg? Send inn bestillingen under, så tar Bokka-vogna det med i nabolaget.</p>
+        </div>
+
+        <form id="order-form" class="form order-form" action="https://formspree.io/f/moeqkjwr" method="POST" novalidate>
+          <!-- Order form. Distinguished from the interest form by the hidden
+               "skjema" + "_subject" fields and its own success/error handling.
+               Vil du ha bestillinger i et eget innboks-skjema? Bytt action-URL-en
+               over til en egen Formspree-skjema-ID for bestillinger. -->
+          <input type="hidden" name="_subject" value="Ny helgebestilling – Bokka Bageri" />
+          <input type="hidden" name="skjema" value="Helgens bestilling" />
+          <input type="hidden" name="Bestilling" value="" />
+
+          <ul class="order-list" role="list">
+            <li class="order-card">
+              <div class="order-card__info">
+                <h3>Kanelbolle</h3>
+                <p class="order-card__desc">Klassisk kanelsnurr med mye kanel og litt sukker. Myk og luftig.</p>
+                <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
+                <p class="order-card__price"><span class="order-card__amount">30</span> kr</p>
+              </div>
+              <div class="qty" data-qty>
+                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Kanelbolle">−</button>
+                <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
+                       name="Kanelbolle (antall)" data-product="Kanelbolle"
+                       value="0" min="0" max="10" step="1" aria-label="Antall Kanelbolle" />
+                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Kanelbolle">+</button>
+              </div>
+            </li>
+
+            <li class="order-card">
+              <div class="order-card__info">
+                <h3>Vaniljebolle</h3>
+                <p class="order-card__desc">Gyllen bolle med søt, hjemmelaget vaniljekrem i midten.</p>
+                <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
+                <p class="order-card__price"><span class="order-card__amount">30</span> kr</p>
+              </div>
+              <div class="qty" data-qty>
+                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Vaniljebolle">−</button>
+                <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
+                       name="Vaniljebolle (antall)" data-product="Vaniljebolle"
+                       value="0" min="0" max="10" step="1" aria-label="Antall Vaniljebolle" />
+                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Vaniljebolle">+</button>
+              </div>
+            </li>
+
+            <li class="order-card">
+              <div class="order-card__info">
+                <h3>Vanilje- og bringebærbolle</h3>
+                <p class="order-card__desc">Saftig bolle med søt vaniljekrem og friske bringebær.</p>
+                <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
+                <p class="order-card__price"><span class="order-card__amount">35</span> kr</p>
+              </div>
+              <div class="qty" data-qty>
+                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre vanilje- og bringebærbolle">−</button>
+                <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
+                       name="Vanilje- og bringebærbolle (antall)" data-product="Vanilje- og bringebærbolle"
+                       value="0" min="0" max="10" step="1" aria-label="Antall vanilje- og bringebærbolle" />
+                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere vanilje- og bringebærbolle">+</button>
+              </div>
+            </li>
+
+            <li class="order-card">
+              <div class="order-card__info">
+                <h3>Bolle med glasur og tutti frutti-strøssel</h3>
+                <p class="order-card__desc">Søt bolle med glasur og fargerikt tutti frutti-strøssel. Barnas favoritt.</p>
+                <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
+                <p class="order-card__price"><span class="order-card__amount">30</span> kr</p>
+              </div>
+              <div class="qty" data-qty>
+                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre bolle med glasur og tutti frutti-strøssel">−</button>
+                <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
+                       name="Bolle m/ glasur og tutti frutti (antall)" data-product="Bolle med glasur og tutti frutti-strøssel"
+                       value="0" min="0" max="10" step="1" aria-label="Antall bolle med glasur og tutti frutti-strøssel" />
+                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere bolle med glasur og tutti frutti-strøssel">+</button>
+              </div>
+            </li>
+          </ul>
+
+          <p class="field__error order-form__empty" id="order-empty" role="alert" hidden>Velg minst én bolle før du sender bestillingen.</p>
+
+          <div class="field">
+            <label for="order-fornavn">Fornavn</label>
+            <input type="text" id="order-fornavn" name="fornavn" autocomplete="given-name" required aria-required="true" />
+            <p class="field__error" id="order-fornavn-error" hidden>Skriv gjerne fornavnet ditt.</p>
+          </div>
+
+          <div class="field">
+            <label for="order-mobil">Mobilnummer</label>
+            <input type="tel" id="order-mobil" name="mobil" inputmode="tel" autocomplete="tel" required aria-required="true" placeholder="f.eks. 900 00 000" />
+            <p class="field__error" id="order-mobil-error" hidden>Skriv et mobilnummer vi kan nå deg på.</p>
+          </div>
+
+          <div class="field">
+            <label for="order-adresse">Gate / husnummer</label>
+            <input type="text" id="order-adresse" name="adresse" autocomplete="street-address" required aria-required="true" placeholder="f.eks. Bokkaveien 3" />
+            <p class="field__error" id="order-adresse-error" hidden>Vi trenger gate og husnummer for å levere til deg.</p>
+          </div>
+
+          <div class="field">
+            <label for="order-kommentar">Kommentar <span class="field__optional">(valgfritt)</span></label>
+            <textarea id="order-kommentar" name="kommentar" rows="3" placeholder="Allergier, ønsket leveringstid eller en liten hilsen …"></textarea>
+          </div>
+
+          <label class="check check--solo">
+            <input type="checkbox" name="levering" value="Ja, ønsker levering i nabolaget" />
+            <span>Jeg ønsker levering i nabolaget</span>
+          </label>
+
+          <p class="form__disclaimer"><strong>Bestillingen er først bekreftet når du får svar fra Bokka.</strong> Vi sier fra så snart vi kan.</p>
+
+          <p class="field__error form__error" id="order-error" role="alert" hidden>Beklager – noe gikk galt da vi sendte bestillingen. Prøv igjen om litt, eller send oss en melding på Instagram.</p>
+
+          <button type="submit" class="btn btn--primary btn--big btn--full">Send bestilling</button>
+        </form>
+
+        <!-- Success message appears here after submit -->
+        <div class="form__success" id="order-success" role="status" hidden>
+          <span class="form__success-mark" aria-hidden="true">🧡</span>
+          <h3>Takk for bestillingen!</h3>
+          <p id="order-success-text">Vi har notert ønsket ditt for helgen. Bokka gir deg beskjed så snart vi kan – bestillingen er først bekreftet når du får svar fra oss.</p>
+          <button type="button" class="btn btn--ghost" id="order-reset">Send en ny bestilling</button>
+        </div>
+      </div>
     </section>
 
     <!-- ============ PRODUCTS ============ -->
@@ -115,10 +248,15 @@
         <li class="product-card">
           <div class="product-card__art">
             <svg viewBox="0 0 120 120" role="img" aria-label="Illustrasjon av et rundt surdeigsbrød">
-              <ellipse cx="60" cy="96" rx="40" ry="7" fill="var(--forest)" opacity="0.12"/>
-              <path d="M20 66c0-20 18-30 40-30s40 10 40 30c0 16-18 24-40 24s-40-8-40-24z" fill="var(--bread)" stroke="var(--forest)" stroke-width="3"/>
-              <path d="M42 52c8 10 14 20 16 30M60 48c2 12 2 22 0 32M78 52c-8 10-13 20-15 30" fill="none" stroke="var(--cream)" stroke-width="3" stroke-linecap="round"/>
-              <path d="M30 62c6-3 12-4 18-3" fill="none" stroke="var(--bread-light)" stroke-width="3" stroke-linecap="round"/>
+              <ellipse cx="60" cy="99" rx="38" ry="6" fill="var(--forest)" opacity="0.12"/>
+              <path d="M22 68c0-19 17-30 38-30s38 11 38 30c0 15-17 22-38 22s-38-7-38-22z" fill="var(--bread)" stroke="var(--brown-ink)" stroke-width="3.4" stroke-linejoin="round"/>
+              <path d="M30 58c9-8 51-8 60 0" fill="none" stroke="var(--bread-light)" stroke-width="3" stroke-linecap="round"/>
+              <path d="M45 60l9 16M60 56l10 18M76 60l7 15" fill="none" stroke="var(--brown-ink)" stroke-width="2.6" stroke-linecap="round"/>
+              <path d="M95 60q10-2 17-9" fill="none" stroke="var(--sage-deep)" stroke-width="2" stroke-linecap="round"/>
+              <ellipse cx="103" cy="55" rx="4.5" ry="2.3" fill="var(--sage)" stroke="var(--brown-ink)" stroke-width="1.1" transform="rotate(-38 103 55)"/>
+              <ellipse cx="110" cy="50" rx="4.5" ry="2.3" fill="var(--sage)" stroke="var(--brown-ink)" stroke-width="1.1" transform="rotate(-38 110 50)"/>
+              <circle cx="34" cy="84" r="1.6" fill="var(--cream)"/>
+              <circle cx="86" cy="83" r="1.4" fill="var(--cream)"/>
             </svg>
           </div>
           <h3>Surdeigsbrød</h3>
@@ -129,12 +267,15 @@
         <li class="product-card">
           <div class="product-card__art">
             <svg viewBox="0 0 120 120" role="img" aria-label="Illustrasjon av en kardemommebolle">
-              <ellipse cx="60" cy="98" rx="34" ry="6" fill="var(--forest)" opacity="0.12"/>
-              <path d="M30 66c0-16 13-28 30-28s30 12 30 28-13 24-30 24-30-8-30-24z" fill="var(--bread-light)" stroke="var(--forest)" stroke-width="3"/>
-              <path d="M40 60c8 8 32 8 40 0M42 72c6 6 28 6 36 0" fill="none" stroke="var(--bread)" stroke-width="3" stroke-linecap="round"/>
-              <circle cx="52" cy="55" r="1.8" fill="var(--forest)"/>
-              <circle cx="66" cy="53" r="1.8" fill="var(--forest)"/>
-              <circle cx="60" cy="62" r="1.8" fill="var(--forest)"/>
+              <ellipse cx="60" cy="99" rx="34" ry="6" fill="var(--forest)" opacity="0.12"/>
+              <path d="M28 64c0-17 14-28 32-28s32 11 32 28-14 26-32 26-32-9-32-26z" fill="var(--bread)" stroke="var(--brown-ink)" stroke-width="3.4" stroke-linejoin="round"/>
+              <path d="M36 58c10 10 38 10 48 0M34 70c11 9 41 9 52 0M40 80c9 6 31 6 40 0" fill="none" stroke="var(--brown-ink)" stroke-width="2.4" stroke-linecap="round"/>
+              <path d="M60 40c-4 14-4 34 0 48" fill="none" stroke="var(--bread-deep)" stroke-width="2.2" stroke-linecap="round"/>
+              <circle cx="48" cy="56" r="1.7" fill="var(--cream)"/>
+              <circle cx="67" cy="52" r="1.7" fill="var(--cream)"/>
+              <circle cx="74" cy="64" r="1.7" fill="var(--cream)"/>
+              <circle cx="52" cy="71" r="1.7" fill="var(--cream)"/>
+              <circle cx="63" cy="79" r="1.7" fill="var(--cream)"/>
             </svg>
           </div>
           <h3>Kardemommeboller</h3>
@@ -144,14 +285,19 @@
 
         <li class="product-card">
           <div class="product-card__art">
-            <svg viewBox="0 0 120 120" role="img" aria-label="Illustrasjon av en surdeigs-cookie">
-              <ellipse cx="60" cy="96" rx="32" ry="6" fill="var(--forest)" opacity="0.12"/>
-              <circle cx="60" cy="60" r="34" fill="var(--bread-light)" stroke="var(--forest)" stroke-width="3"/>
-              <circle cx="50" cy="52" r="4" fill="var(--bread)"/>
-              <circle cx="72" cy="56" r="4" fill="var(--bread)"/>
-              <circle cx="58" cy="70" r="4" fill="var(--bread)"/>
-              <circle cx="70" cy="72" r="3" fill="var(--bread)"/>
-              <circle cx="48" cy="68" r="3" fill="var(--bread)"/>
+            <svg viewBox="0 0 120 120" role="img" aria-label="Illustrasjon av surdeigs-cookies">
+              <ellipse cx="60" cy="97" rx="36" ry="6" fill="var(--forest)" opacity="0.12"/>
+              <circle cx="74" cy="56" r="25" fill="var(--bread-light)" stroke="var(--brown-ink)" stroke-width="3.2"/>
+              <circle cx="70" cy="48" r="2.8" fill="var(--brown-ink)"/>
+              <circle cx="83" cy="58" r="2.8" fill="var(--brown-ink)"/>
+              <circle cx="72" cy="64" r="2.4" fill="var(--brown-ink)"/>
+              <circle cx="86" cy="49" r="2.2" fill="var(--brown-ink)"/>
+              <circle cx="47" cy="66" r="27" fill="var(--bread)" stroke="var(--brown-ink)" stroke-width="3.2"/>
+              <circle cx="39" cy="58" r="3.1" fill="var(--brown-ink)"/>
+              <circle cx="53" cy="60" r="3.1" fill="var(--brown-ink)"/>
+              <circle cx="44" cy="72" r="2.9" fill="var(--brown-ink)"/>
+              <circle cx="57" cy="73" r="2.5" fill="var(--brown-ink)"/>
+              <circle cx="34" cy="69" r="2.3" fill="var(--brown-ink)"/>
             </svg>
           </div>
           <h3>Surdeigs-cookies</h3>
@@ -159,36 +305,47 @@
           <p class="price">25 kr</p>
         </li>
 
+        <li class="product-card">
+          <div class="product-card__art">
+            <svg viewBox="0 0 120 120" role="img" aria-label="Illustrasjon av en surdeigsstarter i et glass">
+              <ellipse cx="60" cy="101" rx="26" ry="5" fill="var(--forest)" opacity="0.12"/>
+              <rect x="38" y="42" width="44" height="56" rx="10" fill="var(--beige)" stroke="var(--brown-ink)" stroke-width="3.2"/>
+              <path d="M42 72c0-7 36-7 36 0v16c0 4-36 4-36 0z" fill="var(--bread-light)"/>
+              <circle cx="49" cy="70" r="3" fill="var(--cream)"/>
+              <circle cx="61" cy="66" r="4" fill="var(--cream)"/>
+              <circle cx="71" cy="72" r="2.6" fill="var(--cream)"/>
+              <circle cx="56" cy="77" r="2.4" fill="var(--cream)"/>
+              <path d="M36 43c3-8 45-8 48 0z" fill="var(--pink-soft)" stroke="var(--brown-ink)" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M42 41l3-6M54 39l2-6M66 39l-2-6M78 41l-3-6" stroke="var(--brown-ink)" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M36 41q24 7 48 0" fill="none" stroke="var(--wheat)" stroke-width="2.4"/>
+              <circle cx="52" cy="57" r="1.7" fill="var(--brown-ink)"/>
+              <circle cx="68" cy="57" r="1.7" fill="var(--brown-ink)"/>
+              <path d="M54 61c3 3 9 3 12 0" fill="none" stroke="var(--brown-ink)" stroke-width="1.6" stroke-linecap="round"/>
+              <circle cx="48" cy="60" r="2.2" fill="var(--pink)" opacity="0.55"/>
+              <circle cx="72" cy="60" r="2.2" fill="var(--pink)" opacity="0.55"/>
+            </svg>
+          </div>
+          <h3>Surdeigsstarter</h3>
+          <p>En liten boblende venn du kan stelle hjemme. Vi hjelper deg i gang.</p>
+        </li>
+
         <li class="product-card product-card--feature">
           <div class="product-card__art">
-            <svg viewBox="0 0 120 120" role="img" aria-label="Illustrasjon av Bokka Dypp – stor kardemommebolle med et lite dyppfat">
+            <svg viewBox="0 0 120 120" role="img" aria-label="Illustrasjon av Bokka Dypp – en bolle med et lite dyppfat">
               <ellipse cx="54" cy="100" rx="40" ry="6" fill="var(--forest)" opacity="0.12"/>
-              <path d="M18 62c0-18 15-30 34-30s34 12 34 30-15 26-34 26-34-8-34-26z" fill="var(--bread-light)" stroke="var(--forest)" stroke-width="3"/>
-              <path d="M30 56c10 9 38 9 48 0M32 70c8 7 34 7 44 0" fill="none" stroke="var(--bread)" stroke-width="3" stroke-linecap="round"/>
-              <path d="M84 86c0-6 6-9 13-9s13 3 13 9-6 8-13 8-13-2-13-8z" fill="var(--pink)" stroke="var(--forest)" stroke-width="2.5"/>
-              <ellipse cx="97" cy="84" rx="8" ry="3" fill="var(--pink-soft)"/>
+              <path d="M20 64c0-17 14-28 32-28s32 11 32 28-14 26-32 26-32-9-32-26z" fill="var(--bread)" stroke="var(--brown-ink)" stroke-width="3.2" stroke-linejoin="round"/>
+              <path d="M28 58c10 9 38 9 48 0M26 70c11 8 39 8 50 0" fill="none" stroke="var(--brown-ink)" stroke-width="2.2" stroke-linecap="round"/>
+              <circle cx="42" cy="54" r="1.6" fill="var(--cream)"/>
+              <circle cx="60" cy="52" r="1.6" fill="var(--cream)"/>
+              <circle cx="54" cy="66" r="1.6" fill="var(--cream)"/>
+              <path d="M82 83c0-6 7-9 14-9s14 3 14 9-7 8-14 8-14-2-14-8z" fill="var(--wheat)" stroke="var(--brown-ink)" stroke-width="2.6"/>
+              <ellipse cx="96" cy="82" rx="9" ry="3.2" fill="var(--bread-light)"/>
+              <path d="M60 30c-2-3-7-2-7 2 0 3 7 7 7 7s7-4 7-7c0-4-5-5-7-2z" fill="var(--pink)"/>
             </svg>
           </div>
           <h3>Bokka Dypp</h3>
           <p>Stor kardemomme-surdeigsbolle med et lite dyppfat – for eksempel lemon curd.</p>
           <p class="price price--soon">Kommer snart</p>
-        </li>
-
-        <li class="product-card">
-          <div class="product-card__art">
-            <svg viewBox="0 0 120 120" role="img" aria-label="Illustrasjon av en surdeigsstarter i et glass">
-              <ellipse cx="60" cy="100" rx="26" ry="5" fill="var(--forest)" opacity="0.12"/>
-              <rect x="38" y="40" width="44" height="56" rx="8" fill="var(--beige)" stroke="var(--forest)" stroke-width="3"/>
-              <rect x="34" y="34" width="52" height="10" rx="5" fill="var(--bread)" stroke="var(--forest)" stroke-width="3"/>
-              <path d="M42 74c0-8 36-8 36 0v14c0 4-36 4-36 0z" fill="var(--bread-light)"/>
-              <circle cx="50" cy="70" r="3" fill="var(--cream)"/>
-              <circle cx="62" cy="66" r="4" fill="var(--cream)"/>
-              <circle cx="72" cy="72" r="2.5" fill="var(--cream)"/>
-              <circle cx="58" cy="76" r="2.5" fill="var(--cream)"/>
-            </svg>
-          </div>
-          <h3>Surdeigsstarter</h3>
-          <p>En liten boblende venn du kan stelle hjemme. Vi hjelper deg i gang.</p>
         </li>
       </ul>
       <p class="products__note">Illustrasjonene er våre egne skisser – ekte bilder kommer når ovnen er varm.</p>
@@ -294,78 +451,17 @@
       </div>
     </section>
 
-    <!-- ============ INTEREST FORM ============ -->
-    <section class="section interest" id="meld-interesse" aria-labelledby="skjema-tittel">
-      <div class="interest__card">
-        <div class="section__head">
-          <h2 id="skjema-tittel">Meld interesse</h2>
-          <p class="section__sub">Vi gir deg beskjed neste gang Bokka baker. Ingenting bindende.</p>
-        </div>
-
-        <form id="interest-form" class="form" action="https://formspree.io/f/moeqkjwr" method="POST" novalidate>
-          <div class="field">
-            <label for="fornavn">Fornavn</label>
-            <input type="text" id="fornavn" name="fornavn" autocomplete="given-name" required aria-required="true" />
-            <p class="field__error" id="fornavn-error" hidden>Skriv gjerne fornavnet ditt.</p>
-          </div>
-
-          <div class="field">
-            <label for="kontakt">Telefon eller e-post</label>
-            <input type="text" id="kontakt" name="kontakt" inputmode="email" autocomplete="email" required aria-required="true" placeholder="f.eks. 900 00 000 eller navn@epost.no" />
-            <p class="field__error" id="kontakt-error" hidden>Skriv et telefonnummer eller en e-postadresse vi kan nå deg på.</p>
-          </div>
-
-          <fieldset class="field field--group">
-            <legend>Hva er du nysgjerrig på?</legend>
-            <p class="field__hint">Kryss av det du liker – helt uforpliktende.</p>
-            <div class="checks">
-              <label class="check"><input type="checkbox" name="produkter" value="Surdeigsbrød" /> <span>Surdeigsbrød</span></label>
-              <label class="check"><input type="checkbox" name="produkter" value="Kardemommeboller" /> <span>Kardemommeboller</span></label>
-              <label class="check"><input type="checkbox" name="produkter" value="Surdeigs-cookies" /> <span>Surdeigs-cookies</span></label>
-              <label class="check"><input type="checkbox" name="produkter" value="Bokka Dypp" /> <span>Bokka Dypp</span></label>
-              <label class="check"><input type="checkbox" name="produkter" value="Surdeigsstarter" /> <span>Surdeigsstarter</span></label>
-            </div>
-          </fieldset>
-
-          <fieldset class="field field--group">
-            <legend>Når passer det best?</legend>
-            <div class="checks checks--row">
-              <label class="check"><input type="checkbox" name="dager" value="Lørdag" /> <span>Lørdag</span></label>
-              <label class="check"><input type="checkbox" name="dager" value="Søndag" /> <span>Søndag</span></label>
-              <label class="check"><input type="checkbox" name="dager" value="Begge passer" /> <span>Begge passer</span></label>
-            </div>
-          </fieldset>
-
-          <div class="field">
-            <label for="nabolag">Gate eller nabolag <span class="field__optional">(valgfritt)</span></label>
-            <input type="text" id="nabolag" name="nabolag" autocomplete="off" placeholder="f.eks. Bokkaveien" />
-            <p class="field__hint">Vi trenger ikke full adresse ennå – bare et hint om hvor du bor.</p>
-          </div>
-
-          <p class="form__disclaimer"><strong>Dette er ikke en bindende bestilling.</strong> Vi tar bare kontakt når vi baker, så bestemmer du selv.</p>
-
-          <p class="form__privacy">Kontaktinformasjonen brukes bare til å gi beskjed når Bokka baker, og deles ikke med andre.</p>
-
-          <p class="field__error form__error" id="form-error" role="alert" hidden>Beklager – noe gikk galt da vi sendte skjemaet. Prøv igjen om litt, eller send oss en e-post.</p>
-
-          <button type="submit" class="btn btn--primary btn--big btn--full">Meld interesse</button>
-        </form>
-
-        <!-- Success message appears here after submit -->
-        <div class="form__success" id="form-success" role="status" hidden>
-          <span class="form__success-mark" aria-hidden="true">🌾</span>
-          <h3>Tusen takk – vi gleder oss til å bake for deg!</h3>
-          <p id="form-success-text">Vi sier fra neste gang Bokka fyrer opp ovnen. Helt uforpliktende, som lovet.</p>
-          <button type="button" class="btn btn--ghost" id="form-reset">Meld interesse for noen andre</button>
-        </div>
-      </div>
+    <!-- ============ FINAL CTA (primary: helgens bestilling) ============ -->
+    <section class="section final-cta" aria-labelledby="final-tittel">
+      <h2 id="final-tittel">Vil du sikre deg helgens bakst?</h2>
+      <p>Send inn bestillingen din i dag – vi holder av til deg.</p>
+      <a class="btn btn--primary btn--big" href="#helgens-bestilling">Bestill til helgen</a>
     </section>
 
-    <!-- ============ FINAL CTA ============ -->
-    <section class="section final-cta" aria-labelledby="final-tittel">
-      <h2 id="final-tittel">Vil du vite når Bokka baker?</h2>
-      <p>Meld interesse i dag – helt uforpliktende.</p>
-      <a class="btn btn--primary btn--big" href="#meld-interesse">Meld interesse</a>
+    <!-- ============ INTEREST TEASER (low-key → interesse.html) ============ -->
+    <section class="section interesse-teaser" aria-labelledby="interesse-teaser-tittel">
+      <p class="interesse-teaser__q" id="interesse-teaser-tittel">Ikke klar for å bestille nå?</p>
+      <p class="interesse-teaser__text"><a class="interesse-teaser__link" href="interesse.html">Meld interesse for senere helger</a></p>
     </section>
   </main>
 

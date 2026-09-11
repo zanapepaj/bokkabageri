@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#2c4a32" />
+  <meta name="description" content="Meld uforpliktende interesse for fersk surdeigsbakst fra Bokka Bageri – vi sier fra når vi baker en senere helg." />
+  <title>Meld interesse – Bokka Bageri</title>
+
+  <!-- Open Graph / social sharing -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="nb_NO" />
+  <meta property="og:site_name" content="Bokka Bageri" />
+  <meta property="og:title" content="Meld interesse – Bokka Bageri" />
+  <meta property="og:description" content="Ikke klar for å bestille nå? Meld interesse, så sier vi fra når Bokka baker en senere helg." />
+  <meta property="og:url" content="https://zanapepaj.github.io/bokkabageri/interesse.html" />
+  <meta property="og:image" content="https://zanapepaj.github.io/bokkabageri/assets/images/branding/9.png" />
+  <meta property="og:image:alt" content="Bokka Bageri-logoen: en gyllen brød-B med et vennlig ansikt" />
+  <meta property="og:image:width" content="520" />
+  <meta property="og:image:height" content="520" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Meld interesse – Bokka Bageri" />
+  <meta name="twitter:description" content="Ikke klar for å bestille nå? Meld interesse, så sier vi fra når Bokka baker en senere helg." />
+  <meta name="twitter:image" content="https://zanapepaj.github.io/bokkabageri/assets/images/branding/9.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" href="assets/images/branding/9.png" />
+  <link rel="apple-touch-icon" href="assets/images/branding/9.png" />
+</head>
+<body>
+  <!-- Skip link for keyboard users -->
+  <a class="skip-link" href="#hovedinnhold">Hopp til innhold</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header">
+    <a class="brand" href="index.html#top" aria-label="Bokka Bageri – til forsiden">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 64 64" width="46" height="46" role="img" aria-hidden="true">
+          <path d="M14 40c0-11 3-21 12-21 6 0 9 3 9 8 0 4-2 6-5 7 4 1 7 3 7 8 0 6-4 10-11 10-7 0-12-4-12-12z"
+                fill="var(--bread)" stroke="var(--brown-ink)" stroke-width="2.6" stroke-linejoin="round"/>
+          <path d="M21 31c3-1 7-1 11 0M20 40c4-1 9-1 13 0" fill="none" stroke="var(--bread-light)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="21" cy="37" r="1.5" fill="var(--brown-ink)"/>
+          <circle cx="29" cy="37" r="1.5" fill="var(--brown-ink)"/>
+          <path d="M22 41c2 2 5 2 7 0" fill="none" stroke="var(--brown-ink)" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="18.5" cy="40" r="1.8" fill="var(--pink)" opacity="0.7"/>
+          <circle cx="31.5" cy="40" r="1.8" fill="var(--pink)" opacity="0.7"/>
+          <path d="M46 23c3 3 3 9 0 12" fill="none" stroke="var(--wheat)" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M46 26l-4-1M46 29h-4M46 32l-4 1" stroke="var(--wheat)" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M43 41c4 0 8 2 8 2" fill="none" stroke="var(--sage)" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="brand__text">
+        <span class="brand__name">Bokka Bageri</span>
+        <span class="brand__descriptor">Et lite nanobakeri ved Bokkaskogen</span>
+      </span>
+    </a>
+    <a class="btn btn--ghost header__cta" href="index.html#helgens-bestilling">Bestill til helgen</a>
+  </header>
+
+  <main id="hovedinnhold">
+    <span id="top"></span>
+
+    <!-- ============ PAGE INTRO ============ -->
+    <section class="section interesse-intro" aria-labelledby="interesse-tittel">
+      <div class="section__head">
+        <p class="eyebrow-hand">For senere helger</p>
+        <h1 id="interesse-tittel">Meld interesse</h1>
+        <p class="section__sub">Ikke klar for å bestille denne helgen? Legg igjen en liten beskjed, så sier vi fra neste gang Bokka fyrer opp ovnen – helt uforpliktende.</p>
+      </div>
+      <p class="interesse-intro__back"><a href="index.html#helgens-bestilling">← Se hva vi baker denne helgen</a></p>
+    </section>
+
+    <!-- ============ INTEREST FORM ============ -->
+    <section class="section interest" id="meld-interesse" aria-label="Interesseskjema">
+      <div class="interest__card">
+        <form id="interest-form" class="form" action="https://formspree.io/f/moeqkjwr" method="POST" novalidate>
+          <div class="field">
+            <label for="fornavn">Fornavn</label>
+            <input type="text" id="fornavn" name="fornavn" autocomplete="given-name" required aria-required="true" />
+            <p class="field__error" id="fornavn-error" hidden>Skriv gjerne fornavnet ditt.</p>
+          </div>
+
+          <div class="field">
+            <label for="kontakt">Telefon eller e-post</label>
+            <input type="text" id="kontakt" name="kontakt" inputmode="email" autocomplete="email" required aria-required="true" placeholder="f.eks. 900 00 000 eller navn@epost.no" />
+            <p class="field__error" id="kontakt-error" hidden>Skriv et telefonnummer eller en e-postadresse vi kan nå deg på.</p>
+          </div>
+
+          <fieldset class="field field--group">
+            <legend>Hva er du nysgjerrig på?</legend>
+            <p class="field__hint">Kryss av det du liker – helt uforpliktende.</p>
+            <div class="checks">
+              <label class="check"><input type="checkbox" name="produkter" value="Surdeigsbrød" /> <span>Surdeigsbrød</span></label>
+              <label class="check"><input type="checkbox" name="produkter" value="Kardemommeboller" /> <span>Kardemommeboller</span></label>
+              <label class="check"><input type="checkbox" name="produkter" value="Surdeigs-cookies" /> <span>Surdeigs-cookies</span></label>
+              <label class="check"><input type="checkbox" name="produkter" value="Bokka Dypp" /> <span>Bokka Dypp</span></label>
+              <label class="check"><input type="checkbox" name="produkter" value="Surdeigsstarter" /> <span>Surdeigsstarter</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="field field--group">
+            <legend>Når passer det best?</legend>
+            <div class="checks checks--row">
+              <label class="check"><input type="checkbox" name="dager" value="Lørdag" /> <span>Lørdag</span></label>
+              <label class="check"><input type="checkbox" name="dager" value="Søndag" /> <span>Søndag</span></label>
+              <label class="check"><input type="checkbox" name="dager" value="Begge passer" /> <span>Begge passer</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="nabolag">Gate eller nabolag <span class="field__optional">(valgfritt)</span></label>
+            <input type="text" id="nabolag" name="nabolag" autocomplete="off" placeholder="f.eks. Bokkaveien" />
+            <p class="field__hint">Vi trenger ikke full adresse ennå – bare et hint om hvor du bor.</p>
+          </div>
+
+          <p class="form__disclaimer"><strong>Dette er ikke en bindende bestilling.</strong> Vi tar bare kontakt når vi baker, så bestemmer du selv.</p>
+
+          <p class="form__privacy">Kontaktinformasjonen brukes bare til å gi beskjed når Bokka baker, og deles ikke med andre.</p>
+
+          <p class="field__error form__error" id="form-error" role="alert" hidden>Beklager – noe gikk galt da vi sendte skjemaet. Prøv igjen om litt, eller send oss en e-post.</p>
+
+          <button type="submit" class="btn btn--primary btn--big btn--full">Meld interesse</button>
+        </form>
+
+        <!-- Success message appears here after submit -->
+        <div class="form__success" id="form-success" role="status" hidden>
+          <span class="form__success-mark" aria-hidden="true">🌾</span>
+          <h3>Tusen takk – vi gleder oss til å bake for deg!</h3>
+          <p id="form-success-text">Vi sier fra neste gang Bokka fyrer opp ovnen. Helt uforpliktende, som lovet.</p>
+          <button type="button" class="btn btn--ghost" id="form-reset">Meld interesse for noen andre</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <svg class="footer__sprig" viewBox="0 0 120 24" aria-hidden="true">
+      <path d="M8 12 Q40 2 60 12 Q80 22 112 12" fill="none" stroke="var(--wheat)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M30 7c-3-3-8-2-8-2 0 0 0 5 8 2zM90 17c3 3 8 2 8 2 0 0 0-5-8-2z" fill="var(--sage)"/>
+      <circle cx="60" cy="12" r="2.4" fill="var(--pink)"/>
+    </svg>
+    <p class="site-footer__brand">Bokka Bageri</p>
+    <p>Et lite nanobakeri ved Bokkaskogen · Stavanger</p>
+    <p class="site-footer__social"><a class="site-footer__link" href="https://instagram.com/bokkabageri" target="_blank" rel="noopener noreferrer">Følg oss på Instagram: @bokkabageri</a></p>
+    <p class="site-footer__tagline">Bakt med kjærlighet ved Bokkaskogen 🌾</p>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
