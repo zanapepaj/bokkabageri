@@ -698,6 +698,42 @@ a { color: var(--forest); }
   font-size: 1.12rem;
   color: var(--bread-deep);
 }
+.order-card__tag {
+  margin: 0 0 0.2rem;
+  font-family: var(--font-hand);
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--pink);
+}
+.order-card--signature {
+  border-color: var(--bread-light);
+  background: #fdf7ea;
+}
+
+/* Small "100 % surdeigsbakst" note by the weekend menu */
+.sourdough-note {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0.9rem auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.55rem 1.2rem;
+  text-align: center;
+  background: var(--cream);
+  border: 2px dashed var(--beige);
+  border-radius: 16px;
+}
+.sourdough-note__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--forest);
+}
+.sourdough-note__sub {
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+}
 
 /* Quantity stepper (0–10) */
 .qty {

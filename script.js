@@ -273,7 +273,7 @@
       });
     }
 
-    // Build a readable "Kanelbolle × 2, Solbolle × 1" line for the email.
+    // Build a readable "Klassisk surdeigsbrød × 1, Kanelbolle × 4" line for the email.
     function buildSummary() {
       return qtyInputs
         .map(function (input) {

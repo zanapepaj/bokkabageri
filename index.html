@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=8" />
+  <link rel="stylesheet" href="styles.css?v=9" />
   <link rel="icon" type="image/png" href="assets/images/branding/9.png" />
   <link rel="apple-touch-icon" href="assets/images/branding/9.png" />
 </head>
@@ -113,6 +113,10 @@
           <p class="eyebrow-hand">Helgens bakst</p>
           <h2 id="bestilling-tittel">Denne helgen baker vi</h2>
           <p class="section__sub">Vil du at vi skal holde av noe til deg? Send inn bestillingen under, så tar Bokka-vogna det med i nabolaget.</p>
+          <p class="sourdough-note">
+            <span class="sourdough-note__title">🌾 100 % surdeigsbakst</span>
+            <span class="sourdough-note__sub">Vi bruker surdeigsstarter i stedet for vanlig bakegjær.</span>
+          </p>
         </div>
 
         <form id="order-form" class="form order-form" action="https://formspree.io/f/moeqkjwr" method="POST" novalidate>
@@ -127,8 +131,41 @@
           <ul class="order-list" role="list">
             <li class="order-card">
               <div class="order-card__info">
+                <h3>Klassisk surdeigsbrød</h3>
+                <p class="order-card__desc">Et enkelt, godt surdeigsbrød bakt på hvetemel, vann, surdeigsstarter og salt. Sprø skorpe og saftig krumme.</p>
+                <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
+                <p class="order-card__price"><span class="order-card__amount">55</span> kr</p>
+              </div>
+              <div class="qty" data-qty>
+                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Klassisk surdeigsbrød">−</button>
+                <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
+                       name="Klassisk surdeigsbrød (antall)" data-product="Klassisk surdeigsbrød"
+                       value="0" min="0" max="10" step="1" aria-label="Antall Klassisk surdeigsbrød" />
+                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Klassisk surdeigsbrød">+</button>
+              </div>
+            </li>
+
+            <li class="order-card order-card--signature">
+              <div class="order-card__info">
+                <p class="order-card__tag">Husets surdeigsbrød</p>
+                <h3>Bokka-brød</h3>
+                <p class="order-card__desc">Saftig surdeigsbrød med 10 % rug, havregryn og en blanding av solsikke-, gresskar- og linfrø. Frøene bløtlegges først for ekstra saftighet og smak.</p>
+                <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
+                <p class="order-card__price"><span class="order-card__amount">65</span> kr</p>
+              </div>
+              <div class="qty" data-qty>
+                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Bokka-brød">−</button>
+                <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
+                       name="Bokka-brød (antall)" data-product="Bokka-brød"
+                       value="0" min="0" max="10" step="1" aria-label="Antall Bokka-brød" />
+                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Bokka-brød">+</button>
+              </div>
+            </li>
+
+            <li class="order-card">
+              <div class="order-card__info">
                 <h3>Kanelbolle</h3>
-                <p class="order-card__desc">Klassisk kanelsnurr med mye kanel og litt sukker. Myk og luftig.</p>
+                <p class="order-card__desc">Myk og luftig kanelbolle bakt med søt surdeigsstarter – helt uten vanlig bakegjær.</p>
                 <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
                 <p class="order-card__price"><span class="order-card__amount">30</span> kr</p>
               </div>
@@ -143,54 +180,22 @@
 
             <li class="order-card">
               <div class="order-card__info">
-                <h3>Vaniljebolle</h3>
-                <p class="order-card__desc">Gyllen bolle med søt, hjemmelaget vaniljekrem i midten.</p>
-                <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
-                <p class="order-card__price"><span class="order-card__amount">30</span> kr</p>
-              </div>
-              <div class="qty" data-qty>
-                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Vaniljebolle">−</button>
-                <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
-                       name="Vaniljebolle (antall)" data-product="Vaniljebolle"
-                       value="0" min="0" max="10" step="1" aria-label="Antall Vaniljebolle" />
-                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Vaniljebolle">+</button>
-              </div>
-            </li>
-
-            <li class="order-card">
-              <div class="order-card__info">
-                <h3>Vanilje- og bringebærbolle</h3>
-                <p class="order-card__desc">Saftig bolle med søt vaniljekrem og friske bringebær.</p>
+                <h3>Kanelbolle med vaniljekrem</h3>
+                <p class="order-card__desc">Myk surdeigs-kanelbolle med hjemmelaget vaniljekrem i midten, bakt med søt surdeigsstarter og uten vanlig bakegjær.</p>
                 <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
                 <p class="order-card__price"><span class="order-card__amount">35</span> kr</p>
               </div>
               <div class="qty" data-qty>
-                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre vanilje- og bringebærbolle">−</button>
+                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Kanelbolle med vaniljekrem">−</button>
                 <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
-                       name="Vanilje- og bringebærbolle (antall)" data-product="Vanilje- og bringebærbolle"
-                       value="0" min="0" max="10" step="1" aria-label="Antall vanilje- og bringebærbolle" />
-                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere vanilje- og bringebærbolle">+</button>
-              </div>
-            </li>
-
-            <li class="order-card">
-              <div class="order-card__info">
-                <h3>Bolle med glasur og tutti frutti-strøssel</h3>
-                <p class="order-card__desc">Søt bolle med glasur og fargerikt tutti frutti-strøssel. Barnas favoritt.</p>
-                <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
-                <p class="order-card__price"><span class="order-card__amount">30</span> kr</p>
-              </div>
-              <div class="qty" data-qty>
-                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre bolle med glasur og tutti frutti-strøssel">−</button>
-                <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
-                       name="Bolle m/ glasur og tutti frutti (antall)" data-product="Bolle med glasur og tutti frutti-strøssel"
-                       value="0" min="0" max="10" step="1" aria-label="Antall bolle med glasur og tutti frutti-strøssel" />
-                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere bolle med glasur og tutti frutti-strøssel">+</button>
+                       name="Kanelbolle med vaniljekrem (antall)" data-product="Kanelbolle med vaniljekrem"
+                       value="0" min="0" max="10" step="1" aria-label="Antall Kanelbolle med vaniljekrem" />
+                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Kanelbolle med vaniljekrem">+</button>
               </div>
             </li>
           </ul>
 
-          <p class="field__error order-form__empty" id="order-empty" role="alert" hidden>Velg minst én bolle før du sender bestillingen.</p>
+          <p class="field__error order-form__empty" id="order-empty" role="alert" hidden>Velg minst én vare før du sender bestillingen.</p>
 
           <div class="field">
             <label for="order-fornavn">Fornavn</label>
@@ -550,6 +555,6 @@
     <p class="site-footer__tagline">Bakt med kjærlighet ved Bokkaskogen 🌾</p>
   </footer>
 
-  <script src="script.js?v=8" defer></script>
+  <script src="script.js?v=9" defer></script>
 </body>
 </html>
