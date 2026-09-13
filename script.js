@@ -341,6 +341,53 @@
   })();
 
   /* -----------------------------------------------------
+     Delivery day → time groups
+     Reveals a day's time options only when the day is checked, and clears that
+     day's selected times when hidden so they are never submitted.
+     ----------------------------------------------------- */
+  (function initDeliveryDays() {
+    const toggles = document.querySelectorAll("[data-day-toggle]");
+    if (!toggles.length) return;
+
+    const bothHint = document.getElementById("day-both-hint");
+
+    function sync(toggle) {
+      const group = document.getElementById(
+        toggle.getAttribute("aria-controls")
+      );
+      if (!group) return;
+      const open = toggle.checked;
+      group.hidden = !open;
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      if (!open) {
+        group
+          .querySelectorAll('input[type="checkbox"]')
+          .forEach(function (box) {
+            box.checked = false;
+          });
+      }
+    }
+
+    function updateBothHint() {
+      if (!bothHint) return;
+      const both = Array.prototype.every.call(toggles, function (t) {
+        return t.checked;
+      });
+      bothHint.hidden = !both;
+    }
+
+    toggles.forEach(function (toggle) {
+      sync(toggle);
+      toggle.addEventListener("change", function () {
+        sync(toggle);
+        updateBothHint();
+      });
+    });
+
+    updateBothHint();
+  })();
+
+  /* -----------------------------------------------------
      Gentle scroll-reveal animations
      Respects prefers-reduced-motion via CSS.
      ----------------------------------------------------- */

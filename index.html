@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=2" />
+  <link rel="stylesheet" href="styles.css?v=6" />
   <link rel="icon" type="image/png" href="assets/images/branding/9.png" />
   <link rel="apple-touch-icon" href="assets/images/branding/9.png" />
 </head>
@@ -210,9 +210,81 @@
             <p class="field__error" id="order-adresse-error" hidden>Vi trenger gate og husnummer for å levere til deg.</p>
           </div>
 
+          <fieldset class="field field--group">
+            <legend>Hvilken dag passer for levering?</legend>
+            <p class="field__hint">Velg dag – så dukker tidspunktene opp. Du kan velge begge.</p>
+            <div class="checks checks--days">
+              <label class="check check--day">
+                <input type="checkbox" data-day-toggle aria-controls="times-lordag" aria-expanded="false" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" /><path d="M12 2.6v2.4M12 19v2.4M2.6 12h2.4M19 12h2.4M5.2 5.2l1.7 1.7M17.1 17.1l1.7 1.7M18.8 5.2l-1.7 1.7M6.9 17.1l-1.7 1.7" /></svg>
+                <span>Lørdag</span>
+              </label>
+              <label class="check check--day">
+                <input type="checkbox" data-day-toggle aria-controls="times-sondag" aria-expanded="false" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 18h8.2a3.3 3.3 0 0 0 .5-6.56A4.8 4.8 0 0 0 7.6 10.2 3.4 3.4 0 0 0 7.5 18Z" /></svg>
+                <span>Søndag</span>
+              </label>
+            </div>
+            <p class="day-both" id="day-both-hint" role="status" hidden>Begge dager passer <span aria-hidden="true">💛</span></p>
+          </fieldset>
+
+          <fieldset class="field field--group day-times" id="times-lordag" hidden>
+            <legend>Når på lørdag passer det?</legend>
+            <p class="field__hint">Kryss av alle tidspunkt som passer.</p>
+            <div class="checks checks--chips">
+              <label class="check check--chip">
+                <input type="checkbox" name="Lørdag leveringstid" value="Før kl. 10" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12H8.2" /></svg>
+                <span>Før kl. 10</span>
+              </label>
+              <label class="check check--chip">
+                <input type="checkbox" name="Lørdag leveringstid" value="Kl. 10–12" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12 9.4 9.4" /></svg>
+                <span>Kl. 10–12</span>
+              </label>
+              <label class="check check--chip">
+                <input type="checkbox" name="Lørdag leveringstid" value="Kl. 12–14" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12l3.6.9" /></svg>
+                <span>Kl. 12–14</span>
+              </label>
+              <label class="check check--chip">
+                <input type="checkbox" name="Lørdag leveringstid" value="Når det passer Bokka" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.3S3.8 15.4 3.8 9.6A3.8 3.8 0 0 1 12 7.4a3.8 3.8 0 0 1 8.2 2.2c0 5.8-8.2 10.7-8.2 10.7Z" /></svg>
+                <span>Når det passer Bokka</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="field field--group day-times" id="times-sondag" hidden>
+            <legend>Når på søndag passer det?</legend>
+            <p class="field__hint">Kryss av alle tidspunkt som passer.</p>
+            <div class="checks checks--chips">
+              <label class="check check--chip">
+                <input type="checkbox" name="Søndag leveringstid" value="Før kl. 10" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12H8.2" /></svg>
+                <span>Før kl. 10</span>
+              </label>
+              <label class="check check--chip">
+                <input type="checkbox" name="Søndag leveringstid" value="Kl. 10–12" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12 9.4 9.4" /></svg>
+                <span>Kl. 10–12</span>
+              </label>
+              <label class="check check--chip">
+                <input type="checkbox" name="Søndag leveringstid" value="Kl. 12–14" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12l3.6.9" /></svg>
+                <span>Kl. 12–14</span>
+              </label>
+              <label class="check check--chip">
+                <input type="checkbox" name="Søndag leveringstid" value="Når det passer Bokka" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.3S3.8 15.4 3.8 9.6A3.8 3.8 0 0 1 12 7.4a3.8 3.8 0 0 1 8.2 2.2c0 5.8-8.2 10.7-8.2 10.7Z" /></svg>
+                <span>Når det passer Bokka</span>
+              </label>
+            </div>
+          </fieldset>
+
           <div class="field">
             <label for="order-kommentar">Kommentar <span class="field__optional">(valgfritt)</span></label>
-            <textarea id="order-kommentar" name="kommentar" rows="3" placeholder="Allergier, ønsket leveringstid eller en liten hilsen …"></textarea>
+            <textarea id="order-kommentar" name="kommentar" rows="3" placeholder="Allergier eller en liten hilsen …"></textarea>
           </div>
 
           <label class="check check--solo">
@@ -478,6 +550,6 @@
     <p class="site-footer__tagline">Bakt med kjærlighet ved Bokkaskogen 🌾</p>
   </footer>
 
-  <script src="script.js?v=2" defer></script>
+  <script src="script.js?v=6" defer></script>
 </body>
 </html>

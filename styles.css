@@ -439,9 +439,19 @@ a { color: var(--forest); }
 .form__error { text-align: center; margin: 0.2rem 0 1rem; }
 
 .field--group { display: grid; gap: 0.6rem; }
+.field--group[hidden] { display: none; }
+.day-times { margin-top: 0.5rem; gap: 0.5rem; }
+.day-times legend { font-size: 1rem; color: var(--forest-soft); }
 .checks { display: grid; gap: 0.55rem; }
 .checks--row { grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); }
+.checks--days { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem; }
+.checks--chips { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
+@media (min-width: 560px) {
+  .checks--chips { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
 .check {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.65rem;
@@ -451,18 +461,159 @@ a { color: var(--forest); }
   padding: 0.7rem 0.9rem;
   min-height: 52px;
   cursor: pointer;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  transition: border-color 0.15s ease, background 0.15s ease,
+    box-shadow 0.15s ease, transform 0.15s ease;
 }
 .check:hover { border-color: var(--bread-light); }
-.check input {
-  width: 1.35rem;
-  height: 1.35rem;
-  accent-color: var(--forest);
+
+/* Custom "sourdough stamp" checkbox — organic hand-drawn blob */
+.check input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
   flex: none;
+  display: grid;
+  place-content: center;
+  background: var(--cream);
+  border: 2.5px solid var(--brown-ink);
+  border-radius: 45% 55% 52% 48% / 55% 48% 52% 45%;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.check input[type="checkbox"]::before {
+  content: "";
+  width: 0.9rem;
+  height: 0.9rem;
+  transform: scale(0) rotate(-8deg);
+  transition: transform 0.15s ease;
+  background: var(--forest);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 13l5 5L20 5' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 13l5 5L20 5' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.check input[type="checkbox"]:checked {
+  background: var(--bread-light);
+  border-color: var(--forest);
+}
+.check input[type="checkbox"]:checked::before { transform: scale(1) rotate(-8deg); }
+.check input[type="checkbox"]:focus-visible {
+  outline: 3px solid var(--brown-ink);
+  outline-offset: 2px;
 }
 .check:has(input:checked) {
   border-color: var(--forest);
   background: #eef3ea;
+}
+
+/* Visually-hidden input for pill/chip variants (label acts as control) */
+.check--day input[type="checkbox"],
+.check--chip input[type="checkbox"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Per-option icon (sun, cloud, wheat, clock, heart …) */
+.check__icon {
+  flex: none;
+  width: 1.4rem;
+  height: 1.4rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: var(--bread-deep);
+  transition: color 0.15s ease;
+}
+
+/* Day selection — cosy storybook cards, each with its own icon */
+.check--day {
+  justify-content: center;
+  text-align: center;
+  gap: 0.5rem;
+  border-width: 2.5px;
+  border-radius: 20px 17px 22px 18px;
+  padding: 0.85rem 1rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--forest);
+}
+.check--day .check__icon { width: 1.55rem; height: 1.55rem; }
+.check--day:hover { border-color: var(--bread); background: #fdf7ea; }
+.check--day:has(input:checked) {
+  border-color: var(--forest);
+  background: linear-gradient(160deg, #f8edcf, #eedfb2);
+  font-weight: 700;
+}
+.check--day:has(input:checked) .check__icon { color: var(--forest); }
+.check--day:has(input:focus-visible) {
+  outline: 3px solid var(--brown-ink);
+  outline-offset: 3px;
+}
+
+/* Small hand-drawn green check tucked inside the corner of a selected day */
+.check--day:has(input:checked)::after {
+  content: "";
+  position: absolute;
+  top: 0.4rem;
+  right: 0.45rem;
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 46% 54% 50% 50% / 55% 48% 52% 45%;
+  background: var(--forest)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 13l4 4L19 6' fill='none' stroke='%23fbf4e4' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 66% no-repeat;
+}
+
+/* Friendly helper line when both days are chosen */
+.day-both {
+  margin: 0.1rem 0 0;
+  font-family: var(--font-hand);
+  font-size: 1.25rem;
+  line-height: 1.1;
+  color: var(--forest);
+  text-align: center;
+}
+.day-both[hidden] { display: none; }
+
+/* Time selection — softer little cards, understated icons */
+.check--chip {
+  justify-content: center;
+  text-align: center;
+  gap: 0.4rem;
+  border-radius: 15px 13px 16px 14px;
+  padding: 0.5rem 0.65rem;
+  min-height: 46px;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+.check--chip .check__icon { width: 1.1rem; height: 1.1rem; color: var(--sage-deep); }
+.check--chip:hover { border-color: var(--bread-light); background: #fdf7ea; }
+.check--chip:has(input:checked) {
+  border-color: var(--forest);
+  background: linear-gradient(160deg, #f8edcf, #eedfb2);
+  color: var(--forest);
+  font-weight: 700;
+}
+.check--chip:has(input:checked) .check__icon { color: var(--forest); }
+.check--chip:has(input:focus-visible) {
+  outline: 3px solid var(--brown-ink);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .check,
+  .check--day,
+  .check--chip,
+  .check input[type="checkbox"]::before { transition: none; }
 }
 
 .form__disclaimer {
