@@ -22,16 +22,10 @@
   const submitBtnLabel = submitBtn ? submitBtn.textContent : "";
 
   /**
-   * Very light contact check: accept either an email-ish string
-   * or a phone number with at least 8 digits. We stay forgiving
-   * on purpose — this is a low-pressure interest form.
+   * Basic email check for the required / optional e-post fields.
    */
-  function isValidContact(value) {
-    const trimmed = value.trim();
-    const looksLikeEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
-    const digitCount = (trimmed.match(/\d/g) || []).length;
-    const looksLikePhone = digitCount >= 8;
-    return looksLikeEmail || looksLikePhone;
+  function isValidEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
   }
 
   function setError(input, errorEl, show) {
@@ -48,33 +42,33 @@
 
   if (form) {
     const firstName = form.elements["fornavn"];
-    const contact = form.elements["kontakt"];
+    const email = form.elements["epost"];
     const firstNameError = document.getElementById("fornavn-error");
-    const contactError = document.getElementById("kontakt-error");
+    const emailError = document.getElementById("epost-error");
 
     // Clear an error as soon as the neighbour starts fixing it.
     firstName.addEventListener("input", function () {
       if (firstName.value.trim()) setError(firstName, firstNameError, false);
     });
-    contact.addEventListener("input", function () {
-      if (isValidContact(contact.value)) setError(contact, contactError, false);
+    email.addEventListener("input", function () {
+      if (isValidEmail(email.value)) setError(email, emailError, false);
     });
 
     form.addEventListener("submit", function (event) {
       event.preventDefault();
 
       const nameOk = firstName.value.trim().length > 0;
-      const contactOk = isValidContact(contact.value);
+      const emailOk = isValidEmail(email.value);
 
       setError(firstName, firstNameError, !nameOk);
-      setError(contact, contactError, !contactOk);
+      setError(email, emailError, !emailOk);
 
       if (!nameOk) {
         firstName.focus();
         return;
       }
-      if (!contactOk) {
-        contact.focus();
+      if (!emailOk) {
+        email.focus();
         return;
       }
 
@@ -177,13 +171,15 @@
     const orderReset = document.getElementById("order-reset");
     const orderSubmit = orderForm.querySelector('button[type="submit"]');
     const orderSubmitLabel = orderSubmit ? orderSubmit.textContent : "";
-    const summaryField = orderForm.elements["Bestilling"];
+    const summaryField = orderForm.elements["bestilling"];
 
     const firstName = orderForm.elements["fornavn"];
     const mobile = orderForm.elements["mobil"];
+    const email = orderForm.elements["epost"];
     const address = orderForm.elements["adresse"];
     const firstNameError = document.getElementById("order-fornavn-error");
     const mobileError = document.getElementById("order-mobil-error");
+    const emailError = document.getElementById("order-epost-error");
     const addressError = document.getElementById("order-adresse-error");
 
     const qtyInputs = Array.prototype.slice.call(
@@ -232,6 +228,9 @@
     mobile.addEventListener("input", function () {
       if (isValidPhone(mobile.value)) setError(mobile, mobileError, false);
     });
+    email.addEventListener("input", function () {
+      if (email.value.trim() === "" || isValidEmail(email.value)) setError(email, emailError, false);
+    });
     address.addEventListener("input", function () {
       if (address.value.trim()) setError(address, addressError, false);
     });
@@ -241,11 +240,14 @@
 
       const nameOk = firstName.value.trim().length > 0;
       const phoneOk = isValidPhone(mobile.value);
+      const emailVal = email.value.trim();
+      const emailOk = emailVal === "" || isValidEmail(emailVal);
       const addressOk = address.value.trim().length > 0;
       const itemsOk = hasItems();
 
       setError(firstName, firstNameError, !nameOk);
       setError(mobile, mobileError, !phoneOk);
+      setError(email, emailError, !emailOk);
       setError(address, addressError, !addressOk);
       if (orderEmpty) orderEmpty.hidden = itemsOk;
 
@@ -255,6 +257,7 @@
       }
       if (!nameOk) { firstName.focus(); return; }
       if (!phoneOk) { mobile.focus(); return; }
+      if (!emailOk) { email.focus(); return; }
       if (!addressOk) { address.focus(); return; }
 
       submitOrder();

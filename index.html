@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=9" />
+  <link rel="stylesheet" href="styles.css?v=10" />
   <link rel="icon" type="image/png" href="assets/images/branding/9.png" />
   <link rel="apple-touch-icon" href="assets/images/branding/9.png" />
 </head>
@@ -119,14 +119,13 @@
           </p>
         </div>
 
-        <form id="order-form" class="form order-form" action="https://formspree.io/f/moeqkjwr" method="POST" novalidate>
-          <!-- Order form. Distinguished from the interest form by the hidden
-               "skjema" + "_subject" fields and its own success/error handling.
-               Vil du ha bestillinger i et eget innboks-skjema? Bytt action-URL-en
-               over til en egen Formspree-skjema-ID for bestillinger. -->
-          <input type="hidden" name="_subject" value="Ny helgebestilling – Bokka Bageri" />
-          <input type="hidden" name="skjema" value="Helgens bestilling" />
-          <input type="hidden" name="Bestilling" value="" />
+        <form id="order-form" class="form order-form" action="https://formspree.io/f/mvkojlza" method="POST" novalidate>
+          <!-- Order form posts to its OWN Formspree endpoint (separate from the
+               interest form). Hidden form_type + _subject keep incoming emails
+               and CSV rows easy to tell apart. -->
+          <input type="hidden" name="_subject" value="Bokka – Helgens bestilling" />
+          <input type="hidden" name="form_type" value="weekend_order" />
+          <input type="hidden" name="bestilling" value="" />
 
           <ul class="order-list" role="list">
             <li class="order-card">
@@ -139,7 +138,7 @@
               <div class="qty" data-qty>
                 <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Klassisk surdeigsbrød">−</button>
                 <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
-                       name="Klassisk surdeigsbrød (antall)" data-product="Klassisk surdeigsbrød"
+                       name="antall_klassisk_surdeigsbrod" data-product="Klassisk surdeigsbrød"
                        value="0" min="0" max="10" step="1" aria-label="Antall Klassisk surdeigsbrød" />
                 <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Klassisk surdeigsbrød">+</button>
               </div>
@@ -156,7 +155,7 @@
               <div class="qty" data-qty>
                 <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Bokka-brød">−</button>
                 <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
-                       name="Bokka-brød (antall)" data-product="Bokka-brød"
+                       name="antall_bokka_brod" data-product="Bokka-brød"
                        value="0" min="0" max="10" step="1" aria-label="Antall Bokka-brød" />
                 <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Bokka-brød">+</button>
               </div>
@@ -172,7 +171,7 @@
               <div class="qty" data-qty>
                 <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Kanelbolle">−</button>
                 <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
-                       name="Kanelbolle (antall)" data-product="Kanelbolle"
+                       name="antall_kanelbolle" data-product="Kanelbolle"
                        value="0" min="0" max="10" step="1" aria-label="Antall Kanelbolle" />
                 <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Kanelbolle">+</button>
               </div>
@@ -188,7 +187,7 @@
               <div class="qty" data-qty>
                 <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Kanelbolle med vaniljekrem">−</button>
                 <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
-                       name="Kanelbolle med vaniljekrem (antall)" data-product="Kanelbolle med vaniljekrem"
+                       name="antall_kanelbolle_vaniljekrem" data-product="Kanelbolle med vaniljekrem"
                        value="0" min="0" max="10" step="1" aria-label="Antall Kanelbolle med vaniljekrem" />
                 <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Kanelbolle med vaniljekrem">+</button>
               </div>
@@ -207,6 +206,12 @@
             <label for="order-mobil">Mobilnummer</label>
             <input type="tel" id="order-mobil" name="mobil" inputmode="tel" autocomplete="tel" required aria-required="true" placeholder="f.eks. 900 00 000" />
             <p class="field__error" id="order-mobil-error" hidden>Skriv et mobilnummer vi kan nå deg på.</p>
+          </div>
+
+          <div class="field">
+            <label for="order-epost">E-post <span class="field__optional">(valgfritt)</span></label>
+            <input type="email" id="order-epost" name="epost" inputmode="email" autocomplete="email" placeholder="navn@epost.no" />
+            <p class="field__error" id="order-epost-error" hidden>Sjekk at e-postadressen er riktig.</p>
           </div>
 
           <div class="field">
@@ -238,22 +243,22 @@
             <p class="field__hint">Kryss av alle tidspunkt som passer.</p>
             <div class="checks checks--chips">
               <label class="check check--chip">
-                <input type="checkbox" name="Lørdag leveringstid" value="Før kl. 10" />
+                <input type="checkbox" name="lordag_tid" value="Før kl. 10" />
                 <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12H8.2" /></svg>
                 <span>Før kl. 10</span>
               </label>
               <label class="check check--chip">
-                <input type="checkbox" name="Lørdag leveringstid" value="Kl. 10–12" />
+                <input type="checkbox" name="lordag_tid" value="Kl. 10–12" />
                 <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12 9.4 9.4" /></svg>
                 <span>Kl. 10–12</span>
               </label>
               <label class="check check--chip">
-                <input type="checkbox" name="Lørdag leveringstid" value="Kl. 12–14" />
+                <input type="checkbox" name="lordag_tid" value="Kl. 12–14" />
                 <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12l3.6.9" /></svg>
                 <span>Kl. 12–14</span>
               </label>
               <label class="check check--chip check--full">
-                <input type="checkbox" name="Lørdag leveringstid" value="Når det passer Bokka" />
+                <input type="checkbox" name="lordag_tid" value="Når det passer Bokka" />
                 <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.3S3.8 15.4 3.8 9.6A3.8 3.8 0 0 1 12 7.4a3.8 3.8 0 0 1 8.2 2.2c0 5.8-8.2 10.7-8.2 10.7Z" /></svg>
                 <span>Når det passer Bokka</span>
               </label>
@@ -265,22 +270,22 @@
             <p class="field__hint">Kryss av alle tidspunkt som passer.</p>
             <div class="checks checks--chips">
               <label class="check check--chip">
-                <input type="checkbox" name="Søndag leveringstid" value="Før kl. 10" />
+                <input type="checkbox" name="sondag_tid" value="Før kl. 10" />
                 <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12H8.2" /></svg>
                 <span>Før kl. 10</span>
               </label>
               <label class="check check--chip">
-                <input type="checkbox" name="Søndag leveringstid" value="Kl. 10–12" />
+                <input type="checkbox" name="sondag_tid" value="Kl. 10–12" />
                 <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12 9.4 9.4" /></svg>
                 <span>Kl. 10–12</span>
               </label>
               <label class="check check--chip">
-                <input type="checkbox" name="Søndag leveringstid" value="Kl. 12–14" />
+                <input type="checkbox" name="sondag_tid" value="Kl. 12–14" />
                 <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12l3.6.9" /></svg>
                 <span>Kl. 12–14</span>
               </label>
               <label class="check check--chip check--full">
-                <input type="checkbox" name="Søndag leveringstid" value="Når det passer Bokka" />
+                <input type="checkbox" name="sondag_tid" value="Når det passer Bokka" />
                 <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.3S3.8 15.4 3.8 9.6A3.8 3.8 0 0 1 12 7.4a3.8 3.8 0 0 1 8.2 2.2c0 5.8-8.2 10.7-8.2 10.7Z" /></svg>
                 <span>Når det passer Bokka</span>
               </label>
@@ -295,6 +300,11 @@
           <label class="check check--solo">
             <input type="checkbox" name="levering" value="Ja, ønsker levering i nabolaget" />
             <span>Jeg ønsker levering i nabolaget</span>
+          </label>
+
+          <label class="check check--solo">
+            <input type="checkbox" name="nyhetsvarsel" value="Ja" />
+            <span>Ja, send meg beskjed når Bokka åpner for bestilling.</span>
           </label>
 
           <p class="form__disclaimer"><strong>Bestillingen er først bekreftet når du får svar fra Bokka.</strong> Vi sier fra så snart vi kan.</p>
@@ -555,6 +565,6 @@
     <p class="site-footer__tagline">Bakt med kjærlighet ved Bokkaskogen 🌾</p>
   </footer>
 
-  <script src="script.js?v=9" defer></script>
+  <script src="script.js?v=10" defer></script>
 </body>
 </html>
