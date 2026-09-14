@@ -1,0 +1,348 @@
+<script>
+(function () {
+  'use strict';
+
+  // ---- state ----
+  var STATE = { day: initialDay(), route: null, busy: false };
+  var map = null, routeLayer = null, markerLayer = null, userMarker = null;
+
+  // ---- element refs ----
+  var el = {
+    days: document.querySelectorAll('.day'),
+    summary: document.getElementById('summary'),
+    fill: document.getElementById('progressFill'),
+    done: document.getElementById('doneCount'),
+    total: document.getElementById('totalCount'),
+    bread: document.getElementById('breadTotal'),
+    buns: document.getElementById('bunTotal'),
+    walk: document.getElementById('walkText'),
+    map: document.getElementById('map'),
+    status: document.getElementById('status'),
+    stops: document.getElementById('stops'),
+    regen: document.getElementById('regenBtn'),
+    locate: document.getElementById('locateBtn'),
+    celebrate: document.getElementById('celebrate'),
+    celebrateText: document.getElementById('celebrateText'),
+    celebrateClose: document.getElementById('celebrateClose'),
+    toast: document.getElementById('toast')
+  };
+
+  function initialDay() {
+    var d = new Date().getDay(); // 0=Sun … 6=Sat
+    return d === 0 ? 'Søndag' : 'Lørdag';
+  }
+
+  // ---- wiring ----
+  el.days.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (STATE.busy) return;
+      STATE.day = btn.getAttribute('data-day');
+      syncDayTabs();
+      loadRoute();
+    });
+  });
+
+  el.stops.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    var card = btn.closest('.stop');
+    if (!card) return;
+    var token = card.getAttribute('data-token');
+    var action = btn.getAttribute('data-action');
+    if (action === 'deliver') setDelivered(token, true);
+    else if (action === 'undo') setDelivered(token, false);
+  });
+
+  el.regen.addEventListener('click', regenerate);
+  el.locate.addEventListener('click', locate);
+  el.celebrateClose.addEventListener('click', function () { el.celebrate.hidden = true; });
+
+  syncDayTabs();
+  loadRoute();
+
+  function syncDayTabs() {
+    el.days.forEach(function (b) {
+      b.classList.toggle('is-active', b.getAttribute('data-day') === STATE.day);
+    });
+  }
+
+  // ---- server calls ----
+  function loadRoute() {
+    STATE.busy = true;
+    setStatus('Laster rute for ' + STATE.day + ' …');
+    hideRoute();
+    google.script.run
+      .withSuccessHandler(onRoute)
+      .withFailureHandler(onFail)
+      .getRouteForDay(STATE.day);
+  }
+
+  function onRoute(res) {
+    STATE.busy = false;
+    if (!res || !res.ok) {
+      STATE.route = null;
+      hideRoute();
+      setStatus(res && res.message ? res.message : 'Ingen rute ennå. Åpne 👩‍🍳 Foreldre for å generere.');
+      return;
+    }
+    STATE.route = res;
+    setStatus('');
+    renderAll();
+  }
+
+  function onFail(err) {
+    STATE.busy = false;
+    setStatus('Noe gikk galt. Prøv igjen.');
+    toast('Feil: ' + (err && err.message ? err.message : 'ukjent'));
+  }
+
+  function setDelivered(token, delivered) {
+    var s = findStop(token);
+    if (!s) return;
+    s.levert = delivered;              // optimistic
+    renderStops();
+    renderMarkers();
+    updateProgress();
+    google.script.run
+      .withSuccessHandler(function (p) {
+        if (p && p.total != null) setProgressNumbers(p.done, p.total);
+        maybeCelebrate();
+      })
+      .withFailureHandler(function () {
+        s.levert = !delivered;         // revert
+        renderStops();
+        renderMarkers();
+        updateProgress();
+        toast('Kunne ikke lagre – prøv igjen');
+      })
+      .markDelivered(token, delivered);
+  }
+
+  function regenerate() {
+    if (STATE.busy) return;
+    STATE.busy = true;
+    setStatus('Genererer rute for ' + STATE.day + ' …');
+    google.script.run
+      .withSuccessHandler(function (res) {
+        if (res && res.needsConfirmReset) {
+          STATE.busy = false;
+          if (confirm(res.message + '\n\nVil du stokke om ruten likevel?')) {
+            STATE.busy = true;
+            setStatus('Stokker om ruten …');
+            google.script.run.withSuccessHandler(afterRegen).withFailureHandler(onFail)
+              .generateRouteForDay(STATE.day, true);
+          } else {
+            setStatus('');
+          }
+          return;
+        }
+        afterRegen(res);
+      })
+      .withFailureHandler(onFail)
+      .generateRouteForDay(STATE.day, false);
+  }
+
+  function afterRegen(res) {
+    STATE.busy = false;
+    if (!res || !res.ok) {
+      setStatus(res && res.message ? res.message : 'Kunne ikke generere ruten.');
+      return;
+    }
+    STATE.route = res;
+    setStatus('');
+    renderAll();
+    toast('Ny rute klar 🌾');
+  }
+
+  // ---- render ----
+  function renderAll() {
+    el.summary.hidden = false;
+    el.map.hidden = false;
+    updateProgress();
+    renderWalk();
+    renderMap();
+    renderStops();
+  }
+
+  function hideRoute() {
+    el.summary.hidden = true;
+    el.map.hidden = true;
+    el.stops.innerHTML = '';
+  }
+
+  function updateProgress() {
+    var st = STATE.route ? STATE.route.stops : [];
+    var done = st.filter(function (s) { return s.levert; }).length;
+    setProgressNumbers(done, st.length);
+    var t = (STATE.route && STATE.route.totals) || { bread: 0, buns: 0 };
+    el.bread.textContent = t.bread;
+    el.buns.textContent = t.buns;
+  }
+
+  function setProgressNumbers(done, total) {
+    el.done.textContent = done;
+    el.total.textContent = total;
+    el.fill.style.width = (total ? (done / total * 100) : 0) + '%';
+  }
+
+  function renderWalk() {
+    if (!STATE.route) return;
+    var prefix = STATE.route.approx ? '≈ ' : '';
+    el.walk.textContent = prefix + fmtDist(STATE.route.distanceMeters) + ' · ' + fmtDur(STATE.route.durationSec);
+  }
+
+  function renderStops() {
+    var st = STATE.route ? STATE.route.stops : [];
+    var nextIdx = st.findIndex(function (s) { return !s.levert; });
+    el.stops.innerHTML = st.map(function (s, i) {
+      var isNext = i === nextIdx;
+      return '' +
+        '<article class="stop' + (s.levert ? ' is-done' : '') + (isNext ? ' is-next' : '') + '" data-token="' + esc(s.stopToken) + '">' +
+        (isNext ? '<span class="stop__ribbon">Neste</span>' : '') +
+        '<div class="stop__num">' + s.stop + '</div>' +
+        '<div class="stop__addr">' + esc(s.adresse) + '</div>' +
+        '<div class="stop__order">' + esc(s.bestilling) + '</div>' +
+        '<span class="stop__time">' + esc(s.leveringstid) + '</span>' +
+        (s.levert
+          ? '<button class="stop__done" data-action="undo">Levert ✓ <span class="stop__undo">angre</span></button>'
+          : '<button class="stop__btn" data-action="deliver">Levert!</button>') +
+        '</article>';
+    }).join('');
+  }
+
+  // ---- map ----
+  function ensureMap() {
+    if (map) return;
+    map = L.map('map', { zoomControl: true, attributionControl: true });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19, attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+    routeLayer = L.layerGroup().addTo(map);
+    markerLayer = L.layerGroup().addTo(map);
+  }
+
+  function renderMap() {
+    ensureMap();
+    routeLayer.clearLayers();
+
+    var pts = STATE.route.polyline ? decodePolyline(STATE.route.polyline) : [];
+    if (pts.length) {
+      L.polyline(pts, { color: '#2c4a32', weight: 5, opacity: .85, lineJoin: 'round', lineCap: 'round' }).addTo(routeLayer);
+    }
+    renderMarkers();
+
+    var bounds = pts.slice();
+    STATE.route.stops.forEach(function (s) { bounds.push([s.lat, s.lng]); });
+    if (bounds.length) map.fitBounds(L.latLngBounds(bounds).pad(0.15));
+    setTimeout(function () { map.invalidateSize(); }, 60);
+  }
+
+  function renderMarkers() {
+    if (!markerLayer) return;
+    markerLayer.clearLayers();
+    var st = STATE.route.stops;
+    var nextIdx = st.findIndex(function (s) { return !s.levert; });
+    st.forEach(function (s, i) {
+      var cls = 'pin' + (s.levert ? ' pin--done' : '') + (i === nextIdx ? ' pin--next' : '');
+      var icon = L.divIcon({ className: '', html: '<div class="' + cls + '"><span>' + s.stop + '</span></div>', iconSize: [34, 34], iconAnchor: [17, 30] });
+      L.marker([s.lat, s.lng], { icon: icon, title: s.adresse }).addTo(markerLayer);
+    });
+  }
+
+  function locate() {
+    if (!navigator.geolocation) { toast('Posisjon ikke tilgjengelig'); return; }
+    toast('Finner posisjonen …');
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      ensureMap();
+      var ll = [pos.coords.latitude, pos.coords.longitude];
+      if (!userMarker) {
+        userMarker = L.circleMarker(ll, { radius: 8, color: '#1d6fb8', fillColor: '#3aa0ff', fillOpacity: .9, weight: 3 }).addTo(map);
+      } else {
+        userMarker.setLatLng(ll);
+      }
+      map.setView(ll, 16);
+    }, function () {
+      toast('Fant ikke posisjonen din');
+    }, { enableHighAccuracy: true, timeout: 8000, maximumAge: 10000 });
+  }
+
+  // ---- celebration ----
+  function maybeCelebrate() {
+    if (!STATE.route) return;
+    var st = STATE.route.stops;
+    if (st.length && st.every(function (s) { return s.levert; })) showCelebrate();
+  }
+
+  function showCelebrate() {
+    var t = STATE.route.totals || { bread: 0, buns: 0 };
+    el.celebrateText.textContent = 'Du leverte ' + t.bread + ' brød og ' + t.buns + ' boller. Bra jobba, Bokka-bud! 🌾';
+    el.celebrate.hidden = false;
+    burstConfetti();
+  }
+
+  function burstConfetti() {
+    var emojis = ['🌾', '🍞', '🥐', '🎉', '💛'];
+    for (var i = 0; i < 16; i++) {
+      var c = document.createElement('div');
+      c.className = 'confetti';
+      c.textContent = emojis[i % emojis.length];
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.animationDuration = (1.6 + Math.random() * 1.4) + 's';
+      c.style.animationDelay = (Math.random() * 0.4) + 's';
+      document.body.appendChild(c);
+      (function (node) { setTimeout(function () { node.remove(); }, 3200); })(c);
+    }
+  }
+
+  // ---- helpers ----
+  function findStop(token) {
+    if (!STATE.route) return null;
+    for (var i = 0; i < STATE.route.stops.length; i++) {
+      if (STATE.route.stops[i].stopToken === token) return STATE.route.stops[i];
+    }
+    return null;
+  }
+
+  function setStatus(msg) { el.status.textContent = msg || ''; }
+
+  var toastTimer = null;
+  function toast(msg) {
+    el.toast.textContent = msg;
+    el.toast.classList.add('is-show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.toast.classList.remove('is-show'); }, 2600);
+  }
+
+  function fmtDist(m) {
+    if (m >= 1000) return (m / 1000).toFixed(1).replace('.', ',') + ' km';
+    return Math.round(m) + ' m';
+  }
+
+  function fmtDur(s) {
+    var min = Math.round(s / 60);
+    if (min >= 60) return Math.floor(min / 60) + ' t ' + (min % 60) + ' min';
+    return min + ' min';
+  }
+
+  function esc(v) {
+    return String(v == null ? '' : v)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  // Google encoded polyline → [[lat,lng], …]
+  function decodePolyline(str) {
+    var index = 0, lat = 0, lng = 0, coords = [];
+    while (index < str.length) {
+      var b, shift = 0, result = 0;
+      do { b = str.charCodeAt(index++) - 63; result |= (b & 0x1f) << shift; shift += 5; } while (b >= 0x20);
+      lat += (result & 1) ? ~(result >> 1) : (result >> 1);
+      shift = 0; result = 0;
+      do { b = str.charCodeAt(index++) - 63; result |= (b & 0x1f) << shift; shift += 5; } while (b >= 0x20);
+      lng += (result & 1) ? ~(result >> 1) : (result >> 1);
+      coords.push([lat / 1e5, lng / 1e5]);
+    }
+    return coords;
+  }
+})();
+</script>

@@ -65,9 +65,14 @@ var KIDS_HEADER_ROW = 4; // rows 1–2 hold the summary, row 4 is the table head
 /* ===================== MENU ===================== */
 
 function onOpen() {
-  SpreadsheetApp.getUi()
-    .createMenu('🌾 Bokka')
+  var ui = SpreadsheetApp.getUi();
+  ui.createMenu('🌾 Bokka')
     .addItem('Synk bestillinger nå', 'syncBokkaOrders')
+    .addSubMenu(ui.createMenu('Interessenter')
+      .addItem('Oppdater interessenter', 'oppdaterInteressenter')
+      .addItem('Forhåndsvis varsel', 'forhandsvisVarsel')
+      .addItem('Send test til meg selv', 'sendTestTilMeg')
+      .addItem('Send åpningsvarsel', 'sendAapningsvarsel'))
     .addToUi();
 }
 
@@ -267,10 +272,11 @@ function refreshKids_(book, ordersSheet, orders) {
   if (kids.getMaxColumns() < totalCols) {
     kids.insertColumnsAfter(kids.getMaxColumns(), totalCols - kids.getMaxColumns());
   }
-  kids.getRange(1, 1, kids.getMaxRows(), kids.getMaxColumns()).breakApart();
-  kids.clearContents();
-  kids.clearFormats();
-  kids.clearDataValidations();
+  var whole = kids.getRange(1, 1, kids.getMaxRows(), kids.getMaxColumns());
+  whole.breakApart();
+  whole.clearContent();
+  whole.clearFormat();
+  whole.clearDataValidations();
 
   // Cute-but-simple summary header.
   kids.getRange(1, 1, 1, totalCols).merge();
