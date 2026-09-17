@@ -1,0 +1,6 @@
+# Private Google Apps Script files
+apps-script/
+
+# Local/private config
+.env
+.env.*
