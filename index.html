@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=10" />
+  <link rel="stylesheet" href="styles.css?v=11" />
   <link rel="icon" type="image/png" href="assets/images/branding/9.png" />
   <link rel="apple-touch-icon" href="assets/images/branding/9.png" />
 </head>
@@ -128,6 +128,11 @@
           <!-- 👇 BYTT for hver bakehelg (må matche ACTIVE_WEEKEND i Apps Script) -->
           <input type="hidden" name="bakehelg" value="2026-09-19_20" />
           <input type="hidden" name="bestilling" value="" />
+          <!-- Honeypot: invisible to people, bots tend to fill it. Must stay empty. -->
+          <div class="hp" aria-hidden="true">
+            <label for="order-gotcha">La dette feltet stå tomt</label>
+            <input type="text" id="order-gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
+          </div>
 
           <ul class="order-list" role="list">
             <li class="order-card">
@@ -567,6 +572,6 @@
     <p class="site-footer__tagline">Bakt med kjærlighet ved Bokkaskogen 🌾</p>
   </footer>
 
-  <script src="script.js?v=10" defer></script>
+  <script src="script.js?v=11" defer></script>
 </body>
 </html>

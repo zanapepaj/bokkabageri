@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=10" />
+  <link rel="stylesheet" href="styles.css?v=11" />
   <link rel="icon" type="image/png" href="assets/images/branding/9.png" />
   <link rel="apple-touch-icon" href="assets/images/branding/9.png" />
 </head>
@@ -77,8 +77,15 @@
     <section class="section interest" id="meld-interesse" aria-label="Interesseskjema">
       <div class="interest__card">
         <form id="interest-form" class="form" action="https://formspree.io/f/moeqkjwr" method="POST" novalidate>
+          <!-- Posts to the Bokka Intake endpoint (INTAKE_ENDPOINT in script.js); the
+               Formspree action is only the fallback when that const is empty. -->
           <input type="hidden" name="_subject" value="Bokka – Interesse" />
           <input type="hidden" name="form_type" value="interest_notification_signup" />
+          <!-- Honeypot: invisible to people, bots tend to fill it. Must stay empty. -->
+          <div class="hp" aria-hidden="true">
+            <label for="interest-gotcha">La dette feltet stå tomt</label>
+            <input type="text" id="interest-gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
+          </div>
           <div class="field">
             <label for="fornavn">Fornavn</label>
             <input type="text" id="fornavn" name="fornavn" autocomplete="given-name" required aria-required="true" />
@@ -155,6 +162,6 @@
     <p class="site-footer__tagline">Bakt med kjærlighet ved Bokkaskogen 🌾</p>
   </footer>
 
-  <script src="script.js?v=10" defer></script>
+  <script src="script.js?v=11" defer></script>
 </body>
 </html>

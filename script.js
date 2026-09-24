@@ -2,13 +2,39 @@
    Bokka Bageri — script.js
    Vanilla JS only. Handles:
    - interest form validation
-   - asynchronous submission to Formspree (no page reload)
+   - asynchronous submission to the Bokka Intake endpoint (no page reload)
    - a warm success message
    - gentle scroll-reveal animations
    ========================================================= */
 
 (function () {
   "use strict";
+
+  // "Bokka Intake" Apps Script web app /exec URL — receives BOTH forms (form_type decides).
+  // Leave "" to fall back to each form's action attribute (Formspree) — the rollback switch.
+  const INTAKE_ENDPOINT = "https://script.google.com/macros/s/AKfycbwY5Z4-fyE2dP9xTBy9VIsn6e_9DRwXBPRKGn6jIkb8q7I6UQwtldSZMZehsJtCgsmw/exec";
+
+  /**
+   * POST a form. Apps Script cannot answer CORS preflight, so the direct request must
+   * stay "simple": urlencoded body, no custom headers. Resolves true only on {ok:true}
+   * (direct) or HTTP 2xx (Formspree fallback).
+   */
+  function postForm(formEl) {
+    const direct = INTAKE_ENDPOINT.length > 0;
+    const url = direct ? INTAKE_ENDPOINT : formEl.action;
+    const options = direct
+      ? { method: "POST", body: new URLSearchParams(new FormData(formEl)) }
+      : { method: "POST", body: new FormData(formEl), headers: { Accept: "application/json" } };
+
+    return fetch(url, options)
+      .then(function (response) {
+        if (!response.ok) throw new Error("http " + response.status);
+        return direct ? response.json() : { ok: true };
+      })
+      .then(function (data) {
+        return Boolean(data && data.ok);
+      });
+  }
 
   /* -----------------------------------------------------
      Interest form
@@ -72,7 +98,7 @@
         return;
       }
 
-      submitToFormspree();
+      submitInterest();
     });
 
     if (resetBtn) {
@@ -88,24 +114,19 @@
   }
 
   /**
-   * Send the form to Formspree with fetch so the page never reloads.
-   * The success state is shown only after Formspree confirms (HTTP 2xx);
-   * a network error or non-OK response shows a friendly notice instead.
+   * Send the interest form without a page reload. The success state is shown only
+   * after the server confirms; a network error or rejection shows a friendly notice.
    */
-  function submitToFormspree() {
+  function submitInterest() {
     if (!form) return;
     hideFormError();
     setSubmitting(true);
 
     const name = form.elements["fornavn"].value.trim();
 
-    fetch(form.action, {
-      method: "POST",
-      body: new FormData(form),
-      headers: { Accept: "application/json" },
-    })
-      .then(function (response) {
-        if (response.ok) {
+    postForm(form)
+      .then(function (ok) {
+        if (ok) {
           showSuccess(name);
         } else {
           showFormError();
@@ -157,8 +178,8 @@
 
   /* -----------------------------------------------------
      Weekend order form ("Denne helgen baker vi")
-     Separate from the interest form: its own Formspree
-     submission, quantity steppers, success and error states.
+     Separate from the interest form: its own submission,
+     quantity steppers, success and error states.
      ----------------------------------------------------- */
   (function initOrderForm() {
     const orderForm = document.getElementById("order-form");
@@ -296,13 +317,9 @@
 
       const name = firstName.value.trim();
 
-      fetch(orderForm.action, {
-        method: "POST",
-        body: new FormData(orderForm),
-        headers: { Accept: "application/json" },
-      })
-        .then(function (response) {
-          if (response.ok) {
+      postForm(orderForm)
+        .then(function (ok) {
+          if (ok) {
             showOrderSuccess(name);
           } else if (orderError) {
             orderError.hidden = false;

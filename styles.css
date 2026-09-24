@@ -503,6 +503,16 @@ a { color: var(--forest); }
   background: #eef3ea;
 }
 
+/* Honeypot wrapper: off-screen, never focusable, never announced */
+.hp {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 /* Visually-hidden input for pill/chip variants (label acts as control) */
 .check--day input[type="checkbox"],
 .check--chip input[type="checkbox"] {

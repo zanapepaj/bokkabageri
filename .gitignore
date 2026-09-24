@@ -4,3 +4,6 @@ apps-script/
 # Local/private config
 .env
 .env.*
+
+# Throwaway local test harnesses
+.tmp/
