@@ -719,6 +719,41 @@ a { color: var(--forest); }
   border-color: var(--bread-light);
   background: #fdf7ea;
 }
+/* Author display:flex would override the UA [hidden] rule */
+.order-card[hidden] { display: none; }
+
+/* Live stock ("Bare 2 igjen" / "Utsolgt") + sold-out card state */
+.order-card__stock {
+  display: inline-block;
+  margin: 0.45rem 0 0;
+  padding: 0.18rem 0.7rem;
+  font-family: var(--font-hand);
+  font-size: 1.05rem;
+  line-height: 1.2;
+  color: var(--forest);
+  background: var(--bread-light);
+  border: 1.5px solid var(--bread);
+  border-radius: 999px;
+  transform: rotate(-1.5deg);
+}
+.order-card__stock[hidden] { display: none; }
+.order-card.is-soldout { opacity: 0.72; background: var(--cream-deep); }
+.order-card.is-soldout h3 { text-decoration: line-through; text-decoration-color: var(--pink); text-decoration-thickness: 2px; }
+.order-card.is-soldout .order-card__stock {
+  color: var(--cream);
+  background: var(--pink);
+  border-color: var(--forest);
+}
+.order-form__soldout {
+  text-align: center;
+  margin: 0.2rem 0 0.6rem;
+  padding: 0.8rem 1rem;
+  color: var(--forest);
+  background: var(--cream);
+  border: 2px dashed var(--beige);
+  border-radius: 16px;
+}
+.order-form__soldout a { color: var(--forest); font-weight: 700; }
 
 /* Small "100 % surdeigsbakst" note by the weekend menu */
 .sourdough-note {
@@ -775,6 +810,8 @@ a { color: var(--forest); }
 }
 .qty__btn:hover { background: var(--bread-light); }
 .qty__btn:active { transform: scale(0.94); }
+.qty__btn:disabled { opacity: 0.45; cursor: not-allowed; background: var(--cream-deep); transform: none; }
+.qty__input:disabled { color: var(--ink-soft); }
 .qty__input {
   width: 2.6rem;
   text-align: center;

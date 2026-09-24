@@ -16,8 +16,8 @@
 
   /**
    * POST a form. Apps Script cannot answer CORS preflight, so the direct request must
-   * stay "simple": urlencoded body, no custom headers. Resolves true only on {ok:true}
-   * (direct) or HTTP 2xx (Formspree fallback).
+   * stay "simple": urlencoded body, no custom headers. Resolves to the server payload
+   * ({ok, error?, stock?}); the Formspree fallback resolves to {ok:true} on HTTP 2xx.
    */
   function postForm(formEl) {
     const direct = INTAKE_ENDPOINT.length > 0;
@@ -26,14 +26,10 @@
       ? { method: "POST", body: new URLSearchParams(new FormData(formEl)) }
       : { method: "POST", body: new FormData(formEl), headers: { Accept: "application/json" } };
 
-    return fetch(url, options)
-      .then(function (response) {
-        if (!response.ok) throw new Error("http " + response.status);
-        return direct ? response.json() : { ok: true };
-      })
-      .then(function (data) {
-        return Boolean(data && data.ok);
-      });
+    return fetch(url, options).then(function (response) {
+      if (!response.ok) throw new Error("http " + response.status);
+      return direct ? response.json() : { ok: true };
+    });
   }
 
   /* -----------------------------------------------------
@@ -125,8 +121,8 @@
     const name = form.elements["fornavn"].value.trim();
 
     postForm(form)
-      .then(function (ok) {
-        if (ok) {
+      .then(function (data) {
+        if (data && data.ok) {
           showSuccess(name);
         } else {
           showFormError();
@@ -188,11 +184,14 @@
     const orderSuccess = document.getElementById("order-success");
     const orderSuccessText = document.getElementById("order-success-text");
     const orderError = document.getElementById("order-error");
+    const orderErrorDefault = orderError ? orderError.textContent : "";
     const orderEmpty = document.getElementById("order-empty");
+    const orderSoldout = document.getElementById("order-soldout");
     const orderReset = document.getElementById("order-reset");
     const orderSubmit = orderForm.querySelector('button[type="submit"]');
     const orderSubmitLabel = orderSubmit ? orderSubmit.textContent : "";
     const summaryField = orderForm.elements["bestilling"];
+    const bakehelgField = orderForm.elements["bakehelg"];
 
     const firstName = orderForm.elements["fornavn"];
     const mobile = orderForm.elements["mobil"];
@@ -207,15 +206,21 @@
       orderForm.querySelectorAll(".qty__input")
     );
 
-    function clampQty(value) {
+    // Per-product ceiling: the HTML max (10) or, once stock is known, what is left.
+    function maxFor(input) {
+      const m = parseInt(input ? input.max : "", 10);
+      return isNaN(m) ? 10 : Math.max(0, m);
+    }
+
+    function clampQty(value, input) {
       const n = parseInt(value, 10);
       if (isNaN(n)) return 0;
-      return Math.max(0, Math.min(10, n));
+      return Math.max(0, Math.min(maxFor(input), n));
     }
 
     function hasItems() {
       return qtyInputs.some(function (input) {
-        return clampQty(input.value) > 0;
+        return clampQty(input.value, input) > 0;
       });
     }
 
@@ -223,7 +228,7 @@
       return (value.match(/\d/g) || []).length >= 8;
     }
 
-    // Wire up the +/- steppers, keeping every value inside 0–10.
+    // Wire up the +/- steppers, keeping every value inside 0–max.
     Array.prototype.forEach.call(
       orderForm.querySelectorAll("[data-qty]"),
       function (wrap) {
@@ -233,14 +238,67 @@
         if (!input) return;
 
         function set(next) {
-          input.value = clampQty(next);
+          input.value = clampQty(next, input);
           if (orderEmpty && hasItems()) orderEmpty.hidden = true;
         }
-        if (dec) dec.addEventListener("click", function () { set(clampQty(input.value) - 1); });
-        if (inc) inc.addEventListener("click", function () { set(clampQty(input.value) + 1); });
+        if (dec) dec.addEventListener("click", function () { set(clampQty(input.value, input) - 1); });
+        if (inc) inc.addEventListener("click", function () { set(clampQty(input.value, input) + 1); });
         input.addEventListener("change", function () { set(input.value); });
       }
     );
+
+    /**
+     * Apply live stock ({field:{kapasitet, igjen}}) from the intake: cap each stepper at
+     * what is left, mark sold-out products, and show the all-sold-out notice when nothing
+     * visible can be ordered. Products without a stock row stay unlimited (max 10).
+     */
+    function applyStock(stock) {
+      if (!stock) return;
+      let anyAvailable = false;
+      qtyInputs.forEach(function (input) {
+        const card = input.closest(".order-card");
+        const s = stock[input.name];
+        if (card && card.hidden) return;
+        if (!s) { anyAvailable = true; return; }
+
+        const left = Math.max(0, parseInt(s.igjen, 10) || 0);
+        const stockEl = card ? card.querySelector("[data-stock]") : null;
+        const buttons = card ? card.querySelectorAll(".qty__btn") : [];
+        const soldOut = left <= 0;
+
+        input.max = String(Math.min(10, left));
+        input.value = clampQty(input.value, input);
+        input.disabled = soldOut;
+        Array.prototype.forEach.call(buttons, function (b) { b.disabled = soldOut; });
+        if (card) card.classList.toggle("is-soldout", soldOut);
+        if (stockEl) {
+          if (soldOut) {
+            stockEl.textContent = "Utsolgt";
+            stockEl.hidden = false;
+          } else if (left <= 5) {
+            stockEl.textContent = left === 1 ? "Bare 1 igjen" : "Bare " + left + " igjen";
+            stockEl.hidden = false;
+          } else {
+            stockEl.hidden = true;
+          }
+        }
+        if (!soldOut) anyAvailable = true;
+      });
+
+      if (orderSoldout) orderSoldout.hidden = anyAvailable;
+      if (orderSubmit) orderSubmit.hidden = !anyAvailable;
+    }
+
+    // Ask the intake what is left for this weekend. Failure is silent: the server still
+    // enforces stock on submit, so the form stays usable without this.
+    function fetchStock() {
+      if (!INTAKE_ENDPOINT || !bakehelgField || !bakehelgField.value) return;
+      fetch(INTAKE_ENDPOINT + "?stock=1&bakehelg=" + encodeURIComponent(bakehelgField.value))
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) { if (data && data.ok) applyStock(data.stock); })
+        .catch(function () {});
+    }
+    fetchStock();
 
     // Clear field errors as the visitor fixes them.
     firstName.addEventListener("input", function () {
@@ -301,13 +359,20 @@
     function buildSummary() {
       return qtyInputs
         .map(function (input) {
-          const n = clampQty(input.value);
+          const n = clampQty(input.value, input);
           if (n <= 0) return null;
           const name = input.getAttribute("data-product") || input.name;
           return name + " \u00d7 " + n;
         })
         .filter(Boolean)
         .join(", ");
+    }
+
+    function showOrderError(message) {
+      if (!orderError) return;
+      orderError.textContent = message || orderErrorDefault;
+      orderError.hidden = false;
+      orderError.scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
     function submitOrder() {
@@ -318,15 +383,18 @@
       const name = firstName.value.trim();
 
       postForm(orderForm)
-        .then(function (ok) {
-          if (ok) {
+        .then(function (data) {
+          if (data && data.ok) {
             showOrderSuccess(name);
-          } else if (orderError) {
-            orderError.hidden = false;
+            fetchStock();
+          } else {
+            // Stock refusals carry a specific message + fresh counts.
+            if (data && data.stock) applyStock(data.stock);
+            showOrderError(data && data.error);
           }
         })
         .catch(function () {
-          if (orderError) orderError.hidden = false;
+          showOrderError();
         })
         .then(function () {
           setOrderSubmitting(false);
