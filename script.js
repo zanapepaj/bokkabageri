@@ -12,7 +12,7 @@
 
   // "Bokka Intake" Apps Script web app /exec URL — receives BOTH forms (form_type decides).
   // Leave "" to fall back to each form's action attribute (Formspree) — the rollback switch.
-  const INTAKE_ENDPOINT = "https://script.google.com/macros/s/AKfycbwY5Z4-fyE2dP9xTBy9VIsn6e_9DRwXBPRKGn6jIkb8q7I6UQwtldSZMZehsJtCgsmw/exec";
+  const INTAKE_ENDPOINT = "https://script.google.com/macros/s/AKfycbxV1iz53ZOKCCsBLaQkF0xB5sNU3W5HF3qccm-NdKMS8l959vpsBSden8qFNGhasiTl/exec";
 
   /**
    * POST a form. Apps Script cannot answer CORS preflight, so the direct request must
