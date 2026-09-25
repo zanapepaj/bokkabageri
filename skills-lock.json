@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "gws-forms": {
+      "source": "googleworkspace/cli",
+      "sourceType": "github",
+      "skillPath": "skills/gws-forms/SKILL.md",
+      "computedHash": "1f8a7f74106e00fa51a6505f16cf58d5e63c12dc90099920c3d2ed7a67cad6ea"
+    }
+  }
+}

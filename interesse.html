@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=12" />
+  <link rel="stylesheet" href="styles.css?v=13" />
   <link rel="icon" type="image/png" href="assets/images/branding/9.png" />
   <link rel="apple-touch-icon" href="assets/images/branding/9.png" />
 </head>
@@ -76,74 +76,17 @@
     <!-- ============ INTEREST FORM ============ -->
     <section class="section interest" id="meld-interesse" aria-label="Interesseskjema">
       <div class="interest__card">
-        <form id="interest-form" class="form" action="https://formspree.io/f/moeqkjwr" method="POST" novalidate>
-          <!-- Posts to the Bokka Intake endpoint (INTAKE_ENDPOINT in script.js); the
-               Formspree action is only the fallback when that const is empty. -->
-          <input type="hidden" name="_subject" value="Bokka – Interesse" />
-          <input type="hidden" name="form_type" value="interest_notification_signup" />
-          <!-- Honeypot: invisible to people, bots tend to fill it. Must stay empty. -->
-          <div class="hp" aria-hidden="true">
-            <label for="interest-gotcha">La dette feltet stå tomt</label>
-            <input type="text" id="interest-gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
-          </div>
-          <div class="field">
-            <label for="fornavn">Fornavn</label>
-            <input type="text" id="fornavn" name="fornavn" autocomplete="given-name" required aria-required="true" />
-            <p class="field__error" id="fornavn-error" hidden>Skriv gjerne fornavnet ditt.</p>
-          </div>
-
-          <div class="field">
-            <label for="epost">E-post</label>
-            <input type="email" id="epost" name="epost" inputmode="email" autocomplete="email" required aria-required="true" placeholder="navn@epost.no" />
-            <p class="field__error" id="epost-error" hidden>Skriv en e-postadresse vi kan nå deg på.</p>
-          </div>
-
-          <div class="field">
-            <label for="mobil">Mobilnummer <span class="field__optional">(valgfritt)</span></label>
-            <input type="tel" id="mobil" name="mobil" inputmode="tel" autocomplete="tel" placeholder="f.eks. 900 00 000" />
-          </div>
-
-          <fieldset class="field field--group">
-            <legend>Hva er du nysgjerrig på?</legend>
-            <p class="field__hint">Kryss av det du liker – helt uforpliktende.</p>
-            <div class="checks">
-              <label class="check"><input type="checkbox" name="produkter" value="Surdeigsbrød" /> <span>Surdeigsbrød</span></label>
-              <label class="check"><input type="checkbox" name="produkter" value="Kardemommeboller" /> <span>Kardemommeboller</span></label>
-              <label class="check"><input type="checkbox" name="produkter" value="Surdeigs-cookies" /> <span>Surdeigs-cookies</span></label>
-              <label class="check"><input type="checkbox" name="produkter" value="Bokka Dypp" /> <span>Bokka Dypp</span></label>
-              <label class="check"><input type="checkbox" name="produkter" value="Surdeigsstarter" /> <span>Surdeigsstarter</span></label>
-            </div>
-          </fieldset>
-
-          <fieldset class="field field--group">
-            <legend>Når passer det best?</legend>
-            <div class="checks checks--row">
-              <label class="check"><input type="checkbox" name="dager" value="Lørdag" /> <span>Lørdag</span></label>
-              <label class="check"><input type="checkbox" name="dager" value="Søndag" /> <span>Søndag</span></label>
-            </div>
-          </fieldset>
-
-          <div class="field">
-            <label for="nabolag">Gate eller nabolag <span class="field__optional">(valgfritt)</span></label>
-            <input type="text" id="nabolag" name="nabolag" autocomplete="off" placeholder="f.eks. Bokkaveien" />
-            <p class="field__hint">Vi trenger ikke full adresse ennå – bare et hint om hvor du bor.</p>
-          </div>
-
-          <p class="form__disclaimer">Du kan når som helst si fra hvis du ikke vil ha flere e-poster.</p>
-
-          <p class="form__privacy">Kontaktinformasjonen brukes bare til å gi beskjed når Bokka baker, og deles ikke med andre.</p>
-
-          <p class="field__error form__error" id="form-error" role="alert" hidden>Beklager – noe gikk galt da vi sendte skjemaet. Prøv igjen om litt, eller send oss en e-post.</p>
-
-          <button type="submit" class="btn btn--primary btn--big btn--full">Gi meg beskjed 🌾</button>
-        </form>
-
-        <!-- Success message appears here after submit -->
-        <div class="form__success" id="form-success" role="status" hidden>
-          <span class="form__success-mark" aria-hidden="true">🌾</span>
-          <h3>Tusen takk – vi gleder oss til å bake for deg!</h3>
-          <p id="form-success-text">Vi sier fra neste gang Bokka fyrer opp ovnen. Helt uforpliktende, som lovet.</p>
-          <button type="button" class="btn btn--ghost" id="form-reset">Meld interesse for noen andre</button>
+        <div class="interest__intro">
+          <ul class="interest__points" role="list">
+            <li>🌾 Vi sier fra på e-post når bestillingen åpner.</li>
+            <li>🧡 Helt uforpliktende – du bestemmer selv om du vil bestille.</li>
+            <li>🔒 Kontaktinformasjonen brukes bare til å gi beskjed når Bokka baker, og deles ikke med andre.</li>
+          </ul>
+          <!-- 👇 BYTT lenke hvis du lager nytt skjema. Åpnes i ny fane. -->
+          <a class="btn btn--primary btn--big btn--full" id="interest-form-link"
+             href="https://docs.google.com/forms/d/e/1FAIpQLSdwNwGVug0T28lHZV-sGzeDOoQDotcvdc939WtR60X6LGQTiQ/viewform"
+             target="_blank" rel="noopener noreferrer">Gi meg beskjed 🌾</a>
+          <p class="form__disclaimer">Skjemaet åpnes i Google Skjemaer. Du kan når som helst si fra hvis du ikke vil ha flere e-poster.</p>
         </div>
       </div>
     </section>
@@ -162,6 +105,6 @@
     <p class="site-footer__tagline">Bakt med kjærlighet ved Bokkaskogen 🌾</p>
   </footer>
 
-  <script src="script.js?v=12" defer></script>
+  <script src="script.js?v=13" defer></script>
 </body>
 </html>
