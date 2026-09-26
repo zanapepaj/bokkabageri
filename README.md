@@ -26,9 +26,9 @@ the oven is warm.
   upcoming *Bokka Dypp*)
 - "Slik funker det" — how the little bakery works
 - The **Bokka-Bobler** sourdough friends and the story of the bread wagon
-- Weekend menu + interest teaser that link to two Google Forms (order / interest);
-  responses land straight in the bakery's private Google Sheet, which the Apps Script
-  files in `apps-script/` (delivery dashboard, Bokka-rute map, opening-notice e-mail) read
+- Weekend-order and interest forms, submitted asynchronously to a private Google
+  Apps Script intake (`apps-script/BokkaIntake.gs`) that writes straight into the
+  bakery's Google Sheet — no third-party form service
 
 All on-page text is in **Norwegian**.
 

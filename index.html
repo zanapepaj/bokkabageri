@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=13" />
+  <link rel="stylesheet" href="styles.css?v=14" />
   <link rel="icon" type="image/png" href="assets/images/branding/9.png" />
   <link rel="apple-touch-icon" href="assets/images/branding/9.png" />
 </head>
@@ -119,41 +119,255 @@
           </p>
         </div>
 
-        <!-- 👇 Helgens meny. Bestillingen skjer i Google-skjemaet (ORDER_FORM_URL). -->
-        <ul class="order-list menu-list" role="list">
-          <li class="order-card order-card--signature">
-            <div class="order-card__info">
-              <p class="order-card__tag">Husets surdeigsbrød</p>
-              <h3>Bokka-brød</h3>
-              <p class="order-card__desc">Saftig surdeigsbrød på hvete og rug med linfrø, solsikkefrø og gresskarfrø – og en liten skvett sirup for rund, mild sødme.</p>
-              <p class="order-card__price"><span class="order-card__amount">50</span> kr</p>
-            </div>
-            <p class="order-card__stock">6 stk</p>
-          </li>
-          <li class="order-card">
-            <div class="order-card__info">
-              <h3>Baguette</h3>
-              <p class="order-card__desc">Sprø surdeigsbaguette med luftig, seig krumme – bakt på hvetemel, vann, surdeigsstarter og salt.</p>
-              <p class="order-card__price"><span class="order-card__amount">35</span> kr</p>
-            </div>
-            <p class="order-card__stock">Bare 3 stk</p>
-          </li>
-          <li class="order-card">
-            <div class="order-card__info">
-              <h3>Fougasse med urter</h3>
-              <p class="order-card__desc">Stort provençalsk flatbrød på surdeig (ca. 700–800 g) med friske urter og olivenolje. Vil du ha den glasert med hvitløk og parmesan? Skriv det i kommentarfeltet når du bestiller.</p>
-              <p class="order-card__price"><span class="order-card__amount">60</span> kr</p>
-            </div>
-            <p class="order-card__stock">6 stk</p>
-          </li>
-        </ul>
+        <form id="order-form" class="form order-form" action="https://formspree.io/f/mvkojlza" method="POST" novalidate>
+          <!-- Order form posts to its OWN Formspree endpoint (separate from the
+               interest form). Hidden form_type + _subject keep incoming emails
+               and CSV rows easy to tell apart. -->
+          <input type="hidden" name="_subject" value="Bokka – Helgens bestilling" />
+          <input type="hidden" name="form_type" value="weekend_order" />
+          <!-- 👇 BYTT for hver bakehelg (må matche ACTIVE_WEEKEND i Apps Script) -->
+          <input type="hidden" name="bakehelg" value="2026-09-26_27" />
+          <input type="hidden" name="bestilling" value="" />
+          <!-- Honeypot: invisible to people, bots tend to fill it. Must stay empty. -->
+          <div class="hp" aria-hidden="true">
+            <label for="order-gotcha">La dette feltet stå tomt</label>
+            <input type="text" id="order-gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
+          </div>
 
-        <div class="order-cta">
-          <!-- 👇 BYTT lenke hvis du lager nytt skjema. Åpnes i ny fane. -->
-          <a class="btn btn--primary btn--big btn--full" id="order-form-link"
-             href="https://docs.google.com/forms/d/e/1FAIpQLSdy9ftGsKXKs26tHPrLQVlN4PjH2JP_Siw50_Lbn5ieuw18xg/viewform"
-             target="_blank" rel="noopener noreferrer">Bestill til helgen 🧡</a>
-          <p class="form__disclaimer"><strong>Bestillingen er først bekreftet når du får svar fra Bokka.</strong> Skjemaet åpnes i Google Skjemaer. Vi baker i små mengder, så det kan bli utsolgt.</p>
+          <!-- Produktkort: legg til/fjern `hidden` på <li> for å skru et produkt av/på denne helgen.
+               Antall igjen hentes fra Lager-fanen i regnearket (data-stock fylles av script.js). -->
+          <ul class="order-list" role="list">
+            <li class="order-card" hidden>
+              <div class="order-card__info">
+                <h3>Klassisk surdeigsbrød</h3>
+                <p class="order-card__desc">Et enkelt, godt surdeigsbrød bakt på hvetemel, vann, surdeigsstarter og salt. Sprø skorpe og saftig krumme.</p>
+                <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
+                <p class="order-card__price"><span class="order-card__amount">55</span> kr</p>
+                <p class="order-card__stock" data-stock hidden></p>
+              </div>
+              <div class="qty" data-qty>
+                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Klassisk surdeigsbrød">−</button>
+                <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
+                       name="antall_klassisk_surdeigsbrod" data-product="Klassisk surdeigsbrød"
+                       value="0" min="0" max="10" step="1" aria-label="Antall Klassisk surdeigsbrød" />
+                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Klassisk surdeigsbrød">+</button>
+              </div>
+            </li>
+
+            <li class="order-card order-card--signature">
+              <div class="order-card__info">
+                <p class="order-card__tag">Husets surdeigsbrød</p>
+                <h3>Bokka-brød</h3>
+                <p class="order-card__desc">Saftig surdeigsbrød på hvete og rug med linfrø, solsikkefrø og gresskarfrø – og en liten skvett sirup for rund, mild sødme.</p>
+                <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
+                <p class="order-card__price"><span class="order-card__amount">50</span> kr</p>
+                <p class="order-card__stock" data-stock hidden></p>
+              </div>
+              <div class="qty" data-qty>
+                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Bokka-brød">−</button>
+                <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
+                       name="antall_bokka_brod" data-product="Bokka-brød"
+                       value="0" min="0" max="10" step="1" aria-label="Antall Bokka-brød" />
+                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Bokka-brød">+</button>
+              </div>
+            </li>
+
+            <li class="order-card">
+              <div class="order-card__info">
+                <h3>Baguette</h3>
+                <p class="order-card__desc">Sprø surdeigsbaguette med luftig, seig krumme – bakt på hvetemel, vann, surdeigsstarter og salt.</p>
+                <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
+                <p class="order-card__price"><span class="order-card__amount">35</span> kr</p>
+                <p class="order-card__stock" data-stock hidden></p>
+              </div>
+              <div class="qty" data-qty>
+                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Baguette">−</button>
+                <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
+                       name="antall_baguette" data-product="Baguette"
+                       value="0" min="0" max="10" step="1" aria-label="Antall Baguette" />
+                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Baguette">+</button>
+              </div>
+            </li>
+
+            <li class="order-card">
+              <div class="order-card__info">
+                <h3>Fougasse med urter</h3>
+                <p class="order-card__desc">Stort provençalsk flatbrød på surdeig (ca. 700–800 g) med friske urter og olivenolje. Vil du ha den glasert med hvitløk og parmesan? Skriv det i kommentarfeltet.</p>
+                <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
+                <p class="order-card__price"><span class="order-card__amount">60</span> kr</p>
+                <p class="order-card__stock" data-stock hidden></p>
+              </div>
+              <div class="qty" data-qty>
+                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Fougasse">−</button>
+                <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
+                       name="antall_fougasse" data-product="Fougasse med urter"
+                       value="0" min="0" max="10" step="1" aria-label="Antall Fougasse" />
+                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Fougasse">+</button>
+              </div>
+            </li>
+
+            <li class="order-card" hidden>
+              <div class="order-card__info">
+                <h3>Kanelbolle</h3>
+                <p class="order-card__desc">Myk og luftig kanelbolle bakt med søt surdeigsstarter – helt uten vanlig bakegjær.</p>
+                <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
+                <p class="order-card__price"><span class="order-card__amount">30</span> kr</p>
+                <p class="order-card__stock" data-stock hidden></p>
+              </div>
+              <div class="qty" data-qty>
+                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Kanelbolle">−</button>
+                <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
+                       name="antall_kanelbolle" data-product="Kanelbolle"
+                       value="0" min="0" max="10" step="1" aria-label="Antall Kanelbolle" />
+                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Kanelbolle">+</button>
+              </div>
+            </li>
+
+            <li class="order-card" hidden>
+              <div class="order-card__info">
+                <h3>Kanelbolle med vaniljekrem</h3>
+                <p class="order-card__desc">Myk surdeigs-kanelbolle med hjemmelaget vaniljekrem i midten, bakt med søt surdeigsstarter og uten vanlig bakegjær.</p>
+                <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
+                <p class="order-card__price"><span class="order-card__amount">35</span> kr</p>
+                <p class="order-card__stock" data-stock hidden></p>
+              </div>
+              <div class="qty" data-qty>
+                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Kanelbolle med vaniljekrem">−</button>
+                <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
+                       name="antall_kanelbolle_vaniljekrem" data-product="Kanelbolle med vaniljekrem"
+                       value="0" min="0" max="10" step="1" aria-label="Antall Kanelbolle med vaniljekrem" />
+                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Kanelbolle med vaniljekrem">+</button>
+              </div>
+            </li>
+          </ul>
+
+          <p class="field__error order-form__empty" id="order-empty" role="alert" hidden>Velg minst én vare før du sender bestillingen.</p>
+          <p class="order-form__soldout" id="order-soldout" role="status" hidden>Alt er dessverre utsolgt denne helgen 🧡 <a href="interesse.html">Meld interesse</a>, så sier vi fra neste gang Bokka baker.</p>
+
+          <div class="field">
+            <label for="order-fornavn">Fornavn</label>
+            <input type="text" id="order-fornavn" name="fornavn" autocomplete="given-name" required aria-required="true" />
+            <p class="field__error" id="order-fornavn-error" hidden>Skriv gjerne fornavnet ditt.</p>
+          </div>
+
+          <div class="field">
+            <label for="order-mobil">Mobilnummer</label>
+            <input type="tel" id="order-mobil" name="mobil" inputmode="tel" autocomplete="tel" required aria-required="true" placeholder="f.eks. 900 00 000" />
+            <p class="field__error" id="order-mobil-error" hidden>Skriv et mobilnummer vi kan nå deg på.</p>
+          </div>
+
+          <div class="field">
+            <label for="order-epost">E-post <span class="field__optional">(valgfritt)</span></label>
+            <input type="email" id="order-epost" name="epost" inputmode="email" autocomplete="email" placeholder="navn@epost.no" />
+            <p class="field__error" id="order-epost-error" hidden>Sjekk at e-postadressen er riktig.</p>
+          </div>
+
+          <div class="field">
+            <label for="order-adresse">Gate / husnummer</label>
+            <input type="text" id="order-adresse" name="adresse" autocomplete="street-address" required aria-required="true" placeholder="f.eks. Bokkaveien 3" />
+            <p class="field__error" id="order-adresse-error" hidden>Vi trenger gate og husnummer for å levere til deg.</p>
+          </div>
+
+          <fieldset class="field field--group">
+            <legend>Hvilken dag passer for levering?</legend>
+            <p class="field__hint">Velg dag – så dukker tidspunktene opp. Du kan velge begge.</p>
+            <div class="checks checks--days">
+              <label class="check check--day">
+                <input type="checkbox" data-day-toggle aria-controls="times-lordag" aria-expanded="false" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" /><path d="M12 2.6v2.4M12 19v2.4M2.6 12h2.4M19 12h2.4M5.2 5.2l1.7 1.7M17.1 17.1l1.7 1.7M18.8 5.2l-1.7 1.7M6.9 17.1l-1.7 1.7" /></svg>
+                <span>Lørdag</span>
+              </label>
+              <label class="check check--day">
+                <input type="checkbox" data-day-toggle aria-controls="times-sondag" aria-expanded="false" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 18h8.2a3.3 3.3 0 0 0 .5-6.56A4.8 4.8 0 0 0 7.6 10.2 3.4 3.4 0 0 0 7.5 18Z" /></svg>
+                <span>Søndag</span>
+              </label>
+            </div>
+            <p class="day-both" id="day-both-hint" role="status" hidden>Begge dager passer <span aria-hidden="true">💛</span></p>
+          </fieldset>
+
+          <fieldset class="field field--group day-times" id="times-lordag" hidden>
+            <legend>Når på lørdag passer det?</legend>
+            <p class="field__hint">Kryss av alle tidspunkt som passer.</p>
+            <div class="checks checks--chips">
+              <label class="check check--chip">
+                <input type="checkbox" name="lordag_tid" value="Før kl. 10" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12H8.2" /></svg>
+                <span>Før kl. 10</span>
+              </label>
+              <label class="check check--chip">
+                <input type="checkbox" name="lordag_tid" value="Kl. 10–12" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12 9.4 9.4" /></svg>
+                <span>Kl. 10–12</span>
+              </label>
+              <label class="check check--chip">
+                <input type="checkbox" name="lordag_tid" value="Kl. 12–14" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12l3.6.9" /></svg>
+                <span>Kl. 12–14</span>
+              </label>
+              <label class="check check--chip check--full">
+                <input type="checkbox" name="lordag_tid" value="Når det passer Bokka" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.3S3.8 15.4 3.8 9.6A3.8 3.8 0 0 1 12 7.4a3.8 3.8 0 0 1 8.2 2.2c0 5.8-8.2 10.7-8.2 10.7Z" /></svg>
+                <span>Når det passer Bokka</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="field field--group day-times" id="times-sondag" hidden>
+            <legend>Når på søndag passer det?</legend>
+            <p class="field__hint">Kryss av alle tidspunkt som passer.</p>
+            <div class="checks checks--chips">
+              <label class="check check--chip">
+                <input type="checkbox" name="sondag_tid" value="Før kl. 10" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12H8.2" /></svg>
+                <span>Før kl. 10</span>
+              </label>
+              <label class="check check--chip">
+                <input type="checkbox" name="sondag_tid" value="Kl. 10–12" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12 9.4 9.4" /></svg>
+                <span>Kl. 10–12</span>
+              </label>
+              <label class="check check--chip">
+                <input type="checkbox" name="sondag_tid" value="Kl. 12–14" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12l3.6.9" /></svg>
+                <span>Kl. 12–14</span>
+              </label>
+              <label class="check check--chip check--full">
+                <input type="checkbox" name="sondag_tid" value="Når det passer Bokka" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.3S3.8 15.4 3.8 9.6A3.8 3.8 0 0 1 12 7.4a3.8 3.8 0 0 1 8.2 2.2c0 5.8-8.2 10.7-8.2 10.7Z" /></svg>
+                <span>Når det passer Bokka</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="order-kommentar">Kommentar <span class="field__optional">(valgfritt)</span></label>
+            <textarea id="order-kommentar" name="kommentar" rows="3" placeholder="Allergier eller en liten hilsen …"></textarea>
+          </div>
+
+          <label class="check check--solo">
+            <input type="checkbox" name="levering" value="Ja, ønsker levering i nabolaget" />
+            <span>Jeg ønsker levering i nabolaget</span>
+          </label>
+
+          <label class="check check--solo">
+            <input type="checkbox" name="nyhetsvarsel" value="Ja" />
+            <span>Ja, send meg beskjed når Bokka åpner for bestilling.</span>
+          </label>
+
+          <p class="form__disclaimer"><strong>Bestillingen er først bekreftet når du får svar fra Bokka.</strong> Vi sier fra så snart vi kan.</p>
+
+          <p class="field__error form__error" id="order-error" role="alert" hidden>Beklager – noe gikk galt da vi sendte bestillingen. Prøv igjen om litt, eller send oss en melding på Instagram.</p>
+
+          <button type="submit" class="btn btn--primary btn--big btn--full">Send bestilling</button>
+        </form>
+
+        <!-- Success message appears here after submit -->
+        <div class="form__success" id="order-success" role="status" hidden>
+          <span class="form__success-mark" aria-hidden="true">🧡</span>
+          <h3>Takk for bestillingen!</h3>
+          <p id="order-success-text">Vi har notert ønsket ditt for helgen. Bokka gir deg beskjed så snart vi kan – bestillingen er først bekreftet når du får svar fra oss.</p>
+          <button type="button" class="btn btn--ghost" id="order-reset">Send en ny bestilling</button>
         </div>
       </div>
     </section>
@@ -285,6 +499,6 @@
     <p class="site-footer__tagline">Bakt med kjærlighet ved Bokkaskogen 🌾</p>
   </footer>
 
-  <script src="script.js?v=13" defer></script>
+  <script src="script.js?v=14" defer></script>
 </body>
 </html>

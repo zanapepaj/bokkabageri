@@ -755,14 +755,6 @@ a { color: var(--forest); }
 }
 .order-form__soldout a { color: var(--forest); font-weight: 700; }
 
-/* Read-only weekend menu + link to the Google Form */
-.menu-list .order-card__stock { flex: none; align-self: center; margin: 0; }
-.order-cta { margin-top: 1.4rem; text-align: center; }
-.order-cta .form__disclaimer { margin-top: 0.9rem; }
-.interest__intro { text-align: center; }
-.interest__points { list-style: none; margin: 0 0 1.4rem; padding: 0; display: grid; gap: 0.6rem; text-align: left; }
-.interest__points li { padding: 0.7rem 1rem; background: var(--cream); border: 2px dashed var(--beige); border-radius: 16px; color: var(--ink-soft); }
-
 /* Small "100 % surdeigsbakst" note by the weekend menu */
 .sourdough-note {
   width: fit-content;
