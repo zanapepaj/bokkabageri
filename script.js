@@ -476,6 +476,49 @@
   })();
 
   /* -----------------------------------------------------
+     Product poll: one tap = one anonymous vote. Tapped items stay marked on this device.
+     ----------------------------------------------------- */
+  (function initPoll() {
+    const buttons = document.querySelectorAll("[data-vote]");
+    if (!buttons.length) return;
+
+    const thanks = document.getElementById("poll-thanks");
+    const STORE = "bokka-poll-votes";
+    let voted = [];
+    // localStorage throws in some private-browsing modes; voting still works without it.
+    try { voted = JSON.parse(localStorage.getItem(STORE)) || []; } catch (e) {}
+    if (!Array.isArray(voted)) voted = [];
+
+    function say(text) { if (thanks) thanks.textContent = text; }
+
+    buttons.forEach(function (btn) {
+      const choice = btn.getAttribute("data-vote");
+      if (voted.indexOf(choice) >= 0) btn.setAttribute("aria-pressed", "true");
+
+      btn.addEventListener("click", function () {
+        if (btn.getAttribute("aria-pressed") === "true") return;
+        btn.setAttribute("aria-pressed", "true");
+        say("Mmm, du liker " + btn.getAttribute("data-yum") + "! Takk for stemmen \ud83e\udde1");
+
+        fetch(INTAKE_ENDPOINT, {
+          method: "POST",
+          body: new URLSearchParams({ form_type: "poll_vote", valg: choice })
+        })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (data) {
+            if (!data || !data.ok) throw new Error("vote refused");
+            voted.push(choice);
+            try { localStorage.setItem(STORE, JSON.stringify(voted)); } catch (e) {}
+          })
+          .catch(function () {
+            btn.setAttribute("aria-pressed", "false");
+            say("Oi, stemmen kom ikke fram. Trykk gjerne en gang til.");
+          });
+      });
+    });
+  })();
+
+  /* -----------------------------------------------------
      Gentle scroll-reveal animations
      Respects prefers-reduced-motion via CSS.
      ----------------------------------------------------- */

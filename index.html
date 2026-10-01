@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=14" />
+  <link rel="stylesheet" href="styles.css?v=17" />
   <link rel="icon" type="image/png" href="assets/images/branding/9.png" />
   <link rel="apple-touch-icon" href="assets/images/branding/9.png" />
 </head>
@@ -57,7 +57,7 @@
         <span class="brand__descriptor">Et lite nanobakeri ved Bokkaskogen</span>
       </span>
     </a>
-    <a class="btn btn--ghost header__cta" href="#helgens-bestilling">Bestill til helgen</a>
+    <a class="btn btn--ghost header__cta" href="#avstemning">Stem på bakst</a>
   </header>
 
   <main id="hovedinnhold">
@@ -92,7 +92,7 @@
           <p class="hero__eyebrow">Fersk surdeigsbakst · Bokkaskogen, Stavanger</p>
           <h1 id="hero-tittel">Bokka kommer når du vil ha oss</h1>
           <p class="hero__lead">Fersk surdeigsbakst fra nabolaget – uten abonnement og uten kjøpepress.</p>
-          <a class="btn btn--primary btn--big" href="#helgens-bestilling">Bestill til helgen</a>
+          <a class="btn btn--primary btn--big" href="#avstemning">Stem på neste bakst</a>
           <p class="hero__reassure">Helt uforpliktende. Du bestemmer selv om du vil bestille når vi baker.</p>
         </div>
       </div>
@@ -104,8 +104,114 @@
       </svg>
     </section>
 
+    <!-- ============ POLL (pause-helg) ============
+         Når vi selger igjen: legg `hidden` på denne, fjern `hidden` fra #helgens-bestilling og
+         interesse-teaseren, og sett header-/hero-/final-CTA tilbake til #helgens-bestilling. -->
+    <section class="section weekend-order" id="avstemning" aria-labelledby="poll-tittel">
+      <div class="order-wrap frame">
+        <div class="section__head">
+          <p class="eyebrow-hand">Denne helgen</p>
+          <h2 id="poll-tittel">Bokka tar en liten pause</h2>
+          <p class="section__sub">Vi baker ikke denne helgen. Hjelp oss å velge hva vi skal bake fremover – trykk på det du vil ha mer av. Velg så mange du vil.</p>
+        </div>
+
+        <ul class="poll-grid" role="list">
+          <li><button type="button" class="poll-option" data-vote="Bokka-brød med frø" data-yum="frøbrød" aria-pressed="false">
+            <svg class="poll-option__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+              <path d="M9 45c0-14 10-24 23-24s23 10 23 24c0 3-2 5-5 5H14c-3 0-5-2-5-5z" fill="var(--bread)"/>
+              <g class="ic-flat">
+                <ellipse cx="21" cy="32" rx="1.4" ry="2.5" transform="rotate(-35 21 32)" fill="var(--cream)"/>
+                <ellipse cx="27" cy="27" rx="1.4" ry="2.5" transform="rotate(-15 27 27)" fill="var(--sage-deep)"/>
+                <ellipse cx="34" cy="25.5" rx="1.4" ry="2.5" transform="rotate(10 34 25.5)" fill="var(--cream)"/>
+                <ellipse cx="41" cy="28" rx="1.4" ry="2.5" transform="rotate(30 41 28)" fill="var(--brown-ink)"/>
+                <ellipse cx="45" cy="34" rx="1.4" ry="2.5" transform="rotate(45 45 34)" fill="var(--cream)"/>
+                <ellipse cx="31" cy="32" rx="1.4" ry="2.5" fill="var(--sage-deep)"/>
+              </g>
+              <circle class="ic-eye" cx="27" cy="40" r="1.6"/><circle class="ic-eye" cx="37" cy="40" r="1.6"/>
+              <path class="ic-thin" d="M29.5 44c1.6 1.4 3.4 1.4 5 0"/>
+              <circle class="ic-cheek" cx="23.5" cy="43" r="1.9"/><circle class="ic-cheek" cx="40.5" cy="43" r="1.9"/>
+            </svg>
+            <span>Bokka-brød med frø</span>
+            <span class="poll-option__hint">chia, linfrø, solsikke</span>
+          </button></li>
+          <li><button type="button" class="poll-option" data-vote="Rundstykker" data-yum="rundstykker" aria-pressed="false">
+            <svg class="poll-option__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+              <ellipse cx="15" cy="40" rx="10" ry="8" fill="var(--bread)"/>
+              <ellipse cx="49" cy="40" rx="10" ry="8" fill="var(--bread)"/>
+              <ellipse cx="32" cy="38" rx="11" ry="9.5" fill="var(--bread)"/>
+              <path class="ic-line" d="M10 37q5-3 10 0M44 37q5-3 10 0" stroke="var(--bread-light)" stroke-width="2"/>
+              <path d="M5 46h54l-4 8H9z" fill="var(--beige)"/>
+              <circle class="ic-eye" cx="28" cy="37.5" r="1.5"/><circle class="ic-eye" cx="36" cy="37.5" r="1.5"/>
+              <path class="ic-thin" d="M30 41c1.3 1.2 2.7 1.2 4 0"/>
+              <circle class="ic-cheek" cx="25" cy="40.5" r="1.7"/><circle class="ic-cheek" cx="39" cy="40.5" r="1.7"/>
+            </svg>
+            <span>Rundstykker</span>
+          </button></li>
+          <li><button type="button" class="poll-option" data-vote="Baguette" data-yum="baguetter" aria-pressed="false">
+            <svg class="poll-option__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+              <g transform="rotate(-35 32 32)">
+                <ellipse cx="32" cy="32" rx="27" ry="8.5" fill="var(--bread)"/>
+                <path class="ic-line" d="M11 29l5 6M19 28l5 7M40 28l5 7M48 29l4 5" stroke="var(--bread-light)" stroke-width="2.2"/>
+                <circle class="ic-eye" cx="29" cy="31" r="1.4"/><circle class="ic-eye" cx="35" cy="31" r="1.4"/>
+                <path class="ic-thin" d="M30.5 34.5c1 1 2 1 3 0"/>
+              </g>
+            </svg>
+            <span>Baguette</span>
+          </button></li>
+          <li><button type="button" class="poll-option" data-vote="Kanelboller" data-yum="kanelboller" aria-pressed="false">
+            <svg class="poll-option__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+              <circle cx="34" cy="34" r="19" fill="var(--bread)"/>
+              <path class="ic-line" d="M32 34a3 3 0 0 1 6 0a6 6 0 0 1-12 0a9 9 0 0 1 18 0a12 12 0 0 1-24 0a15 15 0 0 1 30 0" stroke="var(--bread-deep)" stroke-width="2.6"/>
+              <g class="ic-flat" fill="var(--cream)">
+                <circle cx="24" cy="23" r="1.3"/><circle cx="45" cy="21" r="1.3"/><circle cx="48" cy="45" r="1.3"/><circle cx="22" cy="46" r="1.3"/>
+              </g>
+            </svg>
+            <span>Kanelboller</span>
+          </button></li>
+          <li><button type="button" class="poll-option" data-vote="Surdeigsgranola" data-yum="surdeigsgranola" aria-pressed="false">
+            <svg class="poll-option__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+              <path d="M10 33c1-8 10-12 22-12s21 4 22 12z" fill="var(--cream)"/>
+              <g stroke-width="1.2">
+                <circle cx="19" cy="29" r="2.6" fill="var(--bread-deep)"/><circle cx="25" cy="25.5" r="2.4" fill="var(--bread)"/>
+                <circle cx="42" cy="25.5" r="2.4" fill="var(--bread-deep)"/><circle cx="47" cy="30" r="2.2" fill="var(--bread)"/>
+                <circle cx="33" cy="24" r="3.2" fill="var(--pink)"/><circle cx="38" cy="30" r="2.6" fill="var(--pink)"/>
+              </g>
+              <path d="M7 33h50c0 13-11 22-25 22S7 46 7 33z" fill="var(--sage)"/>
+              <circle class="ic-eye" cx="27" cy="42" r="1.6"/><circle class="ic-eye" cx="37" cy="42" r="1.6"/>
+              <path class="ic-thin" d="M29.5 46c1.6 1.4 3.4 1.4 5 0"/>
+              <circle class="ic-cheek" cx="23" cy="45" r="1.9"/><circle class="ic-cheek" cx="41" cy="45" r="1.9"/>
+            </svg>
+            <span>Surdeigs&shy;granola</span>
+          </button></li>
+          <li><button type="button" class="poll-option" data-vote="Surdeigscookies med mørk sjokolade" data-yum="surdeigscookies med mørk sjokolade" aria-pressed="false">
+            <svg class="poll-option__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+              <circle cx="42" cy="25" r="13" fill="var(--bread-light)"/>
+              <g class="ic-flat" fill="var(--brown-ink)">
+                <circle cx="39" cy="19" r="1.8"/><circle cx="47" cy="18" r="1.6"/><circle cx="50" cy="27" r="1.8"/>
+              </g>
+              <circle cx="26" cy="39" r="16" fill="var(--bread)"/>
+              <g class="ic-flat" fill="var(--brown-ink)">
+                <rect x="16" y="26.5" width="3.6" height="3" rx="0.8" transform="rotate(-15 18 28)"/>
+                <rect x="29.5" y="25.5" width="3.6" height="3" rx="0.8" transform="rotate(20 31 27)"/>
+                <rect x="36" y="44.5" width="3.6" height="3" rx="0.8" transform="rotate(-25 38 46)"/>
+                <rect x="15.5" y="47" width="3.6" height="3" rx="0.8" transform="rotate(30 17 48.5)"/>
+                <rect x="25.5" y="49.5" width="3.6" height="3" rx="0.8"/>
+              </g>
+              <circle class="ic-eye" cx="21" cy="39" r="1.6"/><circle class="ic-eye" cx="31" cy="39" r="1.6"/>
+              <path class="ic-thin" d="M23.5 43c1.6 1.4 3.4 1.4 5 0"/>
+              <circle class="ic-cheek" cx="17.5" cy="42" r="1.9"/><circle class="ic-cheek" cx="34.5" cy="42" r="1.9"/>
+            </svg>
+            <span>Surdeigs&shy;cookies</span>
+            <span class="poll-option__hint">med mørk sjokolade</span>
+          </button></li>
+        </ul>
+
+        <p class="poll__thanks" id="poll-thanks" role="status"></p>
+      </div>
+    </section>
+
     <!-- ============ WEEKEND ORDER ============ -->
-    <section class="section weekend-order" id="helgens-bestilling" aria-labelledby="bestilling-tittel">
+    <section class="section weekend-order" id="helgens-bestilling" aria-labelledby="bestilling-tittel" hidden>
       <div class="order-wrap frame">
         <span class="order__badge" role="text">Begrenset antall</span>
 
@@ -472,15 +578,15 @@
       </div>
     </section>
 
-    <!-- ============ FINAL CTA (primary: helgens bestilling) ============ -->
+    <!-- ============ FINAL CTA (pause-helg: → interesse.html) ============ -->
     <section class="section final-cta" aria-labelledby="final-tittel">
-      <h2 id="final-tittel">Vil du sikre deg helgens bakst?</h2>
-      <p>Send inn bestillingen din i dag – vi holder av til deg.</p>
-      <a class="btn btn--primary btn--big" href="#helgens-bestilling">Bestill til helgen</a>
+      <h2 id="final-tittel">Vil du vite når Bokka baker igjen?</h2>
+      <p>Meld uforpliktende interesse, så sier vi fra før neste bakehelg.</p>
+      <a class="btn btn--primary btn--big" href="interesse.html">Meld interesse</a>
     </section>
 
     <!-- ============ INTEREST TEASER (low-key → interesse.html) ============ -->
-    <section class="section interesse-teaser" aria-labelledby="interesse-teaser-tittel">
+    <section class="section interesse-teaser" aria-labelledby="interesse-teaser-tittel" hidden>
       <p class="interesse-teaser__q" id="interesse-teaser-tittel">Ikke klar for å bestille nå?</p>
       <p class="interesse-teaser__text"><a class="interesse-teaser__link" href="interesse.html">Meld interesse for senere helger</a></p>
     </section>
@@ -499,6 +605,6 @@
     <p class="site-footer__tagline">Bakt med kjærlighet ved Bokkaskogen 🌾</p>
   </footer>
 
-  <script src="script.js?v=14" defer></script>
+  <script src="script.js?v=15" defer></script>
 </body>
 </html>
