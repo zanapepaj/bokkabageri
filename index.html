@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=17" />
+  <link rel="stylesheet" href="styles.css?v=19" />
   <link rel="icon" type="image/png" href="assets/images/branding/9.png" />
   <link rel="apple-touch-icon" href="assets/images/branding/9.png" />
 </head>
@@ -57,7 +57,7 @@
         <span class="brand__descriptor">Et lite nanobakeri ved Bokkaskogen</span>
       </span>
     </a>
-    <a class="btn btn--ghost header__cta" href="#avstemning">Stem på bakst</a>
+    <a class="btn btn--ghost header__cta" href="#helgens-bestilling">Bestill til helgen</a>
   </header>
 
   <main id="hovedinnhold">
@@ -92,7 +92,7 @@
           <p class="hero__eyebrow">Fersk surdeigsbakst · Bokkaskogen, Stavanger</p>
           <h1 id="hero-tittel">Bokka kommer når du vil ha oss</h1>
           <p class="hero__lead">Fersk surdeigsbakst fra nabolaget – uten abonnement og uten kjøpepress.</p>
-          <a class="btn btn--primary btn--big" href="#avstemning">Stem på neste bakst</a>
+          <a class="btn btn--primary btn--big" href="#helgens-bestilling">Bestill til helgen</a>
           <p class="hero__reassure">Helt uforpliktende. Du bestemmer selv om du vil bestille når vi baker.</p>
         </div>
       </div>
@@ -107,7 +107,7 @@
     <!-- ============ POLL (pause-helg) ============
          Når vi selger igjen: legg `hidden` på denne, fjern `hidden` fra #helgens-bestilling og
          interesse-teaseren, og sett header-/hero-/final-CTA tilbake til #helgens-bestilling. -->
-    <section class="section weekend-order" id="avstemning" aria-labelledby="poll-tittel">
+    <section class="section weekend-order" id="avstemning" aria-labelledby="poll-tittel" hidden>
       <div class="order-wrap frame">
         <div class="section__head">
           <p class="eyebrow-hand">Denne helgen</p>
@@ -117,7 +117,7 @@
 
         <ul class="poll-grid" role="list">
           <li><button type="button" class="poll-option" data-vote="Bokka-brød med frø" data-yum="frøbrød" aria-pressed="false">
-            <svg class="poll-option__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <svg class="poll-option__icon" viewBox="4 14.5 56 42" aria-hidden="true" focusable="false">
               <path d="M9 45c0-14 10-24 23-24s23 10 23 24c0 3-2 5-5 5H14c-3 0-5-2-5-5z" fill="var(--bread)"/>
               <g class="ic-flat">
                 <ellipse cx="21" cy="32" rx="1.4" ry="2.5" transform="rotate(-35 21 32)" fill="var(--cream)"/>
@@ -135,7 +135,7 @@
             <span class="poll-option__hint">chia, linfrø, solsikke</span>
           </button></li>
           <li><button type="button" class="poll-option" data-vote="Rundstykker" data-yum="rundstykker" aria-pressed="false">
-            <svg class="poll-option__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <svg class="poll-option__icon" viewBox="3 19.25 58 43.5" aria-hidden="true" focusable="false">
               <ellipse cx="15" cy="40" rx="10" ry="8" fill="var(--bread)"/>
               <ellipse cx="49" cy="40" rx="10" ry="8" fill="var(--bread)"/>
               <ellipse cx="32" cy="38" rx="11" ry="9.5" fill="var(--bread)"/>
@@ -148,7 +148,7 @@
             <span>Rundstykker</span>
           </button></li>
           <li><button type="button" class="poll-option" data-vote="Baguette" data-yum="baguetter" aria-pressed="false">
-            <svg class="poll-option__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <svg class="poll-option__icon" viewBox="4 11 56 42" aria-hidden="true" focusable="false">
               <g transform="rotate(-35 32 32)">
                 <ellipse cx="32" cy="32" rx="27" ry="8.5" fill="var(--bread)"/>
                 <path class="ic-line" d="M11 29l5 6M19 28l5 7M40 28l5 7M48 29l4 5" stroke="var(--bread-light)" stroke-width="2.2"/>
@@ -159,7 +159,7 @@
             <span>Baguette</span>
           </button></li>
           <li><button type="button" class="poll-option" data-vote="Kanelboller" data-yum="kanelboller" aria-pressed="false">
-            <svg class="poll-option__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <svg class="poll-option__icon" viewBox="6 13 56 42" aria-hidden="true" focusable="false">
               <circle cx="34" cy="34" r="19" fill="var(--bread)"/>
               <path class="ic-line" d="M32 34a3 3 0 0 1 6 0a6 6 0 0 1-12 0a9 9 0 0 1 18 0a12 12 0 0 1-24 0a15 15 0 0 1 30 0" stroke="var(--bread-deep)" stroke-width="2.6"/>
               <g class="ic-flat" fill="var(--cream)">
@@ -169,7 +169,7 @@
             <span>Kanelboller</span>
           </button></li>
           <li><button type="button" class="poll-option" data-vote="Surdeigsgranola" data-yum="surdeigsgranola" aria-pressed="false">
-            <svg class="poll-option__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <svg class="poll-option__icon" viewBox="4 17 56 42" aria-hidden="true" focusable="false">
               <path d="M10 33c1-8 10-12 22-12s21 4 22 12z" fill="var(--cream)"/>
               <g stroke-width="1.2">
                 <circle cx="19" cy="29" r="2.6" fill="var(--bread-deep)"/><circle cx="25" cy="25.5" r="2.4" fill="var(--bread)"/>
@@ -184,7 +184,7 @@
             <span>Surdeigs&shy;granola</span>
           </button></li>
           <li><button type="button" class="poll-option" data-vote="Surdeigscookies med mørk sjokolade" data-yum="surdeigscookies med mørk sjokolade" aria-pressed="false">
-            <svg class="poll-option__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <svg class="poll-option__icon" viewBox="0.65 9.5 62.7 47" aria-hidden="true" focusable="false">
               <circle cx="42" cy="25" r="13" fill="var(--bread-light)"/>
               <g class="ic-flat" fill="var(--brown-ink)">
                 <circle cx="39" cy="19" r="1.8"/><circle cx="47" cy="18" r="1.6"/><circle cx="50" cy="27" r="1.8"/>
@@ -211,7 +211,7 @@
     </section>
 
     <!-- ============ WEEKEND ORDER ============ -->
-    <section class="section weekend-order" id="helgens-bestilling" aria-labelledby="bestilling-tittel" hidden>
+    <section class="section weekend-order" id="helgens-bestilling" aria-labelledby="bestilling-tittel">
       <div class="order-wrap frame">
         <span class="order__badge" role="text">Begrenset antall</span>
 
@@ -232,7 +232,7 @@
           <input type="hidden" name="_subject" value="Bokka – Helgens bestilling" />
           <input type="hidden" name="form_type" value="weekend_order" />
           <!-- 👇 BYTT for hver bakehelg (må matche ACTIVE_WEEKEND i Apps Script) -->
-          <input type="hidden" name="bakehelg" value="2026-09-26_27" />
+          <input type="hidden" name="bakehelg" value="2026-10-17_18" />
           <input type="hidden" name="bestilling" value="" />
           <!-- Honeypot: invisible to people, bots tend to fill it. Must stay empty. -->
           <div class="hp" aria-hidden="true">
@@ -260,7 +260,7 @@
               </div>
             </li>
 
-            <li class="order-card order-card--signature">
+            <li class="order-card order-card--signature" hidden>
               <div class="order-card__info">
                 <p class="order-card__tag">Husets surdeigsbrød</p>
                 <h3>Bokka-brød</h3>
@@ -280,22 +280,44 @@
 
             <li class="order-card">
               <div class="order-card__info">
-                <h3>Baguette</h3>
-                <p class="order-card__desc">Sprø surdeigsbaguette med luftig, seig krumme – bakt på hvetemel, vann, surdeigsstarter og salt.</p>
+                <h3>Surdeigsbaguette med rug</h3>
+                <p class="order-card__desc">Langtidsfermentert surdeigsbaguette laget med Manitoba-hvetemel og rugmel. Sprø skorpe, luftig innside og god smak fra surdeigsfermenteringen.</p>
+                <p class="order-card__facts"><strong>Innhold:</strong> Hvetemel (Manitoba), vann, surdeig (hvetemel, vann), rugmel og salt.</p>
+                <p class="order-card__facts"><strong>Allergener:</strong> <strong>hvete</strong> (gluten), <strong>rug</strong> (gluten).</p>
                 <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
                 <p class="order-card__price"><span class="order-card__amount">35</span> kr</p>
                 <p class="order-card__stock" data-stock hidden></p>
               </div>
               <div class="qty" data-qty>
-                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Baguette">−</button>
+                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Surdeigsbaguette med rug">−</button>
                 <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
-                       name="antall_baguette" data-product="Baguette"
-                       value="0" min="0" max="10" step="1" aria-label="Antall Baguette" />
-                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Baguette">+</button>
+                       name="antall_baguette" data-product="Surdeigsbaguette med rug"
+                       value="0" min="0" max="10" step="1" aria-label="Antall Surdeigsbaguette med rug" />
+                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Surdeigsbaguette med rug">+</button>
               </div>
             </li>
 
-            <li class="order-card">
+            <li class="order-card order-card--signature">
+              <div class="order-card__info">
+                <p class="order-card__tag">Nyhet 💚🥥</p>
+                <h3>Kokos-surdeigssnurr med pistasj &amp; mandel</h3>
+                <p class="order-card__desc">Myk, langtidsfermentert surdeigsbolle laget med kokosmelk og tangzhong, fylt med en krem av 100 % pistasj, mandel, smør og vanilje. Saftig og luftig med mild kokossmak og rik, nøtteaktig pistasjfyll.</p>
+                <p class="order-card__facts"><strong>Innhold:</strong> Hvetemel, kokosmelk, surdeig (hvetemel, rugmel, vann), egg, sukker, smør, mandelmel, pistasj (100 %), vanilje og salt.</p>
+                <p class="order-card__facts"><strong>Allergener:</strong> <strong>hvete</strong> (gluten), <strong>rug</strong> (gluten), <strong>egg</strong>, <strong>melk</strong>, <strong>mandler</strong> og <strong>pistasjnøtter</strong>.</p>
+                <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
+                <p class="order-card__price"><span class="order-card__amount">40</span> kr</p>
+                <p class="order-card__stock" data-stock hidden></p>
+              </div>
+              <div class="qty" data-qty>
+                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Kokos-surdeigssnurr">−</button>
+                <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
+                       name="antall_kokos_pistasj_snurr" data-product="Kokos-surdeigssnurr med pistasj &amp; mandel"
+                       value="0" min="0" max="10" step="1" aria-label="Antall Kokos-surdeigssnurr med pistasj og mandel" />
+                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Kokos-surdeigssnurr">+</button>
+              </div>
+            </li>
+
+            <li class="order-card" hidden>
               <div class="order-card__info">
                 <h3>Fougasse med urter</h3>
                 <p class="order-card__desc">Stort provençalsk flatbrød på surdeig (ca. 700–800 g) med friske urter og olivenolje. Vil du ha den glasert med hvitløk og parmesan? Skriv det i kommentarfeltet.</p>
@@ -578,15 +600,15 @@
       </div>
     </section>
 
-    <!-- ============ FINAL CTA (pause-helg: → interesse.html) ============ -->
+    <!-- ============ FINAL CTA (primary: helgens bestilling) ============ -->
     <section class="section final-cta" aria-labelledby="final-tittel">
-      <h2 id="final-tittel">Vil du vite når Bokka baker igjen?</h2>
-      <p>Meld uforpliktende interesse, så sier vi fra før neste bakehelg.</p>
-      <a class="btn btn--primary btn--big" href="interesse.html">Meld interesse</a>
+      <h2 id="final-tittel">Vil du sikre deg helgens bakst?</h2>
+      <p>Send inn bestillingen din i dag – vi holder av til deg.</p>
+      <a class="btn btn--primary btn--big" href="#helgens-bestilling">Bestill til helgen</a>
     </section>
 
     <!-- ============ INTEREST TEASER (low-key → interesse.html) ============ -->
-    <section class="section interesse-teaser" aria-labelledby="interesse-teaser-tittel" hidden>
+    <section class="section interesse-teaser" aria-labelledby="interesse-teaser-tittel">
       <p class="interesse-teaser__q" id="interesse-teaser-tittel">Ikke klar for å bestille nå?</p>
       <p class="interesse-teaser__text"><a class="interesse-teaser__link" href="interesse.html">Meld interesse for senere helger</a></p>
     </section>
