@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=19" />
+  <link rel="stylesheet" href="styles.css?v=20" />
   <link rel="icon" type="image/png" href="assets/images/branding/9.png" />
   <link rel="apple-touch-icon" href="assets/images/branding/9.png" />
 </head>
@@ -390,14 +390,35 @@
             <p class="field__error" id="order-epost-error" hidden>Sjekk at e-postadressen er riktig.</p>
           </div>
 
-          <div class="field">
+          <fieldset class="field field--group" id="order-levering-group">
+            <legend>Levering eller henting?</legend>
+            <p class="field__hint">Prisen for levering avhenger av hvor du bor – <a href="levering.html">se leveringssonene</a>.</p>
+            <div class="checks checks--days">
+              <label class="check check--day check--choice">
+                <input type="radio" name="levering" value="Ja, ønsker levering i nabolaget" />
+                <span>🛒 Levering på døra</span>
+                <span class="check__sub">Gratis nærmest oss, ellers 30–50 kr</span>
+              </label>
+              <label class="check check--day check--choice">
+                <input type="radio" name="levering" value="Henter selv" />
+                <span>🏡 Henter selv</span>
+                <span class="check__sub">Alltid gratis – ring på døra hos oss</span>
+              </label>
+            </div>
+            <p class="field__error" id="order-levering-error" hidden>Velg om du vil ha levering eller hente selv.</p>
+          </fieldset>
+
+          <div class="field" id="order-adresse-field" hidden>
             <label for="order-adresse">Gate / husnummer</label>
-            <input type="text" id="order-adresse" name="adresse" autocomplete="street-address" required aria-required="true" placeholder="f.eks. Bokkaveien 3" />
+            <input type="text" id="order-adresse" name="adresse" autocomplete="street-address" aria-required="true" placeholder="f.eks. Bokkaveien 3" disabled />
+            <p class="field__hint">Vi bruker adressen til å finne leveringssonen din.</p>
             <p class="field__error" id="order-adresse-error" hidden>Vi trenger gate og husnummer for å levere til deg.</p>
           </div>
 
+          <p class="pickup-note" id="order-pickup-note" hidden>Vi sender adressen vår og når bestillingen er klar, sammen med bekreftelsen. Bokka-skapet kommer snart – til da ringer du bare på døra 🧡</p>
+
           <fieldset class="field field--group">
-            <legend>Hvilken dag passer for levering?</legend>
+            <legend id="order-day-legend">Hvilken dag passer for levering?</legend>
             <p class="field__hint">Velg dag – så dukker tidspunktene opp. Du kan velge begge.</p>
             <div class="checks checks--days">
               <label class="check check--day">
@@ -474,11 +495,6 @@
           </div>
 
           <label class="check check--solo">
-            <input type="checkbox" name="levering" value="Ja, ønsker levering i nabolaget" />
-            <span>Jeg ønsker levering i nabolaget</span>
-          </label>
-
-          <label class="check check--solo">
             <input type="checkbox" name="nyhetsvarsel" value="Ja" />
             <span>Ja, send meg beskjed når Bokka åpner for bestilling.</span>
           </label>
@@ -530,7 +546,7 @@
           <span class="step__num" aria-hidden="true">4</span>
           <span class="step__icon" aria-hidden="true">🛒</span>
           <h3>Bokka leverer i nabolaget</h3>
-          <p>Vi triller rundt med vogna og leverer fersk bakst på døra.</p>
+          <p>Vi triller rundt med vogna og leverer fersk bakst på døra. <a href="levering.html">Se hvor langt vi går</a>.</p>
         </li>
       </ol>
     </section>
@@ -623,10 +639,11 @@
     </svg>
     <p class="site-footer__brand">Bokka Bageri</p>
     <p>Et lite nanobakeri ved Bokkaskogen · Stavanger</p>
+    <p><a class="site-footer__link" href="levering.html">Levering og henting</a></p>
     <p class="site-footer__social"><a class="site-footer__link" href="https://instagram.com/bokkabageri" target="_blank" rel="noopener noreferrer">Følg oss på Instagram: @bokkabageri</a></p>
     <p class="site-footer__tagline">Bakt med kjærlighet ved Bokkaskogen 🌾</p>
   </footer>
 
-  <script src="script.js?v=15" defer></script>
+  <script src="script.js?v=16" defer></script>
 </body>
 </html>

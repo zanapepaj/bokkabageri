@@ -29,6 +29,9 @@ the oven is warm.
 - Weekend-order and interest forms, submitted asynchronously to a private Google
   Apps Script intake (`apps-script/BokkaIntake.gs`) that writes straight into the
   bakery's Google Sheet — no third-party form service
+- A **Levering og henting** page (`levering.html`) with a map of the delivery
+  zones and prices. The order form lets people choose delivery or pickup, and the
+  intake works out the zone and fee from the address
 
 All on-page text is in **Norwegian**.
 
@@ -53,6 +56,8 @@ npx serve .
 ```
 bokkabageri/
 ├─ index.html                  # The single-page site
+├─ levering.html               # Delivery zones map + pickup info
+├─ interesse.html              # Interest sign-up page
 ├─ styles.css                  # Storybook brand styling
 ├─ script.js                   # Interest-form validation + reveal animations
 ├─ assets/

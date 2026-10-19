@@ -201,6 +201,35 @@
     const mobileError = document.getElementById("order-mobil-error");
     const emailError = document.getElementById("order-epost-error");
     const addressError = document.getElementById("order-adresse-error");
+    const leveringRadios = Array.prototype.slice.call(
+      orderForm.querySelectorAll('input[name="levering"]')
+    );
+    const leveringError = document.getElementById("order-levering-error");
+    const addressField = document.getElementById("order-adresse-field");
+    const pickupNote = document.getElementById("order-pickup-note");
+    const dayLegend = document.getElementById("order-day-legend");
+    const PICKUP = "Henter selv";
+
+    function leveringChoice() {
+      const chosen = leveringRadios.filter(function (r) { return r.checked; })[0];
+      return chosen ? chosen.value : "";
+    }
+
+    // The address is only asked for (and sent – disabled inputs are left out) for delivery.
+    function syncLevering() {
+      const choice = leveringChoice();
+      const pickup = choice === PICKUP;
+      const delivery = choice !== "" && !pickup;
+      if (addressField) addressField.hidden = !delivery;
+      address.disabled = !delivery;
+      address.required = delivery;
+      if (!delivery) setError(address, addressError, false);
+      if (pickupNote) pickupNote.hidden = !pickup;
+      if (dayLegend) dayLegend.textContent = pickup ? "Hvilken dag vil du hente?" : "Hvilken dag passer for levering?";
+      if (choice && leveringError) leveringError.hidden = true;
+    }
+    leveringRadios.forEach(function (r) { r.addEventListener("change", syncLevering); });
+    syncLevering();
 
     const qtyInputs = Array.prototype.slice.call(
       orderForm.querySelectorAll(".qty__input")
@@ -321,13 +350,15 @@
       const phoneOk = isValidPhone(mobile.value);
       const emailVal = email.value.trim();
       const emailOk = emailVal === "" || isValidEmail(emailVal);
-      const addressOk = address.value.trim().length > 0;
+      const leveringOk = leveringChoice() !== "";
+      const addressOk = !leveringOk || leveringChoice() === PICKUP || address.value.trim().length > 0;
       const itemsOk = hasItems();
 
       setError(firstName, firstNameError, !nameOk);
       setError(mobile, mobileError, !phoneOk);
       setError(email, emailError, !emailOk);
       setError(address, addressError, !addressOk);
+      if (leveringError) leveringError.hidden = leveringOk;
       if (orderEmpty) orderEmpty.hidden = itemsOk;
 
       if (!itemsOk) {
@@ -337,6 +368,7 @@
       if (!nameOk) { firstName.focus(); return; }
       if (!phoneOk) { mobile.focus(); return; }
       if (!emailOk) { email.focus(); return; }
+      if (!leveringOk) { leveringRadios[0].focus(); return; }
       if (!addressOk) { address.focus(); return; }
 
       submitOrder();
@@ -346,6 +378,7 @@
       orderReset.addEventListener("click", function () {
         orderForm.reset();
         qtyInputs.forEach(function (input) { input.value = 0; });
+        syncLevering();
         if (orderError) orderError.hidden = true;
         if (orderEmpty) orderEmpty.hidden = true;
         setOrderSubmitting(false);
@@ -385,7 +418,7 @@
       postForm(orderForm)
         .then(function (data) {
           if (data && data.ok) {
-            showOrderSuccess(name);
+            showOrderSuccess(name, data.levering);
             fetchStock();
           } else {
             // Stock refusals carry a specific message + fresh counts.
@@ -413,12 +446,22 @@
       }
     }
 
-    function showOrderSuccess(name) {
+    // One friendly sentence about delivery/pickup from the intake's answer ({type, sone, gebyr}).
+    function leveringLine(lev) {
+      if (!lev) return "";
+      if (lev.type === "henting") return " Du henter selv – vi sender adressen og når det er klart sammen med bekreftelsen.";
+      if (lev.unknown) return " Vi fant ikke adressen helt sikkert, så vi sjekker den og sier fra om leveringsprisen.";
+      if (lev.gebyr > 0) return " Levering: " + lev.sone.toLowerCase() + ", " + lev.gebyr + " kr.";
+      return " Levering: " + lev.sone.toLowerCase() + " – gratis! 🎉";
+    }
+
+    function showOrderSuccess(name, levering) {
       if (!orderSuccess) return;
       if (orderSuccessText) {
         orderSuccessText.textContent =
           "Takk for bestillingen, " + name +
-          "! Vi har notert ønsket ditt for helgen. Bokka gir deg beskjed så snart vi kan – bestillingen er først bekreftet når du får svar fra oss. 🌾";
+          "! Vi har notert ønsket ditt for helgen." + leveringLine(levering) +
+          " Bokka gir deg beskjed så snart vi kan – bestillingen er først bekreftet når du får svar fra oss. 🌾";
       }
       orderForm.hidden = true;
       orderSuccess.hidden = false;

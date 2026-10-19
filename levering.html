@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#2c4a32" />
+  <meta name="description" content="Slik leverer Bokka Bageri: gratis levering nærmest oss, små tillegg litt lenger unna – eller hent selv, alltid gratis." />
+  <title>Levering og henting – Bokka Bageri</title>
+
+  <!-- Open Graph / social sharing -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="nb_NO" />
+  <meta property="og:site_name" content="Bokka Bageri" />
+  <meta property="og:title" content="Levering og henting – Bokka Bageri" />
+  <meta property="og:description" content="Hvor langt triller Bokka-vogna? Se leveringssonene og prisene – eller hent selv." />
+  <meta property="og:url" content="https://zanapepaj.github.io/bokkabageri/levering.html" />
+  <meta property="og:image" content="https://zanapepaj.github.io/bokkabageri/assets/images/branding/9.png" />
+  <meta property="og:image:alt" content="Bokka Bageri-logoen: en gyllen brød-B med et vennlig ansikt" />
+  <meta name="twitter:card" content="summary" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="styles.css?v=20" />
+  <link rel="icon" type="image/png" href="assets/images/branding/9.png" />
+  <link rel="apple-touch-icon" href="assets/images/branding/9.png" />
+</head>
+<body>
+  <a class="skip-link" href="#hovedinnhold">Hopp til innhold</a>
+
+  <header class="site-header">
+    <a class="brand" href="index.html#top" aria-label="Bokka Bageri – til forsiden">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 64 64" width="46" height="46" role="img" aria-hidden="true">
+          <path d="M14 40c0-11 3-21 12-21 6 0 9 3 9 8 0 4-2 6-5 7 4 1 7 3 7 8 0 6-4 10-11 10-7 0-12-4-12-12z"
+                fill="var(--bread)" stroke="var(--brown-ink)" stroke-width="2.6" stroke-linejoin="round"/>
+          <path d="M21 31c3-1 7-1 11 0M20 40c4-1 9-1 13 0" fill="none" stroke="var(--bread-light)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="21" cy="37" r="1.5" fill="var(--brown-ink)"/>
+          <circle cx="29" cy="37" r="1.5" fill="var(--brown-ink)"/>
+          <path d="M22 41c2 2 5 2 7 0" fill="none" stroke="var(--brown-ink)" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="18.5" cy="40" r="1.8" fill="var(--pink)" opacity="0.7"/>
+          <circle cx="31.5" cy="40" r="1.8" fill="var(--pink)" opacity="0.7"/>
+          <path d="M46 23c3 3 3 9 0 12" fill="none" stroke="var(--wheat)" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M46 26l-4-1M46 29h-4M46 32l-4 1" stroke="var(--wheat)" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M43 41c4 0 8 2 8 2" fill="none" stroke="var(--sage)" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="brand__text">
+        <span class="brand__name">Bokka Bageri</span>
+        <span class="brand__descriptor">Et lite nanobakeri ved Bokkaskogen</span>
+      </span>
+    </a>
+    <a class="btn btn--ghost header__cta" href="index.html#helgens-bestilling">Bestill til helgen</a>
+  </header>
+
+  <main id="hovedinnhold">
+    <span id="top"></span>
+
+    <section class="section lev-intro" aria-labelledby="lev-tittel">
+      <div class="section__head">
+        <p class="eyebrow-hand">Levering og henting</p>
+        <h1 id="lev-tittel">Hvor langt triller Bokka-vogna?</h1>
+        <p class="section__sub">Det er barna våre som leverer – til fots, med vogna. Små bein har en grense for hvor langt de orker å gå, så vi har delt nabolaget inn i tre soner.</p>
+        <p class="lev-intro__kids">Jo nærmere, jo gladere bakere 🧡</p>
+      </div>
+    </section>
+
+    <!-- 👇 Soner og priser: hold i takt med ZONES under og DELIVERY_ZONES i apps-script/BokkaIntake.gs -->
+    <ul class="zones" role="list">
+      <li class="zone zone--1">
+        <span class="zone__dot" aria-hidden="true"></span>
+        <h3>Grønn sone</h3>
+        <p class="zone__km">Inntil 0,5 km</p>
+        <p class="zone__price">Gratis levering</p>
+      </li>
+      <li class="zone zone--2">
+        <span class="zone__dot" aria-hidden="true"></span>
+        <h3>Gul sone</h3>
+        <p class="zone__km">0,5–1 km</p>
+        <p class="zone__price">30 kr</p>
+        <p class="zone__extra">Gratis ved bestilling over 150 kr</p>
+      </li>
+      <li class="zone zone--3">
+        <span class="zone__dot" aria-hidden="true"></span>
+        <h3>Rosa sone</h3>
+        <p class="zone__km">1–1,5 km</p>
+        <p class="zone__price">50 kr</p>
+      </li>
+      <li class="zone zone--out">
+        <span class="zone__dot" aria-hidden="true"></span>
+        <h3>Lenger unna</h3>
+        <p class="zone__km">Over 1,5 km</p>
+        <p class="zone__price">Hent selv – alltid gratis</p>
+      </li>
+    </ul>
+
+    <div class="map-wrap">
+      <div class="map-card">
+        <div id="lev-map" role="region" aria-label="Kart over leveringssonene til Bokka Bageri"></div>
+        <div class="map-bar">
+          <p class="map-bar__hint">Trykk der du bor i kartet – eller</p>
+          <button type="button" class="btn btn--ghost" id="lev-locate">📍 Bruk min posisjon</button>
+          <p class="map-result" id="lev-result" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+      <p class="map-note">Avstanden måles i luftlinje. Når du bestiller, finner vi sonen automatisk ut fra adressen din. Posisjonen du velger her brukes bare i nettleseren din og sendes ikke noe sted.</p>
+    </div>
+
+    <section class="section pickup-section" aria-labelledby="hent-tittel">
+      <div class="pickup">
+        <div class="pickup__card">
+          <span class="pickup__icon" aria-hidden="true">🏡</span>
+          <div>
+            <h2 id="hent-tittel">Hent selv hos Bokka</h2>
+            <p>Bor du lenger unna, eller vil du heller hente? Velg «Henter selv» når du bestiller.</p>
+            <ul>
+              <li>Alltid gratis.</li>
+              <li>Adressen vår og når bakverket er klart får du sammen med bekreftelsen.</li>
+              <li>Foreløpig ringer du bare på døra, så får du det rett i hånda. <span class="pickup__soon">Bokka-skapet kommer snart</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section lev-faq-section" aria-labelledby="faq-tittel">
+      <div class="section__head">
+        <h2 id="faq-tittel">Lurer du på noe?</h2>
+      </div>
+      <div class="lev-faq">
+        <details>
+          <summary>Hvordan betaler jeg for leveringen?</summary>
+          <p>Leveringsprisen kommer i tillegg til bakverket. Du får totalen sammen med bekreftelsen fra oss.</p>
+        </details>
+        <details>
+          <summary>Hvorfor koster det mer lenger unna?</summary>
+          <p>Det er barna som går. Lengre turer betyr at en voksen må bli med, og det tar mye av bakedagen. Det lille tillegget hjelper oss å si ja også når det er litt langt.</p>
+        </details>
+        <details>
+          <summary>Jeg bor rett utenfor sonene – hva nå?</summary>
+          <p>Velg «Henter selv», eller send oss en melding på Instagram, så finner vi ut av det sammen.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section final-cta" aria-labelledby="final-tittel">
+      <h2 id="final-tittel">Klar for helgens bakst?</h2>
+      <p>Se hva vi baker, og bestill – så holder vi av til deg.</p>
+      <a class="btn btn--primary btn--big" href="index.html#helgens-bestilling">Bestill til helgen</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <svg class="footer__sprig" viewBox="0 0 120 24" aria-hidden="true">
+      <path d="M8 12 Q40 2 60 12 Q80 22 112 12" fill="none" stroke="var(--wheat)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M30 7c-3-3-8-2-8-2 0 0 0 5 8 2zM90 17c3 3 8 2 8 2 0 0 0-5-8-2z" fill="var(--sage)"/>
+      <circle cx="60" cy="12" r="2.4" fill="var(--pink)"/>
+    </svg>
+    <p class="site-footer__brand">Bokka Bageri</p>
+    <p>Et lite nanobakeri ved Bokkaskogen · Stavanger</p>
+    <p class="site-footer__social"><a class="site-footer__link" href="https://instagram.com/bokkabageri" target="_blank" rel="noopener noreferrer">Følg oss på Instagram: @bokkabageri</a></p>
+    <p class="site-footer__tagline">Bakt med kjærlighet ved Bokkaskogen 🌾</p>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    (function () {
+      // Same centre and zones as DELIVERY_BASE / DELIVERY_ZONES in apps-script/BokkaIntake.gs.
+      var BASE = [58.95927700958366, 5.7170834085190885];
+      var ZONES = [
+        { km: 0.5, name: "Grønn sone", price: "gratis levering", color: "#6f7d4e", fill: "#a9c48a" },
+        { km: 1,   name: "Gul sone", price: "30 kr i levering (gratis over 150 kr)", color: "#b07d2c", fill: "#e8c07d" },
+        { km: 1.5, name: "Rosa sone", price: "50 kr i levering", color: "#c0675a", fill: "#eec7bd" }
+      ];
+      var OUTER_KM = ZONES[ZONES.length - 1].km;
+
+      var map = L.map("lev-map", { scrollWheelZoom: false, zoomSnap: 0.25 });
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
+      map.fitBounds(L.latLng(BASE).toBounds(OUTER_KM * 2000 + 400));
+
+      // Outermost first so the inner zones are drawn on top.
+      ZONES.slice().reverse().forEach(function (z) {
+        L.circle(BASE, { radius: z.km * 1000, color: z.color, weight: 2.5, fillColor: z.fill, fillOpacity: 0.3, interactive: false }).addTo(map);
+        L.tooltip({ permanent: true, direction: "center", className: "zone-label" })
+          .setLatLng([BASE[0] + (z.km * 1000 - 110) / 111320, BASE[1]])
+          .setContent(String(z.km).replace(".", ",") + " km")
+          .addTo(map);
+      });
+
+      var result = document.getElementById("lev-result");
+      var you;
+
+      function show(latlng) {
+        // Nearest 10 m – the same rounding the order form uses, so the shown distance and zone agree.
+        var m = Math.round(map.distance(BASE, latlng) / 10) * 10;
+        var zone = ZONES.filter(function (z) { return m <= z.km * 1000; })[0];
+        var dist = m < 1000 ? m + " m" : String(m / 1000).replace(".", ",") + " km";
+        result.textContent = zone
+          ? dist + " unna – " + zone.name.toLowerCase() + ", " + zone.price + "."
+          : dist + " unna – litt for langt å gå 🙈 Velg «Henter selv» når du bestiller.";
+        if (you) you.setLatLng(latlng);
+        else you = L.circleMarker(latlng, { radius: 9, color: "#2c4a32", weight: 3, fillColor: "#fbf4e4", fillOpacity: 1 }).addTo(map);
+      }
+
+      map.on("click", function (e) { show(e.latlng); });
+
+      document.getElementById("lev-locate").addEventListener("click", function () {
+        if (!navigator.geolocation) { result.textContent = "Nettleseren din kan ikke finne posisjonen."; return; }
+        result.textContent = "Finner posisjonen din …";
+        navigator.geolocation.getCurrentPosition(
+          function (pos) {
+            var ll = L.latLng(pos.coords.latitude, pos.coords.longitude);
+            show(ll);
+            map.setView(ll, Math.max(map.getZoom(), 15));
+          },
+          function () { result.textContent = "Fikk ikke tilgang til posisjonen. Trykk i kartet i stedet."; },
+          { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
+        );
+      });
+    })();
+  </script>
+</body>
+</html>
