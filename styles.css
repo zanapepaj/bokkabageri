@@ -1232,3 +1232,19 @@ a { color: var(--forest); }
 .lev-faq details { background: var(--cream); border: 2px solid var(--beige); border-radius: var(--radius); padding: 0.8rem 1.1rem; margin: 0 0 0.7rem; }
 .lev-faq summary { cursor: pointer; font-family: var(--font-display); font-weight: 600; color: var(--forest); }
 .lev-faq details p { margin: 0.5rem 0 0.2rem; color: var(--ink-soft); }
+
+/* ============ Business details in the footer ============ */
+.site-footer__company { margin-top: 0.9rem !important; font-size: 0.82rem; line-height: 1.5; opacity: 0.9; }
+.site-footer__legal { font-size: 0.88rem; }
+
+/* ============ Kjøpsvilkår og personvern (vilkar.html) ============ */
+.legal__body { max-width: 44rem; margin: 0 auto; padding: 0 var(--space); }
+.legal__body h2 { font-size: clamp(1.25rem, 3.6vw, 1.5rem); margin: 2rem 0 0.5rem; scroll-margin-top: 6rem; }
+.legal__body h3 { font-size: 1.05rem; margin: 1.3rem 0 0.4rem; color: var(--forest); }
+.legal__body p, .legal__body li { color: var(--ink); line-height: 1.6; }
+.legal__body ul { padding-left: 1.2rem; }
+.legal__body li { margin: 0.3rem 0; }
+.legal__toc { display: flex; flex-wrap: wrap; gap: 0.4rem 0.6rem; padding: 0.9rem 1rem; background: var(--cream); border: 2px solid var(--beige); border-radius: var(--radius); }
+.legal__toc a { font-size: 0.9rem; color: var(--forest); }
+.legal__card { font-style: normal; line-height: 1.6; padding: 0.9rem 1.1rem; background: var(--cream); border: 2px dashed var(--bread); border-radius: var(--radius); }
+.legal__updated { margin-top: 2rem; font-size: 0.85rem; color: var(--ink-soft) !important; }
