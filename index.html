@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=21" />
+  <link rel="stylesheet" href="styles.css?v=22" />
   <link rel="icon" type="image/png" href="assets/images/branding/9.png" />
   <link rel="apple-touch-icon" href="assets/images/branding/9.png" />
 </head>
@@ -232,7 +232,7 @@
           <input type="hidden" name="_subject" value="Bokka – Helgens bestilling" />
           <input type="hidden" name="form_type" value="weekend_order" />
           <!-- 👇 BYTT for hver bakehelg (må matche ACTIVE_WEEKEND i Apps Script) -->
-          <input type="hidden" name="bakehelg" value="2026-10-17_18" />
+          <input type="hidden" name="bakehelg" value="2026-10-24_25" />
           <input type="hidden" name="bestilling" value="" />
           <!-- Honeypot: invisible to people, bots tend to fill it. Must stay empty. -->
           <div class="hp" aria-hidden="true">
@@ -278,7 +278,7 @@
               </div>
             </li>
 
-            <li class="order-card">
+            <li class="order-card" hidden>
               <div class="order-card__info">
                 <h3>Surdeigsbaguette med rug</h3>
                 <p class="order-card__desc">Langtidsfermentert surdeigsbaguette laget med Manitoba-hvetemel og rugmel. Sprø skorpe, luftig innside og god smak fra surdeigsfermenteringen.</p>
@@ -297,7 +297,7 @@
               </div>
             </li>
 
-            <li class="order-card order-card--signature">
+            <li class="order-card order-card--signature" hidden>
               <div class="order-card__info">
                 <p class="order-card__tag">Nyhet 💚🥥</p>
                 <h3>Kokos-surdeigssnurr med pistasj &amp; mandel</h3>
@@ -334,21 +334,94 @@
               </div>
             </li>
 
-            <li class="order-card" hidden>
+            <!-- Produktbilder: illustrasjonene under er plassholdere til ekte bilder finnes.
+                 Bytt <svg> i .order-card__media med f.eks.
+                 <img src="assets/images/produkter/kanelboller.jpg" alt="Kanelboller med surdeig på et brett" width="160" height="160" loading="lazy" /> -->
+            <li class="order-card order-card--rich">
+              <figure class="order-card__media">
+                <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+                  <ellipse cx="60" cy="99" rx="34" ry="6" fill="var(--forest)" opacity="0.12"/>
+                  <path d="M28 64c0-17 14-28 32-28s32 11 32 28-14 26-32 26-32-9-32-26z" fill="var(--bread)" stroke="var(--brown-ink)" stroke-width="3.4" stroke-linejoin="round"/>
+                  <path d="M60 64a4 4 0 0 1 8 0a8 8 0 0 1-16 0a12 12 0 0 1 24 0a16 16 0 0 1-32 0a20 20 0 0 1 36 -4" fill="none" stroke="var(--bread-deep)" stroke-width="3" stroke-linecap="round"/>
+                  <circle cx="44" cy="52" r="1.7" fill="var(--cream)"/>
+                  <circle cx="79" cy="50" r="1.7" fill="var(--cream)"/>
+                  <circle cx="82" cy="74" r="1.7" fill="var(--cream)"/>
+                  <circle cx="40" cy="76" r="1.7" fill="var(--cream)"/>
+                </svg>
+              </figure>
               <div class="order-card__info">
-                <h3>Kanelbolle</h3>
-                <p class="order-card__desc">Myk og luftig kanelbolle bakt med søt surdeigsstarter – helt uten vanlig bakegjær.</p>
+                <h3>Kanelboller med surdeig</h3>
+                <p class="order-card__desc">Myke, saftige kanelboller laget med vår egen søte surdeig, ekte smør og kardemomme. Fylt med en raus kanelremons med brunt sukker, smør og et hint av vanilje.</p>
+                <ul class="order-card__badges" role="list" aria-label="Kjennetegn">
+                  <li>Bakt med surdeig</li>
+                  <li>Ekte smør</li>
+                  <li>Laget for hånd</li>
+                </ul>
                 <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
                 <p class="order-card__price"><span class="order-card__amount">30</span> kr</p>
                 <p class="order-card__stock" data-stock hidden></p>
+                <a class="order-card__notify" href="interesse.html?produkt=Kanelboller%20med%20surdeig">Si fra neste gang vi baker disse</a>
               </div>
               <div class="qty" data-qty>
-                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Kanelbolle">−</button>
+                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre kanelboller med surdeig">−</button>
                 <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
-                       name="antall_kanelbolle" data-product="Kanelbolle"
-                       value="0" min="0" max="10" step="1" aria-label="Antall Kanelbolle" />
-                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Kanelbolle">+</button>
+                       name="antall_kanelbolle" data-product="Kanelboller med surdeig"
+                       value="0" min="0" max="10" step="1" aria-label="Antall kanelboller med surdeig" />
+                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere kanelboller med surdeig">+</button>
               </div>
+              <details class="order-card__more">
+                <summary>Ingredienser og allergener</summary>
+                <div class="order-card__more-body">
+                  <p>Vi lager kanelbollene våre fra bunnen av med en søt, fast surdeig som får tid til å utvikle smak. Deigen inneholder melk, egg, ekte smør og kardemomme. Hver bolle formes for hånd og fylles med en rik blanding av smør, kanel og brunt sukker. Ingen tilsatt industrigjær.</p>
+                  <p><strong>Ingredienser:</strong> Siktet hvetemel, melk, surdeig av hvete (hvetemel, vann og litt sukker), smør, sukker, egg, brunt sukker, kanel, kardemomme, salt og vanilje. Melet inneholder askorbinsyre som melbehandlingsmiddel.</p>
+                  <p><strong>Allergener:</strong> <strong>hvete</strong> (gluten), <strong>melk</strong>, <strong>egg</strong>.</p>
+                  <p><strong>Størrelse:</strong> Ca. 125 g før steking (kan variere noe).</p>
+                </div>
+              </details>
+            </li>
+
+            <li class="order-card order-card--signature order-card--rich">
+              <figure class="order-card__media">
+                <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+                  <ellipse cx="60" cy="99" rx="38" ry="6" fill="var(--forest)" opacity="0.12"/>
+                  <path d="M24 64c0-20 16-34 36-34s36 13 36 32c0 16-15 30-36 30s-36-12-36-28z" fill="var(--bread)" stroke="var(--brown-ink)" stroke-width="3.4" stroke-linejoin="round"/>
+                  <path d="M34 54c4-6 10-9 16-9M70 44c6 1 12 5 15 11" fill="none" stroke="var(--bread-light)" stroke-width="2.6" stroke-linecap="round"/>
+                  <rect x="38" y="58" width="9" height="7" rx="1.6" fill="var(--brown-ink)" transform="rotate(-12 42 61)"/>
+                  <rect x="68" y="64" width="9" height="7" rx="1.6" fill="var(--brown-ink)" transform="rotate(14 72 67)"/>
+                  <rect x="52" y="76" width="8" height="6" rx="1.5" fill="var(--brown-ink)" transform="rotate(-6 56 79)"/>
+                  <rect x="51" y="40" width="22" height="15" rx="2.5" fill="#c8823a" stroke="var(--brown-ink)" stroke-width="2" transform="rotate(-10 62 47)"/>
+                  <path d="M55 44.5h14M55 50h14" stroke="#e9b26a" stroke-width="1.6" stroke-linecap="round" transform="rotate(-10 62 47)"/>
+                </svg>
+              </figure>
+              <div class="order-card__info">
+                <p class="order-card__tag">Nyhet 🍪</p>
+                <h3>Bokka Biscoff Cookies</h3>
+                <p class="order-card__desc">Store, tykke cookies med brunet smør, surdeig og biter av Biscoff-melkesjokolade. Lett sprø utenpå, med en myk og seig kjerne.</p>
+                <ul class="order-card__badges" role="list" aria-label="Kjennetegn">
+                  <li>Bakt med surdeig</li>
+                  <li>Ekte smør</li>
+                </ul>
+                <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
+                <p class="order-card__price"><span class="order-card__amount">35</span> kr</p>
+                <p class="order-card__stock" data-stock hidden></p>
+                <a class="order-card__notify" href="interesse.html?produkt=Bokka%20Biscoff%20Cookies">Si fra neste gang vi baker disse</a>
+              </div>
+              <div class="qty" data-qty>
+                <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Bokka Biscoff Cookies">−</button>
+                <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
+                       name="antall_biscoff_cookies" data-product="Bokka Biscoff Cookies"
+                       value="0" min="0" max="10" step="1" aria-label="Antall Bokka Biscoff Cookies" />
+                <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Bokka Biscoff Cookies">+</button>
+              </div>
+              <details class="order-card__more">
+                <summary>Ingredienser og allergener</summary>
+                <div class="order-card__more-body">
+                  <p>Våre cookies lages med brunet meierismør som gir en dyp, nøtteaktig smak. Vi bruker surdeig i deigen, brunt sukker og rause biter av Freia Biscoff-melkesjokolade. Deigen får hvile kaldt før steking, slik at smakene utvikler seg og cookiesene får sin karakteristiske konsistens. Pyntes med Lotus Biscoff-kjeks og sjokolade.</p>
+                  <p><strong>Ingredienser:</strong> Siktet hvetemel, meierismør, brunt sukker, hvitt sukker, egg, surdeig av hvete, Freia Biscoff-melkesjokolade, Lotus Biscoff-kjeks, maisstivelse, vaniljesukker, bakepulver, natron og salt.</p>
+                  <p><strong>Allergener:</strong> <strong>hvete</strong> (gluten), <strong>melk</strong>, <strong>egg</strong>, <strong>soya</strong>. Kan inneholde spor av <strong>nøtter</strong> (fra sjokoladen).</p>
+                  <p><strong>Størrelse:</strong> Ca. 110–120 g per cookie før steking.</p>
+                </div>
+              </details>
             </li>
 
             <li class="order-card" hidden>
@@ -439,7 +512,8 @@
             <legend>Når på lørdag passer det?</legend>
             <p class="field__hint">Kryss av alle tidspunkt som passer.</p>
             <div class="checks checks--chips">
-              <label class="check check--chip">
+              <!-- 👇 Skjult lør. 24. okt (vi åpnet etter kl. 10). Fjern `hidden` neste bakehelg. -->
+              <label class="check check--chip" hidden>
                 <input type="checkbox" name="lordag_tid" value="Før kl. 10" />
                 <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12H8.2" /></svg>
                 <span>Før kl. 10</span>
@@ -645,6 +719,6 @@
     <p class="site-footer__legal"><a class="site-footer__link" href="vilkar.html">Kjøpsvilkår og personvern</a> &middot; <a class="site-footer__link" href="levering.html">Levering og henting</a></p>
   </footer>
 
-  <script src="script.js?v=16" defer></script>
+  <script src="script.js?v=17" defer></script>
 </body>
 </html>

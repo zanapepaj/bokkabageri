@@ -68,6 +68,14 @@
     const firstNameError = document.getElementById("fornavn-error");
     const emailError = document.getElementById("epost-error");
 
+    // Coming from a sold-out order card (interesse.html?produkt=…): tick that product.
+    const wanted = new URLSearchParams(window.location.search).get("produkt");
+    if (wanted) {
+      Array.prototype.forEach.call(form.querySelectorAll('input[name="produkter"]'), function (box) {
+        if (box.value === wanted) box.checked = true;
+      });
+    }
+
     // Clear an error as soon as the neighbour starts fixing it.
     firstName.addEventListener("input", function () {
       if (firstName.value.trim()) setError(firstName, firstNameError, false);
