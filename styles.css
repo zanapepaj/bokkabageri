@@ -1321,3 +1321,25 @@ a { color: var(--forest); }
 @media (prefers-reduced-motion: reduce) {
   .order-card__more summary::before { transition: none; }
 }
+
+/* ============ Two-for deal + live sum in the order form ============ */
+.order-card__deal { font-family: var(--font-body); font-weight: 600; font-size: 0.85rem; color: var(--forest); }
+.order-deal {
+  margin: 0 0 0.9rem;
+  padding: 0.6rem 0.9rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--forest);
+  background: #eef3ea;
+  border: 2px dashed var(--sage);
+  border-radius: var(--radius);
+}
+.order-sum {
+  margin: 0.2rem 0 0.4rem;
+  text-align: right;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.08rem;
+  color: var(--bread-deep);
+}
+.order-sum[hidden] { display: none; }

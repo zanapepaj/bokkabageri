@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=22" />
+  <link rel="stylesheet" href="styles.css?v=23" />
   <link rel="icon" type="image/png" href="assets/images/branding/9.png" />
   <link rel="apple-touch-icon" href="assets/images/branding/9.png" />
 </head>
@@ -242,6 +242,9 @@
 
           <!-- Produktkort: legg til/fjern `hidden` på <li> for å skru et produkt av/på denne helgen.
                Antall igjen hentes fra Lager-fanen i regnearket (data-stock fylles av script.js). -->
+          <!-- 👇 Kjøp to: hvert par av varer med data-bundle koster 5 kr mindre (BUNDLE_DISCOUNT i apps-script/BokkaIntake.gs) -->
+          <p class="order-deal">🧺 <strong>Kjøp to, spar 5 kr</strong> – også om du blander: 1 kanelbolle + 1 cookie = 60 kr.</p>
+
           <ul class="order-list" role="list">
             <li class="order-card" hidden>
               <div class="order-card__info">
@@ -358,14 +361,14 @@
                   <li>Laget for hånd</li>
                 </ul>
                 <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
-                <p class="order-card__price"><span class="order-card__amount">30</span> kr</p>
+                <p class="order-card__price"><span class="order-card__amount">30</span> kr <span class="order-card__deal">· 2 for 55 kr</span></p>
                 <p class="order-card__stock" data-stock hidden></p>
                 <a class="order-card__notify" href="interesse.html?produkt=Kanelboller%20med%20surdeig">Si fra neste gang vi baker disse</a>
               </div>
               <div class="qty" data-qty>
                 <button type="button" class="qty__btn" data-qty-dec aria-label="Færre kanelboller med surdeig">−</button>
                 <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
-                       name="antall_kanelbolle" data-product="Kanelboller med surdeig"
+                       name="antall_kanelbolle" data-product="Kanelboller med surdeig" data-bundle
                        value="0" min="0" max="10" step="1" aria-label="Antall kanelboller med surdeig" />
                 <button type="button" class="qty__btn" data-qty-inc aria-label="Flere kanelboller med surdeig">+</button>
               </div>
@@ -402,14 +405,14 @@
                   <li>Ekte smør</li>
                 </ul>
                 <!-- 👇 REDIGER PRIS: bytt bare tallet inne i .order-card__amount -->
-                <p class="order-card__price"><span class="order-card__amount">35</span> kr</p>
+                <p class="order-card__price"><span class="order-card__amount">35</span> kr <span class="order-card__deal">· 2 for 65 kr</span></p>
                 <p class="order-card__stock" data-stock hidden></p>
                 <a class="order-card__notify" href="interesse.html?produkt=Bokka%20Biscoff%20Cookies">Si fra neste gang vi baker disse</a>
               </div>
               <div class="qty" data-qty>
                 <button type="button" class="qty__btn" data-qty-dec aria-label="Færre Bokka Biscoff Cookies">−</button>
                 <input class="qty__input" type="number" inputmode="numeric" pattern="[0-9]*"
-                       name="antall_biscoff_cookies" data-product="Bokka Biscoff Cookies"
+                       name="antall_biscoff_cookies" data-product="Bokka Biscoff Cookies" data-bundle
                        value="0" min="0" max="10" step="1" aria-label="Antall Bokka Biscoff Cookies" />
                 <button type="button" class="qty__btn" data-qty-inc aria-label="Flere Bokka Biscoff Cookies">+</button>
               </div>
@@ -441,6 +444,8 @@
               </div>
             </li>
           </ul>
+
+          <p class="order-sum" id="order-sum" aria-live="polite" hidden></p>
 
           <p class="field__error order-form__empty" id="order-empty" role="alert" hidden>Velg minst én vare før du sender bestillingen.</p>
           <p class="order-form__soldout" id="order-soldout" role="status" hidden>Alt er dessverre utsolgt denne helgen 🧡 <a href="interesse.html">Meld interesse</a>, så sier vi fra neste gang Bokka baker.</p>
@@ -719,6 +724,6 @@
     <p class="site-footer__legal"><a class="site-footer__link" href="vilkar.html">Kjøpsvilkår og personvern</a> &middot; <a class="site-footer__link" href="levering.html">Levering og henting</a></p>
   </footer>
 
-  <script src="script.js?v=17" defer></script>
+  <script src="script.js?v=18" defer></script>
 </body>
 </html>

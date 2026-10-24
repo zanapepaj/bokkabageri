@@ -22,8 +22,8 @@ the oven is warm.
 ## Hva finnes her
 
 - A mobile-first single-page site with a soft Scandinavian children's-storybook feel
-- Product showcase (surdeigsbrød, kardemommeboller, surdeigs-cookies, and the
-  upcoming *Bokka Dypp*)
+- Weekend menu with ingredients and allergens for each product (e.g. kanelboller
+  med surdeig and Bokka Biscoff Cookies), including a two-for deal
 - "Slik funker det" — how the little bakery works
 - The **Bokka-Bobler** sourdough friends and the story of the bread wagon
 - Weekend-order and interest forms, submitted asynchronously to a private Google

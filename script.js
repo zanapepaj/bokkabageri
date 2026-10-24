@@ -277,12 +277,41 @@
         function set(next) {
           input.value = clampQty(next, input);
           if (orderEmpty && hasItems()) orderEmpty.hidden = true;
+          updateSum();
         }
         if (dec) dec.addEventListener("click", function () { set(clampQty(input.value, input) - 1); });
         if (inc) inc.addEventListener("click", function () { set(clampQty(input.value, input) + 1); });
         input.addEventListener("change", function () { set(input.value); });
       }
     );
+
+    // Live total for the chosen bakst. Mirrors the intake: every two data-bundle items (any mix)
+    // cost BUNDLE_DISCOUNT kr less. Delivery is added after submit, once the zone is known.
+    const BUNDLE_DISCOUNT = 5;
+    const orderSum = document.getElementById("order-sum");
+
+    function priceOf(input) {
+      const card = input.closest(".order-card");
+      const amount = card ? card.querySelector(".order-card__amount") : null;
+      return amount ? parseInt(amount.textContent, 10) || 0 : 0;
+    }
+
+    function updateSum() {
+      if (!orderSum) return;
+      let sum = 0, bundled = 0;
+      qtyInputs.forEach(function (input) {
+        const n = clampQty(input.value, input);
+        sum += n * priceOf(input);
+        if (input.hasAttribute("data-bundle")) bundled += n;
+      });
+      const saved = BUNDLE_DISCOUNT * Math.floor(bundled / 2);
+      sum -= saved;
+      orderSum.hidden = sum <= 0;
+      orderSum.textContent = sum > 0
+        ? "Sum: " + sum + " kr" + (saved > 0 ? " (du sparer " + saved + " kr)" : "") + " + eventuell levering"
+        : "";
+    }
+    updateSum();
 
     /**
      * Apply live stock ({field:{kapasitet, igjen}}) from the intake: cap each stepper at
@@ -324,6 +353,7 @@
 
       if (orderSoldout) orderSoldout.hidden = anyAvailable;
       if (orderSubmit) orderSubmit.hidden = !anyAvailable;
+      updateSum();
     }
 
     // Ask the intake what is left for this weekend. Failure is silent: the server still
@@ -387,6 +417,7 @@
         orderForm.reset();
         qtyInputs.forEach(function (input) { input.value = 0; });
         syncLevering();
+        updateSum();
         if (orderError) orderError.hidden = true;
         if (orderEmpty) orderEmpty.hidden = true;
         setOrderSubmitting(false);
@@ -426,7 +457,7 @@
       postForm(orderForm)
         .then(function (data) {
           if (data && data.ok) {
-            showOrderSuccess(name, data.levering);
+            showOrderSuccess(name, data.levering, data.sum);
             fetchStock();
           } else {
             // Stock refusals carry a specific message + fresh counts.
@@ -463,12 +494,20 @@
       return " Levering: " + lev.sone.toLowerCase() + " – gratis! 🎉";
     }
 
-    function showOrderSuccess(name, levering) {
+    // "Å betale: 120 kr." from the intake's bakst sum + delivery fee (when the fee is known).
+    function totalLine(sum, lev) {
+      if (typeof sum !== "number" || sum <= 0) return "";
+      const fee = lev && lev.type === "levering" && typeof lev.gebyr === "number" ? lev.gebyr : 0;
+      if (lev && lev.unknown) return " Bakst: " + sum + " kr + levering.";
+      return " Å betale: " + (sum + fee) + " kr" + (fee > 0 ? " inkl. levering" : "") + ".";
+    }
+
+    function showOrderSuccess(name, levering, sum) {
       if (!orderSuccess) return;
       if (orderSuccessText) {
         orderSuccessText.textContent =
           "Takk for bestillingen, " + name +
-          "! Vi har notert ønsket ditt for helgen." + leveringLine(levering) +
+          "! Vi har notert ønsket ditt for helgen." + leveringLine(levering) + totalLine(sum, levering) +
           " Bokka gir deg beskjed så snart vi kan – bestillingen er først bekreftet når du får svar fra oss. 🌾";
       }
       orderForm.hidden = true;
