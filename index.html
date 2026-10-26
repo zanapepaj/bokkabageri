@@ -23,10 +23,24 @@
   <meta name="twitter:description" content="Fersk surdeigsbakst fra nabolaget i Stavanger. Meld uforpliktende interesse – vi sier fra når Bokka baker." />
   <meta name="twitter:image" content="https://zanapepaj.github.io/bokkabageri/assets/images/branding/9.png" />
 
+  <!-- 👇 BYTT for hver bakehelg (må matche ACTIVE_WEEKEND i Apps Script).
+       Fra dagen etter siste bakedag viser forsiden avstemningen i stedet for bestillingen. -->
+  <meta name="bokka-bakehelg" content="2026-10-24_25" />
+  <script>
+    // Decided before first paint, so visitors never see last weekend's order form flip to "utsolgt".
+    (function () {
+      var m = /^(\d{4})-(\d{2})-(\d{2})_(\d{2})$/.exec(document.querySelector('meta[name="bokka-bakehelg"]').content);
+      if (!m) return;
+      // Midnight after the last bake day; 2026-10-31_01 ends in November.
+      var over = new Date(+m[1], +m[2] - 1 + (+m[4] < +m[3] ? 1 : 0), +m[4] + 1);
+      if (new Date() >= over) document.documentElement.classList.add("is-pause");
+    })();
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=23" />
+  <link rel="stylesheet" href="styles.css?v=24" />
   <link rel="icon" type="image/png" href="assets/images/branding/9.png" />
   <link rel="apple-touch-icon" href="assets/images/branding/9.png" />
 </head>
@@ -57,7 +71,8 @@
         <span class="brand__descriptor">Et lite nanobakeri ved Bokkaskogen</span>
       </span>
     </a>
-    <a class="btn btn--ghost header__cta" href="#helgens-bestilling">Bestill til helgen</a>
+    <a class="btn btn--ghost header__cta" href="#helgens-bestilling" data-show="open">Bestill til helgen</a>
+    <a class="btn btn--ghost header__cta" href="#avstemning" data-show="pause">Stem på bakst</a>
   </header>
 
   <main id="hovedinnhold">
@@ -92,7 +107,8 @@
           <p class="hero__eyebrow">Fersk surdeigsbakst · Bokkaskogen, Stavanger</p>
           <h1 id="hero-tittel">Bokka kommer når du vil ha oss</h1>
           <p class="hero__lead">Fersk surdeigsbakst fra nabolaget – uten abonnement og uten kjøpepress.</p>
-          <a class="btn btn--primary btn--big" href="#helgens-bestilling">Bestill til helgen</a>
+          <a class="btn btn--primary btn--big" href="#helgens-bestilling" data-show="open">Bestill til helgen</a>
+          <a class="btn btn--primary btn--big" href="#avstemning" data-show="pause">Stem på neste bakst</a>
           <p class="hero__reassure">Helt uforpliktende. Du bestemmer selv om du vil bestille når vi baker.</p>
         </div>
       </div>
@@ -104,19 +120,20 @@
       </svg>
     </section>
 
-    <!-- ============ POLL (pause-helg) ============
-         Når vi selger igjen: legg `hidden` på denne, fjern `hidden` fra #helgens-bestilling og
-         interesse-teaseren, og sett header-/hero-/final-CTA tilbake til #helgens-bestilling. -->
-    <section class="section weekend-order" id="avstemning" aria-labelledby="poll-tittel" hidden>
+    <!-- ============ POLL (mellom bakehelgene) ============
+         Vises automatisk fra dagen etter siste bakedag (bokka-bakehelg i <head>), og da skjules bestillingen.
+         data-vote må matche POLL_OPTIONS i apps-script/BokkaIntake.gs. -->
+    <section class="section weekend-order" id="avstemning" aria-labelledby="poll-tittel" data-show="pause">
       <div class="order-wrap frame">
         <div class="section__head">
-          <p class="eyebrow-hand">Denne helgen</p>
+          <p class="eyebrow-hand">Mellom bakehelgene</p>
           <h2 id="poll-tittel">Bokka tar en liten pause</h2>
-          <p class="section__sub">Vi baker ikke denne helgen. Hjelp oss å velge hva vi skal bake fremover – trykk på det du vil ha mer av. Velg så mange du vil.</p>
+          <p class="section__sub">Neste bakehelg er ikke åpnet for bestilling ennå. Hjelp oss å planlegge – trykk på det du har lyst på, og når det passer deg. Velg så mange du vil.</p>
         </div>
 
-        <ul class="poll-grid" role="list">
-          <li><button type="button" class="poll-option" data-vote="Bokka-brød med frø" data-yum="frøbrød" aria-pressed="false">
+        <h3 class="poll__q" id="poll-q-bakst">Hva har du lyst på?</h3>
+        <ul class="poll-grid" role="list" aria-labelledby="poll-q-bakst">
+          <li><button type="button" class="poll-option" data-vote="Surdeigsbrød" data-yum="surdeigsbrød" aria-pressed="false">
             <svg class="poll-option__icon" viewBox="4 14.5 56 42" aria-hidden="true" focusable="false">
               <path d="M9 45c0-14 10-24 23-24s23 10 23 24c0 3-2 5-5 5H14c-3 0-5-2-5-5z" fill="var(--bread)"/>
               <g class="ic-flat">
@@ -131,21 +148,8 @@
               <path class="ic-thin" d="M29.5 44c1.6 1.4 3.4 1.4 5 0"/>
               <circle class="ic-cheek" cx="23.5" cy="43" r="1.9"/><circle class="ic-cheek" cx="40.5" cy="43" r="1.9"/>
             </svg>
-            <span>Bokka-brød med frø</span>
-            <span class="poll-option__hint">chia, linfrø, solsikke</span>
-          </button></li>
-          <li><button type="button" class="poll-option" data-vote="Rundstykker" data-yum="rundstykker" aria-pressed="false">
-            <svg class="poll-option__icon" viewBox="3 19.25 58 43.5" aria-hidden="true" focusable="false">
-              <ellipse cx="15" cy="40" rx="10" ry="8" fill="var(--bread)"/>
-              <ellipse cx="49" cy="40" rx="10" ry="8" fill="var(--bread)"/>
-              <ellipse cx="32" cy="38" rx="11" ry="9.5" fill="var(--bread)"/>
-              <path class="ic-line" d="M10 37q5-3 10 0M44 37q5-3 10 0" stroke="var(--bread-light)" stroke-width="2"/>
-              <path d="M5 46h54l-4 8H9z" fill="var(--beige)"/>
-              <circle class="ic-eye" cx="28" cy="37.5" r="1.5"/><circle class="ic-eye" cx="36" cy="37.5" r="1.5"/>
-              <path class="ic-thin" d="M30 41c1.3 1.2 2.7 1.2 4 0"/>
-              <circle class="ic-cheek" cx="25" cy="40.5" r="1.7"/><circle class="ic-cheek" cx="39" cy="40.5" r="1.7"/>
-            </svg>
-            <span>Rundstykker</span>
+            <span>Surdeigs&shy;brød</span>
+            <span class="poll-option__hint">med eller uten frø</span>
           </button></li>
           <li><button type="button" class="poll-option" data-vote="Baguette" data-yum="baguetter" aria-pressed="false">
             <svg class="poll-option__icon" viewBox="4 11 56 42" aria-hidden="true" focusable="false">
@@ -166,7 +170,33 @@
                 <circle cx="24" cy="23" r="1.3"/><circle cx="45" cy="21" r="1.3"/><circle cx="48" cy="45" r="1.3"/><circle cx="22" cy="46" r="1.3"/>
               </g>
             </svg>
-            <span>Kanelboller</span>
+            <span>Kanel&shy;boller</span>
+          </button></li>
+          <li><button type="button" class="poll-option" data-vote="Kardemommeboller" data-yum="kardemommeboller" aria-pressed="false">
+            <svg class="poll-option__icon" viewBox="6 16 56 42" aria-hidden="true" focusable="false">
+              <path d="M12 45c0-12.5 9.8-22 22-22s22 9.5 22 22c0 3.6-2.9 6-6.5 6h-31c-3.6 0-6.5-2.4-6.5-6z" fill="var(--bread)"/>
+              <path class="ic-line" d="M19 36c4-7 11-9.5 17-6.5M31 29.5c5.5-4.5 13-3.5 17 2.5" stroke="var(--bread-deep)" stroke-width="2.4"/>
+              <g class="ic-flat" fill="var(--cream)">
+                <circle cx="24" cy="30.5" r="1.4"/><circle cx="30.5" cy="26.5" r="1.4"/><circle cx="38" cy="25.6" r="1.4"/>
+                <circle cx="45" cy="28.5" r="1.4"/><circle cx="35" cy="31.8" r="1.2"/><circle cx="49" cy="35" r="1.2"/>
+              </g>
+              <circle class="ic-eye" cx="29" cy="41" r="1.6"/><circle class="ic-eye" cx="39" cy="41" r="1.6"/>
+              <path class="ic-thin" d="M31.5 45c1.6 1.4 3.4 1.4 5 0"/>
+              <circle class="ic-cheek" cx="25.5" cy="44" r="1.9"/><circle class="ic-cheek" cx="42.5" cy="44" r="1.9"/>
+            </svg>
+            <span>Karde&shy;momme&shy;boller</span>
+          </button></li>
+          <li class="poll-grid__wide"><button type="button" class="poll-option" data-vote="Ny bolle vi tester" data-yum="nye smaker" aria-pressed="false">
+            <svg class="poll-option__icon" viewBox="6 9.75 56 42" aria-hidden="true" focusable="false">
+              <path d="M12 43c0-12.5 9.8-22 22-22s22 9.5 22 22c0 3.6-2.9 6-6.5 6h-31c-3.6 0-6.5-2.4-6.5-6z" fill="var(--bread)"/>
+              <path d="M14.5 35c1.5-8.3 9.6-14 19.5-14s18 5.7 19.5 14c-1.1 2.2-5.4 2.2-6.5 0c-1.1 2.2-5.4 2.2-6.5 0c-1.1 2.2-5.4 2.2-6.5 0c-1.1 2.2-5.4 2.2-6.5 0c-1.1 2.2-5.4 2.2-6.5 0c-1.1 2.2-5.4 2.2-6.5 0z" fill="var(--pink-soft)"/>
+              <path d="M53 12.5l1.5 3.8 3.8 1.5-3.8 1.5-1.5 3.8-1.5-3.8-3.8-1.5 3.8-1.5z" fill="var(--bread-light)" stroke-width="1.6"/>
+              <circle class="ic-eye" cx="29" cy="40.5" r="1.6"/><circle class="ic-eye" cx="39" cy="40.5" r="1.6"/>
+              <path class="ic-thin" d="M31.5 44.5c1.6 1.4 3.4 1.4 5 0"/>
+              <circle class="ic-cheek" cx="25.5" cy="43.5" r="1.9"/><circle class="ic-cheek" cx="42.5" cy="43.5" r="1.9"/>
+            </svg>
+            <span>Ny bolle vi tester</span>
+            <span class="poll-option__hint">vær med på smaketesten</span>
           </button></li>
           <li><button type="button" class="poll-option" data-vote="Surdeigsgranola" data-yum="surdeigsgranola" aria-pressed="false">
             <svg class="poll-option__icon" viewBox="4 17 56 42" aria-hidden="true" focusable="false">
@@ -183,7 +213,7 @@
             </svg>
             <span>Surdeigs&shy;granola</span>
           </button></li>
-          <li><button type="button" class="poll-option" data-vote="Surdeigscookies med mørk sjokolade" data-yum="surdeigscookies med mørk sjokolade" aria-pressed="false">
+          <li><button type="button" class="poll-option" data-vote="Surdeigscookies" data-yum="cookies" aria-pressed="false">
             <svg class="poll-option__icon" viewBox="0.65 9.5 62.7 47" aria-hidden="true" focusable="false">
               <circle cx="42" cy="25" r="13" fill="var(--bread-light)"/>
               <g class="ic-flat" fill="var(--brown-ink)">
@@ -202,7 +232,39 @@
               <circle class="ic-cheek" cx="17.5" cy="42" r="1.9"/><circle class="ic-cheek" cx="34.5" cy="42" r="1.9"/>
             </svg>
             <span>Surdeigs&shy;cookies</span>
-            <span class="poll-option__hint">med mørk sjokolade</span>
+          </button></li>
+        </ul>
+
+        <h3 class="poll__q" id="poll-q-dag">Hvilken dag passer best?</h3>
+        <ul class="poll-grid" role="list" aria-labelledby="poll-q-dag">
+          <li><button type="button" class="poll-option poll-option--small" data-vote="Fredag" aria-pressed="false">
+            <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 11.2 12 4.6l8 6.6V20H4z" /><path d="M12 17.4s-2.9-1.7-2.9-3.6a1.5 1.5 0 0 1 2.9-.6 1.5 1.5 0 0 1 2.9.6c0 1.9-2.9 3.6-2.9 3.6z" /></svg>
+            <span>Fredag</span>
+          </button></li>
+          <li><button type="button" class="poll-option poll-option--small" data-vote="Lørdag" aria-pressed="false">
+            <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" /><path d="M12 2.6v2.4M12 19v2.4M2.6 12h2.4M19 12h2.4M5.2 5.2l1.7 1.7M17.1 17.1l1.7 1.7M18.8 5.2l-1.7 1.7M6.9 17.1l-1.7 1.7" /></svg>
+            <span>Lørdag</span>
+          </button></li>
+        </ul>
+
+        <h3 class="poll__q" id="poll-q-tid">Når på dagen passer det?</h3>
+        <ul class="poll-grid poll-grid--3" role="list" aria-labelledby="poll-q-tid">
+          <li><button type="button" class="poll-option poll-option--small" data-vote="Kl. 10–13" aria-pressed="false">
+            <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12 8.7 10.1" /></svg>
+            <span>Kl. 10–13</span>
+          </button></li>
+          <li><button type="button" class="poll-option poll-option--small" data-vote="Kl. 13–16" aria-pressed="false">
+            <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12l3.3-1.9" /></svg>
+            <span>Kl. 13–16</span>
+          </button></li>
+          <li><button type="button" class="poll-option poll-option--small" data-vote="Etter kl. 16" aria-pressed="false">
+            <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
+            <span>Etter kl. 16</span>
+          </button></li>
+          <li class="poll-grid__wide"><button type="button" class="poll-option poll-option--small" data-vote="Når det passer Bokka / henter selv i skapet" aria-pressed="false">
+            <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20.3S3.8 15.4 3.8 9.6A3.8 3.8 0 0 1 12 7.4a3.8 3.8 0 0 1 8.2 2.2c0 5.8-8.2 10.7-8.2 10.7Z" /></svg>
+            <span>Når det passer Bokka</span>
+            <span class="poll-option__hint">eller jeg henter selv i Bokka-skapet</span>
           </button></li>
         </ul>
 
@@ -210,8 +272,59 @@
       </div>
     </section>
 
+    <!-- ============ RATING (mellom bakehelgene) ============
+         script.js lager én stjernerad per vare på forrige bakehelgs meny (bestillingskortene som ikke er `hidden`). -->
+    <section class="section weekend-order" id="vurdering" aria-labelledby="vurdering-tittel" data-show="pause" hidden>
+      <div class="order-wrap frame">
+        <div class="section__head">
+          <p class="eyebrow-hand">Smakte det?</p>
+          <h2 id="vurdering-tittel">Gi baksten en stjerne</h2>
+          <p class="section__sub">Fikk du bakst fra Bokka sist? Trykk på stjernene for det du smakte – det hjelper oss å bake enda bedre. Helt anonymt.</p>
+        </div>
+
+        <form id="rating-form" class="form" novalidate>
+          <input type="hidden" name="form_type" value="rating" />
+          <div class="hp" aria-hidden="true">
+            <label for="rating-gotcha">La dette feltet stå tomt</label>
+            <input type="text" id="rating-gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="rate-list" id="rate-list"></div>
+          <template id="rate-row">
+            <fieldset class="rate">
+              <legend class="rate__name"></legend>
+              <div class="rate__stars">
+                <label class="rate__star"><input type="radio" value="1" aria-label="1 av 5 stjerner" /><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.7 5.7 6.2.8-4.5 4.3 1.1 6.2L12 16.9l-5.5 2.9 1.1-6.2-4.5-4.3 6.2-.8z" /></svg></label>
+                <label class="rate__star"><input type="radio" value="2" aria-label="2 av 5 stjerner" /><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.7 5.7 6.2.8-4.5 4.3 1.1 6.2L12 16.9l-5.5 2.9 1.1-6.2-4.5-4.3 6.2-.8z" /></svg></label>
+                <label class="rate__star"><input type="radio" value="3" aria-label="3 av 5 stjerner" /><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.7 5.7 6.2.8-4.5 4.3 1.1 6.2L12 16.9l-5.5 2.9 1.1-6.2-4.5-4.3 6.2-.8z" /></svg></label>
+                <label class="rate__star"><input type="radio" value="4" aria-label="4 av 5 stjerner" /><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.7 5.7 6.2.8-4.5 4.3 1.1 6.2L12 16.9l-5.5 2.9 1.1-6.2-4.5-4.3 6.2-.8z" /></svg></label>
+                <label class="rate__star"><input type="radio" value="5" aria-label="5 av 5 stjerner" /><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.7 5.7 6.2.8-4.5 4.3 1.1 6.2L12 16.9l-5.5 2.9 1.1-6.2-4.5-4.3 6.2-.8z" /></svg></label>
+              </div>
+            </fieldset>
+          </template>
+
+          <div class="field">
+            <label for="rating-kommentar">Vil du si noe mer? <span class="field__optional">(valgfritt)</span></label>
+            <textarea id="rating-kommentar" name="kommentar" rows="3" maxlength="500" placeholder="Hva var best? Hva kan bli enda bedre?"></textarea>
+            <p class="field__hint">Skriv ikke navn eller kontaktinfo – da er vurderingen helt anonym.</p>
+          </div>
+
+          <p class="field__error order-form__empty" id="rating-empty" role="alert" hidden>Trykk på stjernene for minst én vare.</p>
+          <p class="field__error form__error" id="rating-error" role="alert" hidden>Oi, vurderingen kom ikke fram. Prøv igjen om litt.</p>
+
+          <button type="submit" class="btn btn--primary btn--big btn--full">Send vurdering</button>
+        </form>
+
+        <div class="form__success" id="rating-success" role="status" hidden>
+          <span class="form__success-mark" aria-hidden="true">⭐</span>
+          <h3>Tusen takk!</h3>
+          <p>Vi leser alt og tar det med oss til neste bakst. 🧡</p>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ WEEKEND ORDER ============ -->
-    <section class="section weekend-order" id="helgens-bestilling" aria-labelledby="bestilling-tittel">
+    <section class="section weekend-order" id="helgens-bestilling" aria-labelledby="bestilling-tittel" data-show="open">
       <div class="order-wrap frame">
         <span class="order__badge" role="text">Begrenset antall</span>
 
@@ -231,8 +344,8 @@
                and CSV rows easy to tell apart. -->
           <input type="hidden" name="_subject" value="Bokka – Helgens bestilling" />
           <input type="hidden" name="form_type" value="weekend_order" />
-          <!-- 👇 BYTT for hver bakehelg (må matche ACTIVE_WEEKEND i Apps Script) -->
-          <input type="hidden" name="bakehelg" value="2026-10-24_25" />
+          <!-- Fylles av script.js fra bokka-bakehelg i <head> -->
+          <input type="hidden" name="bakehelg" value="" />
           <input type="hidden" name="bestilling" value="" />
           <!-- Honeypot: invisible to people, bots tend to fill it. Must stay empty. -->
           <div class="hp" aria-hidden="true">
@@ -543,22 +656,12 @@
 
           <fieldset class="field field--group day-times" id="times-sondag" hidden>
             <legend>Når på søndag passer det?</legend>
-            <p class="field__hint">Kryss av alle tidspunkt som passer.</p>
+            <p class="field__hint">På søndag kommer vi etter kl. 14.</p>
             <div class="checks checks--chips">
               <label class="check check--chip">
-                <input type="checkbox" name="sondag_tid" value="Før kl. 10" />
-                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12H8.2" /></svg>
-                <span>Før kl. 10</span>
-              </label>
-              <label class="check check--chip">
-                <input type="checkbox" name="sondag_tid" value="Kl. 10–12" />
-                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12 9.4 9.4" /></svg>
-                <span>Kl. 10–12</span>
-              </label>
-              <label class="check check--chip">
-                <input type="checkbox" name="sondag_tid" value="Kl. 12–14" />
-                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12l3.6.9" /></svg>
-                <span>Kl. 12–14</span>
+                <input type="checkbox" name="sondag_tid" value="Etter kl. 14" />
+                <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12l3.3 1.9" /></svg>
+                <span>Etter kl. 14</span>
               </label>
               <label class="check check--chip check--full">
                 <input type="checkbox" name="sondag_tid" value="Når det passer Bokka" />
@@ -695,15 +798,20 @@
       </div>
     </section>
 
-    <!-- ============ FINAL CTA (primary: helgens bestilling) ============ -->
-    <section class="section final-cta" aria-labelledby="final-tittel">
+    <!-- ============ FINAL CTA (bestilling – eller interesse mellom bakehelgene) ============ -->
+    <section class="section final-cta" aria-labelledby="final-tittel" data-show="open">
       <h2 id="final-tittel">Vil du sikre deg helgens bakst?</h2>
       <p>Send inn bestillingen din i dag – vi holder av til deg.</p>
       <a class="btn btn--primary btn--big" href="#helgens-bestilling">Bestill til helgen</a>
     </section>
+    <section class="section final-cta" aria-labelledby="final-tittel-pause" data-show="pause">
+      <h2 id="final-tittel-pause">Vil du vite når Bokka baker igjen?</h2>
+      <p>Meld uforpliktende interesse, så sier vi fra før neste bakehelg.</p>
+      <a class="btn btn--primary btn--big" href="interesse.html">Meld interesse</a>
+    </section>
 
     <!-- ============ INTEREST TEASER (low-key → interesse.html) ============ -->
-    <section class="section interesse-teaser" aria-labelledby="interesse-teaser-tittel">
+    <section class="section interesse-teaser" aria-labelledby="interesse-teaser-tittel" data-show="open">
       <p class="interesse-teaser__q" id="interesse-teaser-tittel">Ikke klar for å bestille nå?</p>
       <p class="interesse-teaser__text"><a class="interesse-teaser__link" href="interesse.html">Meld interesse for senere helger</a></p>
     </section>
@@ -724,6 +832,6 @@
     <p class="site-footer__legal"><a class="site-footer__link" href="vilkar.html">Kjøpsvilkår og personvern</a> &middot; <a class="site-footer__link" href="levering.html">Levering og henting</a></p>
   </footer>
 
-  <script src="script.js?v=18" defer></script>
+  <script src="script.js?v=19" defer></script>
 </body>
 </html>

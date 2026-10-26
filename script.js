@@ -14,6 +14,11 @@
   // Leave "" to fall back to each form's action attribute (Formspree) — the rollback switch.
   const INTAKE_ENDPOINT = "https://script.google.com/macros/s/AKfycbxV1iz53ZOKCCsBLaQkF0xB5sNU3W5HF3qccm-NdKMS8l959vpsBSden8qFNGhasiTl/exec";
 
+  // From index.html <head>: the bake weekend, and .is-pause on <html> once it is over.
+  const bakehelgMeta = document.querySelector('meta[name="bokka-bakehelg"]');
+  const BAKEHELG = bakehelgMeta ? bakehelgMeta.content : "";
+  const PAUSE = document.documentElement.classList.contains("is-pause");
+
   /**
    * POST a form. Apps Script cannot answer CORS preflight, so the direct request must
    * stay "simple": urlencoded body, no custom headers. Resolves to the server payload
@@ -200,6 +205,7 @@
     const orderSubmitLabel = orderSubmit ? orderSubmit.textContent : "";
     const summaryField = orderForm.elements["bestilling"];
     const bakehelgField = orderForm.elements["bakehelg"];
+    if (bakehelgField) bakehelgField.value = BAKEHELG;
 
     const firstName = orderForm.elements["fornavn"];
     const mobile = orderForm.elements["mobil"];
@@ -356,10 +362,10 @@
       updateSum();
     }
 
-    // Ask the intake what is left for this weekend. Failure is silent: the server still
-    // enforces stock on submit, so the form stays usable without this.
+    // Ask the intake what is left for this weekend (not between weekends: the form is hidden then).
+    // Failure is silent: the server still enforces stock on submit, so the form stays usable without this.
     function fetchStock() {
-      if (!INTAKE_ENDPOINT || !bakehelgField || !bakehelgField.value) return;
+      if (PAUSE || !INTAKE_ENDPOINT || !bakehelgField || !bakehelgField.value) return;
       fetch(INTAKE_ENDPOINT + "?stock=1&bakehelg=" + encodeURIComponent(bakehelgField.value))
         .then(function (r) { return r.ok ? r.json() : null; })
         .then(function (data) { if (data && data.ok) applyStock(data.stock); })
@@ -566,14 +572,15 @@
   })();
 
   /* -----------------------------------------------------
-     Product poll: one tap = one anonymous vote. Tapped items stay marked on this device.
+     Poll (what, which day, what time): one tap = one anonymous vote.
+     Tapped items stay marked on this device until the next bake weekend.
      ----------------------------------------------------- */
   (function initPoll() {
     const buttons = document.querySelectorAll("[data-vote]");
     if (!buttons.length) return;
 
     const thanks = document.getElementById("poll-thanks");
-    const STORE = "bokka-poll-votes";
+    const STORE = "bokka-poll-" + BAKEHELG;
     let voted = [];
     // localStorage throws in some private-browsing modes; voting still works without it.
     try { voted = JSON.parse(localStorage.getItem(STORE)) || []; } catch (e) {}
@@ -588,7 +595,8 @@
       btn.addEventListener("click", function () {
         if (btn.getAttribute("aria-pressed") === "true") return;
         btn.setAttribute("aria-pressed", "true");
-        say("Mmm, du liker " + btn.getAttribute("data-yum") + "! Takk for stemmen \ud83e\udde1");
+        const yum = btn.getAttribute("data-yum");
+        say((yum ? "Mmm, du liker " + yum + "!" : "Notert!") + " Takk for stemmen \ud83e\udde1");
 
         fetch(INTAKE_ENDPOINT, {
           method: "POST",
@@ -605,6 +613,66 @@
             say("Oi, stemmen kom ikke fram. Trykk gjerne en gang til.");
           });
       });
+    });
+  })();
+
+  /* -----------------------------------------------------
+     Rating: 1–5 stars for each product on the last bake weekend's menu
+     (the order cards that are not hidden). Anonymous; only between bake weekends.
+     ----------------------------------------------------- */
+  (function initRating() {
+    const section = document.getElementById("vurdering");
+    const rateForm = document.getElementById("rating-form");
+    const list = document.getElementById("rate-list");
+    const rowTemplate = document.getElementById("rate-row");
+    if (!PAUSE || !section || !rateForm || !list || !rowTemplate) return;
+
+    const menu = Array.prototype.filter.call(
+      document.querySelectorAll(".order-card .qty__input[data-product]"),
+      function (input) { return !input.closest(".order-card").hidden; }
+    );
+    if (!menu.length) return;
+
+    menu.forEach(function (input) {
+      const row = rowTemplate.content.firstElementChild.cloneNode(true);
+      row.querySelector(".rate__name").textContent = input.getAttribute("data-product");
+      row.querySelectorAll("input").forEach(function (star) { star.name = "stjerner_" + input.name; });
+      list.appendChild(row);
+    });
+    section.hidden = false;
+
+    const empty = document.getElementById("rating-empty");
+    const error = document.getElementById("rating-error");
+    const success = document.getElementById("rating-success");
+    const submit = rateForm.querySelector('button[type="submit"]');
+    const submitLabel = submit.textContent;
+
+    rateForm.addEventListener("change", function () { empty.hidden = true; });
+
+    rateForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const rated = rateForm.querySelector(".rate input:checked") !== null;
+      empty.hidden = rated;
+      if (!rated) return;
+
+      error.hidden = true;
+      submit.disabled = true;
+      submit.textContent = "Sender \u2026";
+      postForm(rateForm)
+        .then(function (data) {
+          if (!data || !data.ok) throw new Error("rating refused");
+          rateForm.hidden = true;
+          success.hidden = false;
+          success.setAttribute("tabindex", "-1");
+          success.focus();
+        })
+        .catch(function () {
+          error.hidden = false;
+        })
+        .then(function () {
+          submit.disabled = false;
+          submit.textContent = submitLabel;
+        });
     });
   })();
 

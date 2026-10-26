@@ -523,7 +523,8 @@ a { color: var(--forest); }
 /* Visually-hidden input for pill/chip variants (label acts as control) */
 .check--day input[type="checkbox"],
 .check--day input[type="radio"],
-.check--chip input[type="checkbox"] {
+.check--chip input[type="checkbox"],
+.rate__star input {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -1343,3 +1344,66 @@ a { color: var(--forest); }
   color: var(--bread-deep);
 }
 .order-sum[hidden] { display: none; }
+
+/* ============ Between bake weekends: poll + rating instead of the order form ============ */
+/* index.html's <head> script puts .is-pause on <html> from the day after the bake weekend. */
+html.is-pause [data-show="open"],
+html:not(.is-pause) [data-show="pause"] { display: none; }
+/* Author display:grid on .form would override the UA [hidden] rule */
+.form[hidden] { display: none; }
+
+.poll__q { margin: 1.9rem 0 0.75rem; font-size: 1.25rem; text-align: center; }
+.section__head + .poll__q { margin-top: 0; }
+.poll-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+.poll-grid__wide { grid-column: 1 / -1; }
+.poll-option--small { min-height: 56px; padding: 0.55rem 0.35rem; font-size: 0.98rem; }
+.poll-option--small .check__icon { margin-bottom: 0.1rem; }
+.poll-grid__wide .check__icon { color: var(--pink); }
+.poll-option[aria-pressed="true"] .check__icon { opacity: 0.5; }
+
+.rate-list { display: grid; gap: 0.7rem; }
+.rate {
+  min-width: 0;
+  margin: 0;
+  padding: 0.7rem 0.9rem 0.8rem;
+  background: var(--cream);
+  border: 2px solid var(--beige);
+  border-radius: var(--radius);
+}
+.rate:has(input:checked) { border-color: var(--forest); background: #eef3ea; }
+/* Floated so the legend sits inside the card instead of on its border */
+.rate__name {
+  float: left;
+  width: 100%;
+  margin: 0 0 0.25rem;
+  padding: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.25;
+  color: var(--forest);
+}
+.rate__stars { clear: both; display: flex; gap: 0.2rem; }
+.rate__star {
+  flex: 0 1 2.75rem;
+  min-width: 0;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.rate__star svg {
+  width: 2.2rem;
+  height: 2.2rem;
+  fill: var(--cream-deep);
+  stroke: var(--brown-ink);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  transition: fill 0.15s ease, transform 0.15s ease;
+}
+/* Fill every star up to the chosen one */
+.rate__stars:has(input:checked) svg { fill: var(--bread); }
+.rate__star:has(input:checked) ~ .rate__star svg { fill: var(--cream-deep); }
+.rate__star:has(input:checked) svg { transform: scale(1.12) rotate(-6deg); }
+.rate__star:has(input:focus-visible) { outline: 3px solid var(--brown-ink); outline-offset: 1px; }
