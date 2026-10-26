@@ -17,7 +17,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-  <link rel="stylesheet" href="rute.css?v=1">
+  <link rel="stylesheet" href="rute.css?v=2">
 </head>
 <body>
   <!-- ===== The game world: full-viewport map ===== -->
@@ -113,15 +113,21 @@
     </div>
   </div>
 
-  <!-- ===== Vipps payment ===== -->
+  <!-- ===== Vipps payment: one-time QR for the exact order (falls back to #67713) ===== -->
   <div class="modal" id="payModal" hidden>
     <div class="modal__card frame pay" role="dialog" aria-labelledby="payTitle">
       <h2 id="payTitle">&#x1F4B3; Betal med Vipps</h2>
       <div class="pay__amount" id="payAmount"></div>
       <div class="pay__order" id="payOrder"></div>
-      <img class="pay__qr" src="assets/images/vipps/vipps-qr-67713.png" alt="Vipps-QR-kode til Bokka Bageri, #67713" width="280" height="280">
-      <p class="pay__to">Skann med Vipps &middot; <b>Bokka Bageri #67713</b></p>
-      <p class="modal__note">Kunden taster inn beløpet selv. Vent til de viser «Betalt» i Vipps før dere går videre.</p>
+      <div class="pay__qrwrap">
+        <img class="pay__qr" id="payQr" src="assets/images/vipps/vipps-qr-67713.png" alt="Vipps-QR-kode for betalingen" width="280" height="280">
+        <div class="pay__done" id="payDone" hidden><span aria-hidden="true">&#x2713;</span>Betalt!</div>
+      </div>
+      <p class="pay__to" id="payTo">Skann med Vipps &middot; <b>Bokka Bageri #67713</b></p>
+      <p class="pay__status" id="payStatus" role="status" aria-live="polite"></p>
+      <button class="btn" id="payRetry" hidden>Lag ny kode</button>
+      <p class="modal__note" id="payNote">Kunden taster inn beløpet selv. Vent til de viser «Betalt» i Vipps før dere går videre.</p>
+      <button class="pay__fallback" id="payStatic" hidden>Bruk vanlig Vipps-QR (#67713) i stedet</button>
       <button class="btn btn--ghost" id="payClose">Lukk</button>
     </div>
   </div>
@@ -157,6 +163,6 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
           integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="rute.js?v=1"></script>
+  <script src="rute.js?v=2"></script>
 </body>
 </html>

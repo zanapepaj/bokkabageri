@@ -115,6 +115,13 @@
     payModal: document.getElementById('payModal'),
     payAmount: document.getElementById('payAmount'),
     payOrder: document.getElementById('payOrder'),
+    payQr: document.getElementById('payQr'),
+    payDone: document.getElementById('payDone'),
+    payTo: document.getElementById('payTo'),
+    payStatus: document.getElementById('payStatus'),
+    payRetry: document.getElementById('payRetry'),
+    payNote: document.getElementById('payNote'),
+    payStatic: document.getElementById('payStatic'),
     payClose: document.getElementById('payClose')
   };
 
@@ -167,8 +174,10 @@
   el.regen.addEventListener('click', function () { el.parentModal.hidden = true; regenerate(); });
   el.parentMode.addEventListener('click', toggleParentMode);
   el.celebrateClose.addEventListener('click', function () { el.celebrate.hidden = true; });
-  el.payClose.addEventListener('click', function () { el.payModal.hidden = true; });
-  el.payModal.addEventListener('click', function (e) { if (e.target === el.payModal) el.payModal.hidden = true; });
+  el.payClose.addEventListener('click', closePay);
+  el.payModal.addEventListener('click', function (e) { if (e.target === el.payModal) closePay(); });
+  el.payRetry.addEventListener('click', function () { var s = findStop(PAY.token); if (s) startVippsPay(s); });
+  el.payStatic.addEventListener('click', function () { cancelPending(); showStaticPay(''); });
   el.forgetBtn.addEventListener('click', function () {
     if (!confirm('Glemme koden på denne telefonen? Den må tastes inn igjen neste gang.')) return;
     el.parentModal.hidden = true;
@@ -444,13 +453,130 @@
   }
 
   /* ===================== Betal (Vipps) ===================== */
+  // With Vipps keys on the server: a one-time QR for exactly this order (amount + order lines in
+  // the customer's app), polled until paid and captured. Without keys / on any error: the
+  // printed #67713 QR, where the customer types the amount.
+  var STATIC_QR = 'assets/images/vipps/vipps-qr-67713.png';
+  var PAY = { token: null, reference: null, timer: null, started: 0 };
+
   function openPay(token) {
     var s = findStop(token);
     if (!s) return;
+    cancelPending();
+    PAY.token = token;
     el.payAmount.textContent = s.betale != null ? s.betale + ' kr' : 'Se bestillingen';
     el.payOrder.innerHTML = esc(s.bestilling) +
       (s.levering ? '<br><span class="pay__fee">Levering: ' + esc(s.levering) + '</span>' : '');
+    el.payDone.hidden = true;
+    el.payRetry.hidden = true;
+    el.payQr.classList.remove('is-faded', 'is-loading');
     el.payModal.hidden = false;
+    if (s.betalt) showPaid();
+    else if (STATE.route && STATE.route.vipps && s.betale > 0) startVippsPay(s);
+    else showStaticPay('');
+  }
+
+  function showStaticPay(msg) {
+    el.payQr.classList.remove('is-faded', 'is-loading');
+    el.payQr.src = STATIC_QR;
+    el.payTo.innerHTML = 'Skann med Vipps &middot; <b>' + esc(VIPPS.name) + ' #' + VIPPS.number + '</b>';
+    el.payNote.textContent = 'Kunden taster inn beløpet selv. Vent til de viser «Betalt» i Vipps før dere går videre.';
+    el.payNote.hidden = false;
+    el.payStatus.textContent = msg || '';
+    el.payRetry.hidden = true;
+    el.payStatic.hidden = true;
+  }
+
+  function startVippsPay(s) {
+    cancelPending();
+    el.payQr.classList.remove('is-faded');
+    el.payQr.classList.add('is-loading');
+    el.payDone.hidden = true;
+    el.payRetry.hidden = true;
+    el.payStatic.hidden = false;
+    el.payTo.textContent = 'Kunden skanner med Vipps-appen';
+    el.payNote.textContent = 'Beløpet og bestillingen står ferdig i Vipps – kunden trykker bare «Betal».';
+    el.payStatus.textContent = 'Lager Vipps-kode ' + E(0x2026);
+    var token = s.stopToken;
+    apiCall('vippsCreate', [token]).then(function (res) {
+      if (PAY.token !== token || el.payModal.hidden) {      // closed meanwhile: don't leave it payable
+        if (res && res.reference) apiCall('vippsCancel', [res.reference]).catch(function () {});
+        return;
+      }
+      if (res && res.alreadyPaid) { markPaid(token); return; }
+      if (!res || !res.ok || !res.qrUrl) { showStaticPay((res && res.message) || 'Fikk ikke laget Vipps-kode – bruk vanlig QR.'); return; }
+      PAY.reference = res.reference;
+      PAY.started = Date.now();
+      el.payQr.src = res.qrUrl;
+      el.payQr.classList.remove('is-loading');
+      el.payStatus.textContent = (res.env === 'test' ? 'TEST · ' : '') + 'Venter på betaling ' + E(0x2026);
+      PAY.timer = setTimeout(pollPay, 3000);
+    }, function (err) {
+      if (err && err.auth) return;
+      if (PAY.token === token) showStaticPay('Fikk ikke kontakt med Vipps – bruk vanlig QR.');
+    });
+  }
+
+  function pollPay() {
+    var ref = PAY.reference, token = PAY.token;
+    if (!ref) return;
+    apiCall('vippsStatus', [ref]).then(function (res) {
+      if (PAY.reference !== ref) return;
+      var st = res && res.state;
+      if (st === 'PAID') { markPaid(token); return; }
+      if (st === 'ABORTED' || st === 'EXPIRED') {
+        PAY.reference = null;
+        el.payQr.classList.add('is-faded');
+        el.payStatus.textContent = st === 'ABORTED' ? 'Betalingen ble avbrutt i Vipps.' : 'Koden gikk ut før noen betalte.';
+        el.payRetry.hidden = false;
+        return;
+      }
+      if (st === 'FAILED') { PAY.reference = null; el.payStatus.textContent = res.message || 'Noe gikk galt med trekket.'; return; }
+      if (!res || !res.ok) { el.payStatus.textContent = (res && res.message) || 'Sjekker igjen ' + E(0x2026); }
+      if (Date.now() - PAY.started > 10 * 60 * 1000) { el.payStatus.textContent = 'Ingen betaling ennå.'; el.payRetry.hidden = false; return; }
+      PAY.timer = setTimeout(pollPay, 2500);
+    }, function () {
+      if (PAY.reference === ref) PAY.timer = setTimeout(pollPay, 4000); // flaky mobile data: keep trying
+    });
+  }
+
+  function markPaid(token) {
+    clearTimeout(PAY.timer);
+    PAY.reference = null;
+    var s = findStop(token);
+    if (s) s.betalt = true;
+    if (!el.payModal.hidden && PAY.token === token) showPaid();
+    toast('Betalt med Vipps! ' + E(0x1F4B0));
+    if (STATE.route) { renderNext(); renderList(); }
+  }
+
+  function showPaid() {
+    el.payQr.classList.add('is-faded');
+    el.payDone.hidden = false;
+    el.payStatus.textContent = 'Betalt med Vipps ' + E(0x2713);
+    el.payNote.hidden = true;
+    el.payRetry.hidden = true;
+    el.payStatic.hidden = true;
+  }
+
+  // Close the window. An unpaid one-time QR is cancelled so it can't be paid later by mistake –
+  // unless the customer approved at the very last second, which the server then still captures.
+  function closePay() {
+    el.payModal.hidden = true;
+    el.payNote.hidden = false;
+    cancelPending();
+    PAY.token = null;
+  }
+
+  function cancelPending() {
+    clearTimeout(PAY.timer);
+    PAY.timer = null;
+    if (!PAY.reference) return;
+    var ref = PAY.reference, token = PAY.token;
+    PAY.reference = null;
+    apiCall('vippsCancel', [ref]).then(function (res) {
+      if (res && res.state === 'PAID') markPaid(token);
+    }, function () {});
   }
 
   // 8 Norwegian digits → +47…; keeps an existing +country prefix; '' if unusable.
@@ -565,6 +691,7 @@
   // Zone/fee, amount to pay and "nobody home" as small tags under the address.
   function extraTags(s) {
     return (s.skipped ? '<span class="tag tag--skip">&#x1F6AA; Ikke hjemme</span>' : '') +
+      (s.betalt ? '<span class="tag tag--paid">&#x2705; Betalt</span>' : '') +
       (s.levering ? '<span class="tag">' + esc(s.levering) + '</span>' : '') +
       (s.betale != null ? '<span class="tag tag--pay">' + esc(s.betale) + ' kr</span>' : '');
   }
@@ -576,7 +703,9 @@
   function moreActions(s) {
     var t = esc(s.stopToken);
     return '<div class="next__more">' +
-      '<button class="btn-more btn-more--pay" data-action="pay" data-token="' + t + '">&#x1F4B3; Betal</button>' +
+      (s.betalt
+        ? '<button class="btn-more btn-more--paid" data-action="pay" data-token="' + t + '">&#x2705; Betalt</button>'
+        : '<button class="btn-more btn-more--pay" data-action="pay" data-token="' + t + '">&#x1F4B3; Betal</button>') +
       (s.skipped
         ? '<button class="btn-more" data-action="unskip" data-token="' + t + '">&#x21A9;&#xFE0E; Prøv igjen</button>'
         : '<button class="btn-more" data-action="skip" data-token="' + t + '">&#x1F6AA; Ikke hjemme</button>') +
