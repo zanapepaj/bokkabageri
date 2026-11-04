@@ -25,7 +25,7 @@
 
   <!-- 👇 BYTT for hver bakehelg (må matche ACTIVE_WEEKEND i Apps Script).
        Fra dagen etter siste bakedag viser forsiden avstemningen i stedet for bestillingen. -->
-  <meta name="bokka-bakehelg" content="2026-10-24_25" />
+  <meta name="bokka-bakehelg" content="2026-11-07_08" />
   <script>
     // Decided before first paint, so visitors never see last weekend's order form flip to "utsolgt".
     (function () {
@@ -630,8 +630,7 @@
             <legend>Når på lørdag passer det?</legend>
             <p class="field__hint">Kryss av alle tidspunkt som passer.</p>
             <div class="checks checks--chips">
-              <!-- 👇 Skjult lør. 24. okt (vi åpnet etter kl. 10). Fjern `hidden` neste bakehelg. -->
-              <label class="check check--chip" hidden>
+              <label class="check check--chip">
                 <input type="checkbox" name="lordag_tid" value="Før kl. 10" />
                 <svg class="check__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.2" /><path d="M12 12V7.3M12 12H8.2" /></svg>
                 <span>Før kl. 10</span>
